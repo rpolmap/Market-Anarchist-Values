@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Anarchist Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Theme Toggle Corner Button -->
+    <button class="theme-toggle-corner" id="theme-toggle" aria-label="Toggle theme">
+        <svg viewBox="0 0 24 24">
+            <path class="icon-sun" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41M12 6a6 6 0 100 12 6 6 0 000-12z"></path>
+            <path class="icon-moon" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+        </svg>
+    </button>
+
+    <div class="main-container">
+        <div class="title-container">
+            <h1>Market Anarchist Quiz</h1>
+        </div>
+        <p class="version-text">Discover your exact market anarchist ideological alignment</p>
+        
+        <div class="description-box" style="margin-top: 30px; text-align: center;">
+            This political quiz evaluates your philosophical stances across 6 core dimensions: Culture, Property Rights, Intellectual Property, Capital & Wealth, Workplace Structure, and Revolutionary Tactics. Answer the prompts to find your closest ideological match.
+        </div>
+
+        <div class="button-container" style="margin-top: 20px;">
+            <button onclick="location.href='test.html'">Start Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        htmlElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
+        themeToggle.addEventListener('click', () => {
+            const next = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        });
+    </script>
+</body>
+</html>
