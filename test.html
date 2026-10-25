@@ -30,237 +30,60 @@
             localStorage.setItem('theme', next);
         });
 
+        const A = "Agree", N = "Neutral", D = "Disagree";
+        const wrap = x => typeof x === 'string' ? { result: x } : { next: x };
+        // q(prompt, onAgree, onNeutral, onDisagree): string = final result, object = next question
+        const q = (prompt, a, n, d) => ({
+            prompt,
+            choices: [{ label: A, ...wrap(a) }, { label: N, ...wrap(n) }, { label: D, ...wrap(d) }]
+        });
+
+        // ---------- Culture ----------
+        const cultureBonds = q("Although we need to progress, maintaining cultural bonds is necessary.",
+            "Moderate", "Moderate", "Progressive");
+        const cultureLeave = q("We should leave the past behind, as society always naturally progresses.",
+            "Progressive", cultureBonds, "Moderate");
+        const cultureStop = q("We should stop social progress and completely return to the lifestyle of our ancestors.",
+            "Traditionalist", "Conservative", "Conservative");
+
+        // ---------- Property ----------
+        const landQ = "Unused natural land should belong to everyone equally.";
+        const propAgree = q(landQ, "Georgism", "Occupancy & Use", "Occupancy & Use");
+        const propOther = q(landQ, "Georgism", "Georgism", "Absolute Lockean");
+
+        // ---------- Intellectual Property ----------
+        const ipCopy = q("When you create a new product, no one else should be able to copy it without your consent.",
+            "Proprietary IP", "Proprietary IP", "Anti-IP");
+
+        // ---------- Capital & Wealth ----------
+        const capNatural = q("Companies profiting from cronyism right now should be left to naturally collapse or adapt to the new system, while respecting the CEOs' positions and legitimacy.",
+            "Full Capitalism", "Full Capitalism", "Freed Markets");
+        const capCollapse = q("Every company profiting from cronyism right now is illegitimate and should immediately, entirely or partially, collapse or be reformed.",
+            "Freed Markets", capNatural, capNatural);
+
+        // ---------- Workplace Structure ----------
+        const workUnion = q("Worker unions are preferable to individual labour.",
+            "Unionism", "Hierarchical", "Hierarchical");
+        const workUnion2 = q("Worker unions are preferable to individual labour.",
+            "Unionism", "Unionism", "Horizontal Self-Employment");
+        const workHire = q("Workers in the same sector should be able to collectively hire and fire.",
+            "Horizontal Self-Employment", "Horizontal Self-Employment", workUnion2);
+        const workElect = q("Workers should democratically elect their bosses every few years.",
+            "Democratic Workplace", workHire, workHire);
+
+        // ---------- Tactic ----------
+        const tacticBlack = q("The only realistic way of reaching our goals is starving the state with the help of the black market.",
+            "Counter Economics", "Counter Economics", "Revolution");
+        const tacticElect = q("The only realistic way of popularizing our ideas is through participation in elections and the democratic system.",
+            "Democracy", tacticBlack, tacticBlack);
+
         const quizTree = {
-            culture: {
-                prompt: "We are progressing towards greater liberty and freedom.",
-                choices: [
-                    { label: "Agree", next: {
-                        prompt: "We should leave the past behind, as society naturally progresses.",
-                        choices: [
-                            { label: "Agree", result: "Progressive" },
-                            { label: "Neutral", next: {
-                                prompt: "Although we need to progress, maintaining cultural bonds is necessary.",
-                                choices: [
-                                    { label: "Agree", result: "Moderate" },
-                                    { label: "Neutral", result: "Moderate" },
-                                    { label: "Disagree", result: "Progressive" }
-                                ]
-                            }},
-                            { label: "Disagree", result: "Moderate" }
-                        ]
-                    }},
-                    { label: "Neutral", next: {
-                        prompt: "We should leave the past behind, as society naturally progresses.",
-                        choices: [
-                            { label: "Agree", result: "Progressive" },
-                            { label: "Neutral", next: {
-                                prompt: "Although we need to progress, maintaining cultural bonds is necessary.",
-                                choices: [
-                                    { label: "Agree", result: "Moderate" },
-                                    { label: "Neutral", result: "Moderate" },
-                                    { label: "Disagree", result: "Progressive" }
-                                ]
-                            }},
-                            { label: "Disagree", result: "Moderate" }
-                        ]
-                    }},
-                    { label: "Disagree", next: {
-                        prompt: "We should stop social progress and completely return to the lifestyle of our ancestors.",
-                        choices: [
-                            { label: "Agree", result: "Traditionalist" },
-                            { label: "Neutral", result: "Conservative" },
-                            { label: "Disagree", result: "Conservative" }
-                        ]
-                    }}
-                ]
-            },
-            property: {
-                prompt: "Everyone should have the right to reclaim abandoned land, even when owned but not actively used.",
-                choices: [
-                    { label: "Agree", next: {
-                        prompt: "Unused natural land should belong to everyone equally.",
-                        choices: [
-                            { label: "Agree", result: "Georgism" },
-                            { label: "Neutral", result: "Occupancy & Use" },
-                            { label: "Disagree", result: "Occupancy & Use" }
-                        ]
-                    }},
-                    { label: "Neutral", next: {
-                        prompt: "Unused natural land should belong to everyone equally.",
-                        choices: [
-                            { label: "Agree", result: "Georgism" },
-                            { label: "Neutral", result: "Georgism" },
-                            { label: "Disagree", result: "Absolute Lockean" }
-                        ]
-                    }},
-                    { label: "Disagree", next: {
-                        prompt: "Unused natural land should belong to everyone equally.",
-                        choices: [
-                            { label: "Agree", result: "Georgism" },
-                            { label: "Neutral", result: "Georgism" },
-                            { label: "Disagree", result: "Absolute Lockean" }
-                        ]
-                    }}
-                ]
-            },
-            ip: {
-                prompt: "Nobody should be able to restrict what ideas or products can be produced and used.",
-                choices: [
-                    { label: "Agree", result: "Anti-IP" },
-                    { label: "Neutral", next: {
-                        prompt: "When you create a new product, no one else should copy it without your consent.",
-                        choices: [
-                            { label: "Agree", result: "Proprietary IP" },
-                            { label: "Neutral", result: "Proprietary IP" },
-                            { label: "Disagree", result: "Anti-IP" }
-                        ]
-                    }},
-                    { label: "Disagree", result: "Proprietary IP" }
-                ]
-            },
-            capital: {
-                prompt: "There is nothing wrong with state/market intervention to favor specific allied companies.",
-                choices: [
-                    { label: "Agree", result: "Cronyism" },
-                    { label: "Neutral", next: {
-                        prompt: "Every company profiting from crony subsidies should immediately collapse or be forcibly restructured.",
-                        choices: [
-                            { label: "Agree", result: "Freed Markets" },
-                            { label: "Neutral", next: {
-                                prompt: "Companies profiting from cronyism should naturally adapt to the new market while respecting corporate leadership legitimacy.",
-                                choices: [
-                                    { label: "Agree", result: "Full Capitalism" },
-                                    { label: "Neutral", result: "Full Capitalism" },
-                                    { label: "Disagree", result: "Freed Markets" }
-                                ]
-                            }},
-                            { label: "Disagree", next: {
-                                prompt: "Companies profiting from cronyism should naturally adapt to the new market while respecting corporate leadership legitimacy.",
-                                choices: [
-                                    { label: "Agree", result: "Full Capitalism" },
-                                    { label: "Neutral", result: "Full Capitalism" },
-                                    { label: "Disagree", result: "Freed Markets" }
-                                ]
-                            }}
-                        ]
-                    }},
-                    { label: "Disagree", next: {
-                        prompt: "Every company profiting from crony subsidies should immediately collapse or be forcibly restructured.",
-                        choices: [
-                            { label: "Agree", result: "Freed Markets" },
-                            { label: "Neutral", next: {
-                                prompt: "Companies profiting from cronyism should naturally adapt to the new market while respecting corporate leadership legitimacy.",
-                                choices: [
-                                    { label: "Agree", result: "Full Capitalism" },
-                                    { label: "Neutral", result: "Full Capitalism" },
-                                    { label: "Disagree", result: "Freed Markets" }
-                                ]
-                            }},
-                            { label: "Disagree", next: {
-                                prompt: "Companies profiting from cronyism should naturally adapt to the new market while respecting corporate leadership legitimacy.",
-                                choices: [
-                                    { label: "Agree", result: "Full Capitalism" },
-                                    { label: "Neutral", result: "Full Capitalism" },
-                                    { label: "Disagree", result: "Freed Markets" }
-                                ]
-                            }}
-                        ]
-                    }}
-                ]
-            },
-            workplace: {
-                prompt: "We should keep the current hierarchical workplace structure.",
-                choices: [
-                    { label: "Agree", next: {
-                        prompt: "Worker unions are preferable to individual labor negotiation.",
-                        choices: [
-                            { label: "Agree", result: "Unionism" },
-                            { label: "Neutral", result: "Hierarchical" },
-                            { label: "Disagree", result: "Hierarchical" }
-                        ]
-                    }},
-                    { label: "Neutral", next: {
-                        prompt: "Worker unions are preferable to individual labor negotiation.",
-                        choices: [
-                            { label: "Agree", result: "Unionism" },
-                            { label: "Neutral", result: "Hierarchical" },
-                            { label: "Disagree", result: "Hierarchical" }
-                        ]
-                    }},
-                    { label: "Disagree", next: {
-                        prompt: "Workers should democratically elect their bosses and management.",
-                        choices: [
-                            { label: "Agree", result: "Democratic Workplace" },
-                            { label: "Neutral", next: {
-                                prompt: "Workers in the same sector should operate primarily as self-employed freelancers or independent contractors.",
-                                choices: [
-                                    { label: "Agree", result: "Horizontal Self-Employment" },
-                                    { label: "Neutral", result: "Horizontal Self-Employment" },
-                                    { label: "Disagree", next: {
-                                        prompt: "Worker unions are preferable to individual labor negotiation.",
-                                        choices: [
-                                            { label: "Agree", result: "Unionism" },
-                                            { label: "Neutral", result: "Unionism" },
-                                            { label: "Disagree", result: "Horizontal Self-Employment" }
-                                        ]
-                                    }}
-                                ]
-                            }},
-                            { label: "Disagree", next: {
-                                prompt: "Workers in the same sector should operate primarily as self-employed freelancers or independent contractors.",
-                                choices: [
-                                    { label: "Agree", result: "Horizontal Self-Employment" },
-                                    { label: "Neutral", result: "Horizontal Self-Employment" },
-                                    { label: "Disagree", next: {
-                                        prompt: "Worker unions are preferable to individual labor negotiation.",
-                                        choices: [
-                                            { label: "Agree", result: "Unionism" },
-                                            { label: "Neutral", result: "Unionism" },
-                                            { label: "Disagree", result: "Horizontal Self-Employment" }
-                                        ]
-                                    }}
-                                ]
-                            }}
-                        ]
-                    }}
-                ]
-            },
-            tactic: {
-                prompt: "We should reach our goals using the present political landscape.",
-                choices: [
-                    { label: "Agree", result: "Democracy" },
-                    { label: "Neutral", next: {
-                        prompt: "The only realistic way of popularizing our ideas is through elections and democratic reforms.",
-                        choices: [
-                            { label: "Agree", result: "Democracy" },
-                            { label: "Neutral", next: {
-                                prompt: "The only realistic way of reaching our goals is starving the state through black/grey counter-markets.",
-                                choices: [
-                                    { label: "Agree", result: "Counter Economics" },
-                                    { label: "Neutral", result: "Counter Economics" },
-                                    { label: "Disagree", result: "Revolution" }
-                                ]
-                            }},
-                            { label: "Disagree", next: {
-                                prompt: "The only realistic way of reaching our goals is starving the state through black/grey counter-markets.",
-                                choices: [
-                                    { label: "Agree", result: "Counter Economics" },
-                                    { label: "Neutral", result: "Counter Economics" },
-                                    { label: "Disagree", result: "Revolution" }
-                                ]
-                            }}
-                        ]
-                    }},
-                    { label: "Disagree", next: {
-                        prompt: "The only realistic way of reaching our goals is starving the state through black/grey counter-markets.",
-                        choices: [
-                            { label: "Agree", result: "Counter Economics" },
-                            { label: "Neutral", result: "Counter Economics" },
-                            { label: "Disagree", result: "Revolution" }
-                        ]
-                    }}
-                ]
-            }
+            culture:   q("We are progressing towards greater liberty and freedom.", cultureLeave, cultureLeave, cultureStop),
+            property:  q("Everyone should have the right to reclaim abandoned land, even when it's owned by somebody but not actively used.", propAgree, propOther, propOther),
+            ip:        q("Nobody should be able to restrict what can be produced or used.", "Anti-IP", ipCopy, "Proprietary IP"),
+            capital:   q("There is nothing wrong with someone intervening in the market to restrict rival companies when the intervening power and the company being helped agree.", "Cronyism", capCollapse, capCollapse),
+            workplace: q("We should keep the current hierarchical workplace structure.", workUnion, workUnion, workElect),
+            tactic:    q("We should reach our goals using the present political landscape.", "Democracy", tacticElect, tacticBlack)
         };
 
         const keys = Object.keys(quizTree);
