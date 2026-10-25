@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Anarchist Quiz - Test</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Theme Toggle Corner Button -->
+    <button class="theme-toggle-corner" id="theme-toggle" aria-label="Toggle theme">
+        <svg viewBox="0 0 24 24">
+            <path class="icon-sun" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41M12 6a6 6 0 100 12 6 6 0 000-12z"></path>
+            <path class="icon-moon" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+        </svg>
+    </button>
+
+    <div class="main-container" id="app">
+        <!-- Rendered dynamically -->
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        htmlElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
+        themeToggle.addEventListener('click', () => {
+            const next = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        });
+
+        const quizTree = {
+            culture: {
+                prompt: "We are progressing towards greater liberty and freedom.",
+                choices: [
+                    { label: "Agree", next: {
+                        prompt: "We should leave the past behind, as society naturally progresses.",
+                        choices: [
+                            { label: "Agree", result: "Progressive" },
+                            { label: "Neutral", next: {
+                                prompt: "Although we need to progress, maintaining cultural bonds is necessary.",
+                                choices: [
+                                    { label: "Agree", result: "Moderate" },
+                                    { label: "Neutral", result: "Moderate" },
+                                    { label: "Disagree", result: "Progressive" }
+                                ]
+                            }},
+                            { label: "Disagree", result: "Moderate" }
+                        ]
+                    }},
+                    { label: "Neutral", next: {
+                        prompt: "We should leave the past behind, as society naturally progresses.",
+                        choices: [
+                            { label: "Agree", result: "Progressive" },
+                            { label: "Neutral", next: {
+                                prompt: "Although we need to progress, maintaining cultural bonds is necessary.",
+                                choices: [
+                                    { label: "Agree", result: "Moderate" },
+                                    { label: "Neutral", result: "Moderate" },
+                                    { label: "Disagree", result: "Progressive" }
+                                ]
+                            }},
+                            { label: "Disagree", result: "Moderate" }
+                        ]
+                    }},
+                    { label: "Disagree", next: {
+                        prompt: "We should stop social progress and completely return to the lifestyle of our ancestors.",
+                        choices: [
+                            { label: "Agree", result: "Traditionalist" },
+                            { label: "Neutral", result: "Conservative" },
+                            { label: "Disagree", result: "Conservative" }
+                        ]
+                    }}
+                ]
+            },
+            property: {
+                prompt: "Everyone should have the right to reclaim abandoned land, even when owned but not actively used.",
+                choices: [
+                    { label: "Agree", next: {
+                        prompt: "Unused natural land should belong to everyone equally.",
+                        choices: [
+                            { label: "Agree", result: "Georgism" },
+                            { label: "Neutral", result: "Occupancy & Use" },
+                            { label: "Disagree", result: "Occupancy & Use" }
+                        ]
+                    }},
+                    { label: "Neutral", next: {
+                        prompt: "Unused natural land should belong to everyone equally.",
+                        choices: [
+                            { label: "Agree", result: "Georgism" },
+                            { label: "Neutral", result: "Georgism" },
+                            { label: "Disagree", result: "Absolute Lockean" }
+                        ]
+                    }},
+                    { label: "Disagree", next: {
+                        prompt: "Unused natural land should belong to everyone equally.",
+                        choices: [
+                            { label: "Agree", result: "Georgism" },
+                            { label: "Neutral", result: "Georgism" },
+                            { label: "Disagree", result: "Absolute Lockean" }
+                        ]
+                    }}
+                ]
+            },
+            ip: {
+                prompt: "Nobody should be able to restrict what ideas or products can be produced and used.",
+                choices: [
+                    { label: "Agree", result: "Anti-IP" },
+                    { label: "Neutral", next: {
+                        prompt: "When you create a new product, no one else should copy it without your consent.",
+                        choices: [
+                            { label: "Agree", result: "Proprietary IP" },
+                            { label: "Neutral", result: "Proprietary IP" },
+                            { label: "Disagree", result: "Anti-IP" }
+                        ]
+                    }},
+                    { label: "Disagree", result: "Proprietary IP" }
+                ]
+            },
+            capital: {
+                prompt: "There is nothing wrong with state/market intervention to favor specific allied companies.",
+                choices: [
+                    { label: "Agree", result: "Cronyism" },
+                    { label: "Neutral", next: {
+                        prompt: "Every company profiting from crony subsidies should immediately collapse or be forcibly restructured.",
+                        choices: [
+                            { label: "Agree", result: "Freed Markets" },
+                            { label: "Neutral", next: {
+                                prompt: "Companies profiting from cronyism should naturally adapt to the new market while respecting corporate leadership legitimacy.",
+                                choices: [
+                                    { label: "Agree", result: "Full Capitalism" },
+                                    { label: "Neutral", result: "Full Capitalism" },
+                                    { label: "Disagree", result: "Freed Markets" }
+                                ]
+                            }},
+                            { label: "Disagree", next: {
+                                prompt: "Companies profiting from cronyism should naturally adapt to the new market while respecting corporate leadership legitimacy.",
+                                choices: [
+                                    { label: "Agree", result: "Full Capitalism" },
+                                    { label: "Neutral", result: "Full Capitalism" },
+                                    { label: "Disagree", result: "Freed Markets" }
+                                ]
+                            }}
+                        ]
+                    }},
+                    { label: "Disagree", next: {
+                        prompt: "Every company profiting from crony subsidies should immediately collapse or be forcibly restructured.",
+                        choices: [
+                            { label: "Agree", result: "Freed Markets" },
+                            { label: "Neutral", next: {
+                                prompt: "Companies profiting from cronyism should naturally adapt to the new market while respecting corporate leadership legitimacy.",
+                                choices: [
+                                    { label: "Agree", result: "Full Capitalism" },
+                                    { label: "Neutral", result: "Full Capitalism" },
+                                    { label: "Disagree", result: "Freed Markets" }
+                                ]
+                            }},
+                            { label: "Disagree", next: {
+                                prompt: "Companies profiting from cronyism should naturally adapt to the new market while respecting corporate leadership legitimacy.",
+                                choices: [
+                                    { label: "Agree", result: "Full Capitalism" },
+                                    { label: "Neutral", result: "Full Capitalism" },
+                                    { label: "Disagree", result: "Freed Markets" }
+                                ]
+                            }}
+                        ]
+                    }}
+                ]
+            },
+            workplace: {
+                prompt: "We should keep the current hierarchical workplace structure.",
+                choices: [
+                    { label: "Agree", next: {
+                        prompt: "Worker unions are preferable to individual labor negotiation.",
+                        choices: [
+                            { label: "Agree", result: "Unionism" },
+                            { label: "Neutral", result: "Hierarchical" },
+                            { label: "Disagree", result: "Hierarchical" }
+                        ]
+                    }},
+                    { label: "Neutral", next: {
+                        prompt: "Worker unions are preferable to individual labor negotiation.",
+                        choices: [
+                            { label: "Agree", result: "Unionism" },
+                            { label: "Neutral", result: "Hierarchical" },
+                            { label: "Disagree", result: "Hierarchical" }
+                        ]
+                    }},
+                    { label: "Disagree", next: {
+                        prompt: "Workers should democratically elect their bosses and management.",
+                        choices: [
+                            { label: "Agree", result: "Democratic Workplace" },
+                            { label: "Neutral", next: {
+                                prompt: "Workers in the same sector should operate primarily as self-employed freelancers or independent contractors.",
+                                choices: [
+                                    { label: "Agree", result: "Horizontal Self-Employment" },
+                                    { label: "Neutral", result: "Horizontal Self-Employment" },
+                                    { label: "Disagree", next: {
+                                        prompt: "Worker unions are preferable to individual labor negotiation.",
+                                        choices: [
+                                            { label: "Agree", result: "Unionism" },
+                                            { label: "Neutral", result: "Unionism" },
+                                            { label: "Disagree", result: "Horizontal Self-Employment" }
+                                        ]
+                                    }}
+                                ]
+                            }},
+                            { label: "Disagree", next: {
+                                prompt: "Workers in the same sector should operate primarily as self-employed freelancers or independent contractors.",
+                                choices: [
+                                    { label: "Agree", result: "Horizontal Self-Employment" },
+                                    { label: "Neutral", result: "Horizontal Self-Employment" },
+                                    { label: "Disagree", next: {
+                                        prompt: "Worker unions are preferable to individual labor negotiation.",
+                                        choices: [
+                                            { label: "Agree", result: "Unionism" },
+                                            { label: "Neutral", result: "Unionism" },
+                                            { label: "Disagree", result: "Horizontal Self-Employment" }
+                                        ]
+                                    }}
+                                ]
+                            }}
+                        ]
+                    }}
+                ]
+            },
+            tactic: {
+                prompt: "We should reach our goals using the present political landscape.",
+                choices: [
+                    { label: "Agree", result: "Democracy" },
+                    { label: "Neutral", next: {
+                        prompt: "The only realistic way of popularizing our ideas is through elections and democratic reforms.",
+                        choices: [
+                            { label: "Agree", result: "Democracy" },
+                            { label: "Neutral", next: {
+                                prompt: "The only realistic way of reaching our goals is starving the state through black/grey counter-markets.",
+                                choices: [
+                                    { label: "Agree", result: "Counter Economics" },
+                                    { label: "Neutral", result: "Counter Economics" },
+                                    { label: "Disagree", result: "Revolution" }
+                                ]
+                            }},
+                            { label: "Disagree", next: {
+                                prompt: "The only realistic way of reaching our goals is starving the state through black/grey counter-markets.",
+                                choices: [
+                                    { label: "Agree", result: "Counter Economics" },
+                                    { label: "Neutral", result: "Counter Economics" },
+                                    { label: "Disagree", result: "Revolution" }
+                                ]
+                            }}
+                        ]
+                    }},
+                    { label: "Disagree", next: {
+                        prompt: "The only realistic way of reaching our goals is starving the state through black/grey counter-markets.",
+                        choices: [
+                            { label: "Agree", result: "Counter Economics" },
+                            { label: "Neutral", result: "Counter Economics" },
+                            { label: "Disagree", result: "Revolution" }
+                        ]
+                    }}
+                ]
+            }
+        };
+
+        const keys = Object.keys(quizTree);
+        let categoryIndex = 0;
+        let currentNode = quizTree[keys[0]];
+        let userResults = {};
+
+        const app = document.getElementById('app');
+
+        function render() {
+            app.innerHTML = `
+                <div class="title-container">
+                    <h1 style="font-size: 2rem;">Question ${categoryIndex + 1} of ${keys.length}</h1>
+                </div>
+                <p class="version-text" style="text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px;">Category: ${keys[categoryIndex]}</p>
+                <div class="question-container">
+                    <div id="question">${currentNode.prompt}</div>
+                </div>
+                <div id="buttons">
+                    ${currentNode.choices.map((c, i) => `<button onclick="choose(${i})">${c.label}</button>`).join('')}
+                </div>
+            `;
+        }
+
+        function choose(i) {
+            const choice = currentNode.choices[i];
+            if (choice.result) {
+                userResults[keys[categoryIndex]] = choice.result;
+                categoryIndex++;
+                if (categoryIndex < keys.length) {
+                    currentNode = quizTree[keys[categoryIndex]];
+                    render();
+                } else {
+                    localStorage.setItem('userResults', JSON.stringify(userResults));
+                    location.href = 'results.html';
+                }
+            } else if (choice.next) {
+                currentNode = choice.next;
+                render();
+            }
+        }
+
+        render();
+    </script>
+</body>
+</html>
