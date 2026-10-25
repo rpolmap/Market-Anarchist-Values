@@ -30,51 +30,99 @@
             localStorage.setItem('theme', next);
         });
 
+        // ---------- Ideology profiles ----------
+        // A value can be an array = several acceptable positions (the best one counts).
         const ideologies = [
-            { name: "Rothbardianism", color: "#3b82f6", profile: { culture: "Moderate", property: "Absolute Lockean", ip: "Anti-IP", capital: "Full Capitalism", workplace: "Hierarchical", tactic: "Counter Economics" } },
-            { name: "Left Rothbardianism", color: "#ef4444", profile: { culture: "Progressive", property: "Absolute Lockean", ip: "Anti-IP", capital: "Freed Markets", workplace: "Unionism", tactic: "Counter Economics" } },
-            { name: "Hoppeanism", color: "#8b5cf6", profile: { culture: "Traditionalist", property: "Absolute Lockean", ip: "Anti-IP", capital: "Full Capitalism", workplace: "Hierarchical", tactic: "Counter Economics" } },
-            { name: "Mutualism", color: "#10b981", profile: { culture: "Progressive", property: "Occupancy & Use", ip: "Anti-IP", capital: "Freed Markets", workplace: "Democratic Workplace", tactic: "Revolution" } },
-            { name: "Geoanarchism", color: "#f59e0b", profile: { culture: "Moderate", property: "Georgism", ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics" } },
-            { name: "Agorism", color: "#ec4899", profile: { culture: "Moderate", property: "Absolute Lockean", ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics" } }
+            { name: "Rothbardianism", color: "#3b82f6", profile: { culture: ["Moderate", "Conservative"], property: "Absolute Lockean", ip: "Anti-IP", capital: "Full Capitalism", workplace: "Hierarchical", tactic: ["Counter Economics", "Democracy"] } },
+            { name: "Left Rothbardianism", color: "#ef4444", profile: { culture: "Progressive", property: "Absolute Lockean", ip: "Anti-IP", capital: "Freed Markets", workplace: ["Unionism", "Horizontal Self-Employment"], tactic: "Counter Economics" } },
+            { name: "Hoppeanism", color: "#8b5cf6", profile: { culture: ["Traditionalist", "Conservative"], property: "Absolute Lockean", ip: "Anti-IP", capital: "Full Capitalism", workplace: "Hierarchical", tactic: ["Democracy", "Counter Economics"] } },
+            { name: "Friedmanite Anarcho-Capitalism", color: "#06b6d4", profile: { culture: "Moderate", property: "Absolute Lockean", ip: "Proprietary IP", capital: "Full Capitalism", workplace: "Hierarchical", tactic: "Democracy" } },
+            { name: "Mutualism", color: "#10b981", profile: { culture: "Progressive", property: "Occupancy & Use", ip: "Anti-IP", capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: ["Revolution", "Counter Economics"] } },
+            { name: "Individualist Anarchism", color: "#84cc16", profile: { culture: "Moderate", property: "Occupancy & Use", ip: "Proprietary IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics" } },
+            { name: "Geoanarchism", color: "#f59e0b", profile: { culture: "Moderate", property: "Georgism", ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: ["Counter Economics", "Democracy"] } },
+            { name: "Agorism", color: "#ec4899", profile: { culture: ["Moderate", "Progressive"], property: "Absolute Lockean", ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics" } }
         ];
 
         const valueColors = {
-            culture: "#38bdf8",
-            property: "#34d399",
-            ip: "#fbbf24",
-            capital: "#f87171",
-            workplace: "#a78bfa",
-            tactic: "#f472b6"
+            culture: "#38bdf8", property: "#34d399", ip: "#fbbf24",
+            capital: "#f87171", workplace: "#a78bfa", tactic: "#f472b6"
         };
 
         const valueDisplayNames = {
-            culture: "Culture",
-            property: "Property",
-            ip: "Intellectual Property",
-            capital: "Capital & Wealth",
-            workplace: "Workplace",
-            tactic: "Tactic"
+            culture: "Culture", property: "Property", ip: "Intellectual Property",
+            capital: "Capital & Wealth", workplace: "Workplace", tactic: "Tactic"
         };
+
+        // ---------- Matching algorithm ----------
+        // 1) Partial credit: nearby positions score between 0 and 1 instead of all-or-nothing.
+        // 2) Weights: dimensions that define an ideology count more.
+        // 3) A % match for every ideology, sorted, exact-match count as tie-breaker.
+        const ordinal = list => (a, b) => {
+            const i = list.indexOf(a), j = list.indexOf(b);
+            return (i < 0 || j < 0) ? 0 : 1 - Math.abs(i - j) / (list.length - 1);
+        };
+        const table = pairs => (a, b) => pairs[a + "|" + b] ?? pairs[b + "|" + a] ?? 0;
+
+        const similarity = {
+            culture: ordinal(["Progressive", "Moderate", "Conservative", "Traditionalist"]),
+            property: table({
+                "Occupancy & Use|Georgism": 0.5,
+                "Georgism|Absolute Lockean": 0.4,
+                "Occupancy & Use|Absolute Lockean": 0
+            }),
+            ip: table({}),
+            capital: table({
+                "Freed Markets|Full Capitalism": 0.5,
+                "Full Capitalism|Cronyism": 0.3,
+                "Freed Markets|Cronyism": 0
+            }),
+            workplace: table({
+                "Hierarchical|Unionism": 0.4,
+                "Hierarchical|Horizontal Self-Employment": 0.3,
+                "Horizontal Self-Employment|Unionism": 0.4,
+                "Unionism|Democratic Workplace": 0.6,
+                "Horizontal Self-Employment|Democratic Workplace": 0.3,
+                "Hierarchical|Democratic Workplace": 0
+            }),
+            tactic: table({
+                "Counter Economics|Revolution": 0.5,
+                "Counter Economics|Democracy": 0.3,
+                "Revolution|Democracy": 0
+            })
+        };
+
+        const weights = { culture: 1.0, property: 1.4, ip: 1.0, capital: 1.2, workplace: 1.2, tactic: 0.8 };
+
+        function scoreIdeology(ideo, answers) {
+            let total = 0, max = 0, exact = 0;
+            for (const key in answers) {
+                const accepted = [].concat(ideo.profile[key]);
+                const sim = Math.max(...accepted.map(v => v === answers[key] ? 1 : similarity[key](v, answers[key])));
+                total += sim * weights[key];
+                max += weights[key];
+                if (accepted.includes(answers[key])) exact++;
+            }
+            return { ideo, percent: max ? Math.round((total / max) * 100) : 0, exact, raw: total };
+        }
 
         const userResults = JSON.parse(localStorage.getItem('userResults')) || {};
 
-        // Matching Algorithm: Nearest-neighbor exact match count
-        let bestMatch = ideologies[0];
-        let maxMatches = -1;
+        const ranked = ideologies
+            .map(i => scoreIdeology(i, userResults))
+            .sort((a, b) => b.raw - a.raw || b.exact - a.exact);
 
-        ideologies.forEach(ideo => {
-            let matches = 0;
-            for (let key in userResults) {
-                if (ideo.profile[key] === userResults[key]) {
-                    matches++;
-                }
-            }
-            if (matches > maxMatches) {
-                maxMatches = matches;
-                bestMatch = ideo;
-            }
-        });
+        const bestMatch = ranked[0].ideo;
+
+        const runnerUps = ranked.slice(1, 4).map(r => `
+            <div style="margin: 8px 0; text-align: left;">
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem; color: var(--text-primary);">
+                    <span>${r.ideo.name}</span><span>${r.percent}%</span>
+                </div>
+                <div style="height:6px; border-radius:3px; background: rgba(128,128,128,0.25); overflow:hidden;">
+                    <div style="height:100%; width:${r.percent}%; background:${r.ideo.color};"></div>
+                </div>
+            </div>
+        `).join('');
 
         const app = document.getElementById('app');
         app.innerHTML = `
@@ -95,8 +143,11 @@
 
                 <div class="result-header-text">Closest Match Ideology</div>
                 <div class="label-bubble" style="background-color: ${bestMatch.color};">
-                    ${bestMatch.name}
+                    ${bestMatch.name} · ${ranked[0].percent}%
                 </div>
+
+                <div class="result-header-text" style="margin-top: 20px;">Runner-ups</div>
+                <div style="width: 100%; max-width: 320px; margin: 0 auto;">${runnerUps}</div>
 
                 <div class="button-container" style="margin-top: 25px;">
                     <button onclick="location.href='index.html'">Home</button>
