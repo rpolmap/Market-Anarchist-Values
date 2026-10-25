@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Anarchist Quiz - Results</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Theme Toggle Corner Button -->
+    <button class="theme-toggle-corner" id="theme-toggle" aria-label="Toggle theme">
+        <svg viewBox="0 0 24 24">
+            <path class="icon-sun" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41M12 6a6 6 0 100 12 6 6 0 000-12z"></path>
+            <path class="icon-moon" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+        </svg>
+    </button>
+
+    <div class="main-container" id="app">
+        <!-- Rendered dynamically -->
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        htmlElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
+        themeToggle.addEventListener('click', () => {
+            const next = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        });
+
+        const ideologies = [
+            { name: "Rothbardianism", color: "#3b82f6", profile: { culture: "Moderate", property: "Absolute Lockean", ip: "Anti-IP", capital: "Full Capitalism", workplace: "Hierarchical", tactic: "Counter Economics" } },
+            { name: "Left Rothbardianism", color: "#ef4444", profile: { culture: "Progressive", property: "Absolute Lockean", ip: "Anti-IP", capital: "Freed Markets", workplace: "Unionism", tactic: "Counter Economics" } },
+            { name: "Hoppeanism", color: "#8b5cf6", profile: { culture: "Traditionalist", property: "Absolute Lockean", ip: "Anti-IP", capital: "Full Capitalism", workplace: "Hierarchical", tactic: "Counter Economics" } },
+            { name: "Mutualism", color: "#10b981", profile: { culture: "Progressive", property: "Occupancy & Use", ip: "Anti-IP", capital: "Freed Markets", workplace: "Democratic Workplace", tactic: "Revolution" } },
+            { name: "Geoanarchism", color: "#f59e0b", profile: { culture: "Moderate", property: "Georgism", ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics" } },
+            { name: "Agorism", color: "#ec4899", profile: { culture: "Moderate", property: "Absolute Lockean", ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics" } }
+        ];
+
+        const valueColors = {
+            culture: "#38bdf8",
+            property: "#34d399",
+            ip: "#fbbf24",
+            capital: "#f87171",
+            workplace: "#a78bfa",
+            tactic: "#f472b6"
+        };
+
+        const valueDisplayNames = {
+            culture: "Culture",
+            property: "Property",
+            ip: "Intellectual Property",
+            capital: "Capital & Wealth",
+            workplace: "Workplace",
+            tactic: "Tactic"
+        };
+
+        const userResults = JSON.parse(localStorage.getItem('userResults')) || {};
+
+        // Matching Algorithm: Nearest-neighbor exact match count
+        let bestMatch = ideologies[0];
+        let maxMatches = -1;
+
+        ideologies.forEach(ideo => {
+            let matches = 0;
+            for (let key in userResults) {
+                if (ideo.profile[key] === userResults[key]) {
+                    matches++;
+                }
+            }
+            if (matches > maxMatches) {
+                maxMatches = matches;
+                bestMatch = ideo;
+            }
+        });
+
+        const app = document.getElementById('app');
+        app.innerHTML = `
+            <div class="main-results-wrapper">
+                <div class="title-container">
+                    <h1>Your Results</h1>
+                </div>
+                <p class="version-text">Here is your breakdown across all 6 dimensions:</p>
+
+                <div id="results-container">
+                    ${Object.keys(userResults).map(key => `
+                        <div class="result-item">
+                            <div class="result-icon" style="background-color: ${valueColors[key]};"></div>
+                            <div class="result-text">${valueDisplayNames[key]}<br><strong style="color:var(--text-primary); font-size: 0.9rem;">${userResults[key]}</strong></div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="result-header-text">Closest Match Ideology</div>
+                <div class="label-bubble" style="background-color: ${bestMatch.color};">
+                    ${bestMatch.name}
+                </div>
+
+                <div class="button-container" style="margin-top: 25px;">
+                    <button onclick="location.href='index.html'">Home</button>
+                    <button onclick="location.href='test.html'">Retake Quiz</button>
+                </div>
+            </div>
+        `;
+    </script>
+</body>
+</html>
