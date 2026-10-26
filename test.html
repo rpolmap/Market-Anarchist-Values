@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Market Anarchist Quiz - Test</title>
+    <title>MAValues - Test</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,70 +20,64 @@
         <!-- Rendered dynamically -->
     </div>
 
+    <script src="data.js"></script>
     <script>
-        const themeToggle = document.getElementById('theme-toggle');
-        const htmlElement = document.documentElement;
-        htmlElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
-        themeToggle.addEventListener('click', () => {
-            const next = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            htmlElement.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-        });
-
         const A = "Agree", N = "Neutral", D = "Disagree";
         const wrap = x => typeof x === 'string' ? { result: x } : { next: x };
-        // q(prompt, onAgree, onNeutral, onDisagree): string = final result, object = next question
+        // q(prompt, onAgree, onNeutral, onDisagree): string = final result (a value), object = next question
         const q = (prompt, a, n, d) => ({
             prompt,
             choices: [{ label: A, ...wrap(a) }, { label: N, ...wrap(n) }, { label: D, ...wrap(d) }]
         });
 
         // ---------- Culture ----------
-        const cultureBonds = q("Although we need to progress, maintaining cultural bonds is necessary.",
+        const cultureBonds = q("Although we need to progress, maintaining cultural bonds is necessary",
             "Moderate", "Moderate", "Progressive");
-        const cultureLeave = q("We should leave the past behind, as society always naturally progresses.",
+        const cultureLeave = q("We should leave the past behind, as society always naturaly progresses",
             "Progressive", cultureBonds, "Moderate");
-        const cultureStop = q("We should stop social progress and completely return to the lifestyle of our ancestors.",
-            "Traditionalist", "Conservative", "Conservative");
+        const cultureStop = q("We should stop social progress and completely return to the lifestyle of our ancestors",
+            "Traditionalist", "Conservatve", "Conservatve");
 
         // ---------- Property ----------
-        const landQ = "Unused natural land should belong to everyone equally.";
-        const propAgree = q(landQ, "Georgism", "Occupancy & Use", "Occupancy & Use");
-        const propOther = q(landQ, "Georgism", "Georgism", "Absolute Lockean");
+        const propLandlords = q("Landlords are illegitimate and should not own any property they dont live in",
+            "Occupancy & Use", "Constructive Occupancy", "Constructive Occupancy");
+        const propAbandoned = q("Abondened land should be able to be rehomesteaded even when its already owned by someone else",
+            propLandlords, propLandlords, "Lockean Homesteading");
 
         // ---------- Intellectual Property ----------
-        const ipCopy = q("When you create a new product, no one else should be able to copy it without your consent.",
-            "Proprietary IP", "Proprietary IP", "Anti-IP");
+        const ipCopy = q("When you create a new product no one else should be able to copy it without your consent",
+            "Propertiary IP", "Propertiary IP", "Anti-IP");
 
-        // ---------- Capital & Wealth ----------
-        const capNatural = q("Companies profiting from cronyism right now should be left to naturally collapse or adapt to the new system, while respecting the CEOs' positions and legitimacy.",
-            "Full Capitalism", "Full Capitalism", "Freed Markets");
-        const capCollapse = q("Every company profiting from cronyism right now is illegitimate and should immediately, entirely or partially, collapse or be reformed.",
-            "Freed Markets", capNatural, capNatural);
+        // ---------- Capital and Wealth ----------
+        const capCorps = q("Big Corporations profiting from the state right now would naturally collapse under an Anarchist Framework",
+            "Full Capitalism", "Full Capitalism", "Cronyism");
+        const capStatism = q("Capitalism is the result of statism not the voluntary exchange between individuals",
+            "Freed Markets", capCorps, capCorps);
 
         // ---------- Workplace Structure ----------
-        const workUnion = q("Worker unions are preferable to individual labour.",
-            "Unionism", "Hierarchical", "Hierarchical");
-        const workUnion2 = q("Worker unions are preferable to individual labour.",
+        const workUnion = q("Worker Unions are preferrable to Individual Labour",
+            "Unionism", "Hierarchial", "Hierarchial");
+        const workUnion2 = q("Worker Unions are preferrable to Individual Labour",
             "Unionism", "Unionism", "Horizontal Self-Employment");
-        const workHire = q("Workers in the same sector should be able to collectively hire and fire.",
+        const workHire = q("Workers in the same sector should be able to collectively hire and fire",
             "Horizontal Self-Employment", "Horizontal Self-Employment", workUnion2);
-        const workElect = q("Workers should democratically elect their bosses every few years.",
+        const workElect = q("Workers should democratically elect their Bosses every few years",
             "Democratic Workplace", workHire, workHire);
 
         // ---------- Tactic ----------
-        const tacticBlack = q("The only realistic way of reaching our goals is starving the state with the help of the black market.",
+        const tacticBlack = q("The only realistic way of reaching our goals is starving the state by the help of the black market",
             "Counter Economics", "Counter Economics", "Revolution");
-        const tacticElect = q("The only realistic way of popularizing our ideas is through participation in elections and the democratic system.",
+        const tacticElect = q("The only realistic way of popularizing our ideas is through participation in elections and the democratic system",
             "Democracy", tacticBlack, tacticBlack);
 
         const quizTree = {
-            culture:   q("We are progressing towards greater liberty and freedom.", cultureLeave, cultureLeave, cultureStop),
-            property:  q("Everyone should have the right to reclaim abandoned land, even when it's owned by somebody but not actively used.", propAgree, propOther, propOther),
-            ip:        q("Nobody should be able to restrict what can be produced or used.", "Anti-IP", ipCopy, "Proprietary IP"),
-            capital:   q("There is nothing wrong with someone intervening in the market to restrict rival companies when the intervening power and the company being helped agree.", "Cronyism", capCollapse, capCollapse),
-            workplace: q("We should keep the current hierarchical workplace structure.", workUnion, workUnion, workElect),
-            tactic:    q("We should reach our goals using the present political landscape.", "Democracy", tacticElect, tacticBlack)
+            culture:   q("We are progressing towards greater liberty and freedom", cultureLeave, cultureLeave, cultureStop),
+            property:  q("Unused natural land should belong to everyone equally", "Georgism", propAbandoned, propAbandoned),
+            ip:        q("Nobody should be able to restrict what can be produced or used", "Anti-IP", ipCopy, "Propertiary IP"),
+            capital:   q("Capitalism is not only the voluntary exchange between individuals but also the cause of inequality and should therefore be replaced by freed markets", "Freed Markets", capStatism, capCorps),
+            workplace: q("We should keep the current hierarchial Workplace Structure", workUnion, workUnion, workElect),
+            tactic:    q("We should reach our goals using the present polical landscape", "Democracy", tacticElect, tacticBlack),
+            price:     q("Prices should be determined by how much Labor is put into them", "Labor Input", "Supply & Demand", "Supply & Demand")
         };
 
         const keys = Object.keys(quizTree);
@@ -98,7 +92,7 @@
                 <div class="title-container">
                     <h1 style="font-size: 2rem;">Question ${categoryIndex + 1} of ${keys.length}</h1>
                 </div>
-                <p class="version-text" style="text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px;">Category: ${keys[categoryIndex]}</p>
+                <p class="version-text" style="text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px;">Category: ${categoryNames[keys[categoryIndex]]}</p>
                 <div class="question-container">
                     <div id="question">${currentNode.prompt}</div>
                 </div>
