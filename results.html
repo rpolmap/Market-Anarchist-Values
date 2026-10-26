@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Market Anarchist Quiz - Results</title>
+    <title>MAValues - Results</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,40 +20,17 @@
         <!-- Rendered dynamically -->
     </div>
 
+    <script src="data.js"></script>
     <script>
-        const themeToggle = document.getElementById('theme-toggle');
-        const htmlElement = document.documentElement;
-        htmlElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
-        themeToggle.addEventListener('click', () => {
-            const next = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            htmlElement.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-        });
-
-        // ---------- Ideology profiles ----------
-        // A value can be an array = several acceptable positions (the best one counts).
-        const ideologies = [
-            { name: "Left-Market Anarchism", color: "#ef4444", profile: { culture: "Progressive", property: "Occupancy & Use", ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics" } },
-            { name: "Rothbardianism", color: "#3b82f6", profile: { culture: "Moderate", property: "Absolute Lockean", ip: "Anti-IP", capital: "Full Capitalism", workplace: "Hierarchical", tactic: "Counter Economics" } },
-            { name: "Hoppeanism", color: "#8b5cf6", profile: { culture: "Traditionalist", property: "Absolute Lockean", ip: "Anti-IP", capital: "Full Capitalism", workplace: "Hierarchical", tactic: "Counter Economics" } },
-            { name: "Agorism", color: "#ec4899", profile: { culture: "Moderate", property: "Occupancy & Use", ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics" } },
-            { name: "Geoanarchism", color: "#f59e0b", profile: { culture: "Moderate", property: "Georgism", ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics" } }
-        ];
-
         const valueColors = {
             culture: "#38bdf8", property: "#34d399", ip: "#fbbf24",
-            capital: "#f87171", workplace: "#a78bfa", tactic: "#f472b6"
-        };
-
-        const valueDisplayNames = {
-            culture: "Culture", property: "Property", ip: "Intellectual Property",
-            capital: "Capital & Wealth", workplace: "Workplace", tactic: "Tactic"
+            capital: "#f87171", workplace: "#a78bfa", tactic: "#f472b6", price: "#fb923c"
         };
 
         // ---------- Matching algorithm ----------
         // 1) Partial credit: nearby positions score between 0 and 1 instead of all-or-nothing.
         // 2) Weights: dimensions that define an ideology count more.
-        // 3) A % match for every ideology, sorted, exact-match count as tie-breaker.
+        // 3) A % match for every ideology/person, sorted, exact-match count as tie-breaker.
         const ordinal = list => (a, b) => {
             const i = list.indexOf(a), j = list.indexOf(b);
             return (i < 0 || j < 0) ? 0 : 1 - Math.abs(i - j) / (list.length - 1);
@@ -61,11 +38,14 @@
         const table = pairs => (a, b) => pairs[a + "|" + b] ?? pairs[b + "|" + a] ?? 0;
 
         const similarity = {
-            culture: ordinal(["Progressive", "Moderate", "Conservative", "Traditionalist"]),
+            culture: ordinal(["Progressive", "Moderate", "Conservatve", "Traditionalist"]),
             property: table({
+                "Occupancy & Use|Constructive Occupancy": 0.7,
+                "Constructive Occupancy|Lockean Homesteading": 0.6,
                 "Occupancy & Use|Georgism": 0.5,
-                "Georgism|Absolute Lockean": 0.4,
-                "Occupancy & Use|Absolute Lockean": 0
+                "Georgism|Lockean Homesteading": 0.4,
+                "Georgism|Constructive Occupancy": 0.3,
+                "Occupancy & Use|Lockean Homesteading": 0
             }),
             ip: table({}),
             capital: table({
@@ -74,77 +54,82 @@
                 "Freed Markets|Cronyism": 0
             }),
             workplace: table({
-                "Hierarchical|Unionism": 0.4,
-                "Hierarchical|Horizontal Self-Employment": 0.3,
+                "Hierarchial|Unionism": 0.4,
+                "Hierarchial|Horizontal Self-Employment": 0.3,
                 "Horizontal Self-Employment|Unionism": 0.4,
                 "Unionism|Democratic Workplace": 0.6,
                 "Horizontal Self-Employment|Democratic Workplace": 0.3,
-                "Hierarchical|Democratic Workplace": 0
+                "Hierarchial|Democratic Workplace": 0
             }),
             tactic: table({
                 "Counter Economics|Revolution": 0.5,
                 "Counter Economics|Democracy": 0.3,
                 "Revolution|Democracy": 0
-            })
+            }),
+            price: table({})
         };
 
-        const weights = { culture: 1.0, property: 1.4, ip: 1.0, capital: 1.2, workplace: 1.2, tactic: 0.8 };
+        const weights = { culture: 1.0, property: 1.4, ip: 1.0, capital: 1.2, workplace: 1.2, tactic: 0.8, price: 1.0 };
 
-        function scoreIdeology(ideo, answers) {
+        function score(entry, answers) {
             let total = 0, max = 0, exact = 0;
             for (const key in answers) {
-                const accepted = [].concat(ideo.profile[key]);
+                const accepted = [].concat(entry.profile[key]);
                 const sim = Math.max(...accepted.map(v => v === answers[key] ? 1 : similarity[key](v, answers[key])));
                 total += sim * weights[key];
                 max += weights[key];
                 if (accepted.includes(answers[key])) exact++;
             }
-            return { ideo, percent: max ? Math.round((total / max) * 100) : 0, exact, raw: total };
+            return { entry, percent: max ? Math.round((total / max) * 100) : 0, exact, raw: total };
         }
+        const rank = list => list.map(e => score(e, userResults)).sort((a, b) => b.raw - a.raw || b.exact - a.exact);
 
         const userResults = JSON.parse(localStorage.getItem('userResults')) || {};
 
-        const ranked = ideologies
-            .map(i => scoreIdeology(i, userResults))
-            .sort((a, b) => b.raw - a.raw || b.exact - a.exact);
+        const rankedIdeologies = rank(ideologies);
+        const rankedPeople = rank(people);
+        const bestIdeology = rankedIdeologies[0];
+        const bestPerson = rankedPeople[0];
 
-        const bestMatch = ranked[0].ideo;
-
-        const runnerUps = ranked.slice(1, 4).map(r => `
-            <div style="margin: 8px 0; text-align: left;">
-                <div style="display:flex; justify-content:space-between; font-size:0.85rem; color: var(--text-primary);">
-                    <span>${r.ideo.name}</span><span>${r.percent}%</span>
-                </div>
-                <div style="height:6px; border-radius:3px; background: rgba(128,128,128,0.25); overflow:hidden;">
-                    <div style="height:100%; width:${r.percent}%; background:${r.ideo.color};"></div>
-                </div>
+        const bars = (list, clickFn) => list.map(r => `
+            <div class="bar-row" onclick="${clickFn}('${r.entry.name}')">
+                <div class="bar-label"><span>${r.entry.name}</span><span>${r.percent}%</span></div>
+                <div class="bar-track"><div class="bar-fill" style="width:${r.percent}%; background:${r.entry.color};"></div></div>
             </div>
         `).join('');
 
-        const app = document.getElementById('app');
-        app.innerHTML = `
+        document.getElementById('app').innerHTML = `
             <div class="main-results-wrapper">
                 <div class="title-container">
-                    <h1>Your Results</h1>
+                    <h1 class="brand">MAValues</h1>
                 </div>
-                <p class="version-text">Here is your breakdown across all 6 dimensions:</p>
+                <h2 class="results-heading">Your Results</h2>
+                <p class="version-text">Here is your breakdown across all 7 dimensions:</p>
 
                 <div id="results-container">
                     ${Object.keys(userResults).map(key => `
-                        <div class="result-item">
+                        <div class="result-item" onclick="openValueInfo('${userResults[key]}', '${key}')">
                             <div class="result-icon" style="background-color: ${valueColors[key]};"></div>
-                            <div class="result-text">${valueDisplayNames[key]}<br><strong style="color:var(--text-primary); font-size: 0.9rem;">${userResults[key]}</strong></div>
+                            <div class="result-text">${userResults[key]}</div>
                         </div>
                     `).join('')}
                 </div>
 
                 <div class="result-header-text">Closest Match Ideology</div>
-                <div class="label-bubble" style="background-color: ${bestMatch.color};">
-                    ${bestMatch.name} · ${ranked[0].percent}%
+                <div class="label-bubble" style="background-color: ${bestIdeology.entry.color};" onclick="openIdeologyInfo('${bestIdeology.entry.name}')">
+                    ${bestIdeology.entry.name} · ${bestIdeology.percent}%
                 </div>
 
-                <div class="result-header-text" style="margin-top: 20px;">Runner-ups</div>
-                <div style="width: 100%; max-width: 320px; margin: 0 auto;">${runnerUps}</div>
+                <div class="result-header-text" style="margin-top: 20px;">Other Ideologies</div>
+                <div class="bars">${bars(rankedIdeologies.slice(1), 'openIdeologyInfo')}</div>
+
+                <div class="result-header-text" style="margin-top: 30px;">Closest Match Person</div>
+                <div class="label-bubble" style="background-color: ${bestPerson.entry.color};" onclick="openPersonInfo('${bestPerson.entry.name}')">
+                    ${bestPerson.entry.name} · ${bestPerson.percent}%
+                </div>
+
+                <div class="result-header-text" style="margin-top: 20px;">Other People</div>
+                <div class="bars">${bars(rankedPeople.slice(1), 'openPersonInfo')}</div>
 
                 <div class="button-container" style="margin-top: 25px;">
                     <button onclick="location.href='index.html'">Home</button>
