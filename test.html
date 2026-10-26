@@ -4,7 +4,501 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAValues - Test</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap');
+
+:root {
+    --bg-color: #18181b;
+    --card-bg: #27272a;
+    --text-primary: #f4f4f5;
+    --text-dim: #a1a1aa;
+    --accent-primary: #d4d4d8;
+    --accent-soft: #71717a;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --card-border: rgba(255, 255, 255, 0.05);
+    --radius-lg: 28px;
+    --radius-sm: 14px;
+    --soft-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    --hover-shadow: rgba(255, 255, 255, 0.1);
+    --corner-fill: #f4f4f5;
+    --corner-color: #18181b;
+    --smooth-transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+[data-theme="light"] {
+    --bg-color: #f4f4f6;
+    --card-bg: #ffffff;
+    --text-primary: #18181b;
+    --text-dim: #71717a;
+    --accent-primary: #27272a;
+    --accent-soft: #e4e4e7;
+    --border-color: rgba(0, 0, 0, 0.09);
+    --card-border: rgba(0, 0, 0, 0.06);
+    --soft-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    --hover-shadow: rgba(0, 0, 0, 0.12);
+    --corner-fill: #18181b;
+    --corner-color: #f4f4f6;
+}
+
+.theme-toggle-corner {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    z-index: 9999;
+    padding: 0;
+    line-height: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.theme-toggle-corner:focus,
+.theme-toggle-corner:focus-visible,
+.theme-toggle-corner:active {
+    outline: none;
+    box-shadow: none;
+}
+
+.theme-toggle-corner svg {
+    width: 100%;
+    height: 100%;
+    fill: var(--corner-fill);
+    color: var(--corner-color);
+    transition: var(--smooth-transition);
+}
+
+.theme-toggle-corner:hover svg {
+    transform: scale(1.06);
+}
+
+.theme-toggle-corner .icon-sun,
+.theme-toggle-corner .icon-moon {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.theme-toggle-corner .icon-sun {
+    display: block;
+}
+.theme-toggle-corner .icon-moon {
+    display: none;
+}
+
+[data-theme="light"] .theme-toggle-corner .icon-sun {
+    display: none;
+}
+[data-theme="light"] .theme-toggle-corner .icon-moon {
+    display: block;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: 'Quicksand', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 1200px;
+    min-height: 100vh;
+    padding: 60px 24px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-weight: 700;
+    font-size: 3.2rem;
+    margin: 0;
+    color: var(--accent-primary);
+    letter-spacing: -1.5px;
+    text-align: center;
+}
+
+.question-container {
+    min-height: 140px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+#question {
+    background-color: var(--card-bg);
+    padding: 35px 50px;
+    border-radius: var(--radius-lg);
+    font-size: 1.4rem;
+    font-weight: 500;
+    line-height: 1.5;
+    box-shadow: var(--soft-shadow);
+    max-width: 800px;
+    border: 1px solid var(--card-border);
+    text-align: center;
+}
+
+button {
+    padding: 16px 24px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--smooth-transition);
+}
+
+button:hover {
+    background-color: var(--text-primary);
+    color: var(--bg-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px var(--hover-shadow);
+}
+
+.description-box {
+    background-color: var(--card-bg);
+    padding: 24px 30px;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    line-height: 1.7;
+    border: 1px solid var(--card-border);
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
+    align-self: center;
+    margin-bottom: 30px;
+    box-shadow: var(--soft-shadow);
+    font-size: 1.1rem;
+}
+
+#buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 480px;
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.button-container button {
+    width: auto;
+    min-width: 220px;
+    max-width: 400px;
+    text-align: center;
+}
+
+.main-results-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px 0;
+}
+
+#results-container {
+    display: grid;
+    grid-template-columns: repeat(3, 140px);
+    justify-content: center;
+    gap: 24px 30px;
+    margin-top: 20px;
+    margin-bottom: 35px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.result-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 140px;
+    box-sizing: border-box;
+    transition: var(--smooth-transition);
+}
+
+.result-icon {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    margin-bottom: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: var(--smooth-transition);
+}
+
+.result-item:hover .result-icon {
+    transform: scale(1.08);
+}
+
+.result-text {
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+}
+
+.label-bubble {
+    display: inline-block;
+    padding: 14px 40px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: #ffffff;
+    margin: 15px 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.result-header-text {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    font-weight: 700;
+    margin-top: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 800px) {
+    #results-container {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px 10px;
+        max-width: 420px;
+    }
+    .result-item {
+        width: 100% !important;
+        max-width: 105px;
+    }
+    .result-icon {
+        width: 70px;
+        height: 70px;
+    }
+    .result-text {
+        font-size: 0.68rem;
+    }
+    h1 {
+        font-size: 2.3rem;
+    }
+}
+
+/* ---------- MAValues additions ---------- */
+.brand {
+    letter-spacing: -2px;
+}
+
+.results-heading {
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin: 0 0 6px;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.result-item,
+.label-bubble,
+.bar-row,
+.chip {
+    cursor: pointer;
+}
+
+.result-text {
+    text-transform: none;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.bars {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.bar-row {
+    margin: 8px 0;
+    text-align: left;
+}
+
+.bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+}
+
+.bar-track {
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(128, 128, 128, 0.25);
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+}
+
+/* Values / Ideologies screens */
+.catalog {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin: 25px 0;
+}
+
+.catalog-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--soft-shadow);
+    padding: 22px 26px;
+}
+
+.catalog-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+}
+
+.group-title {
+    background: transparent;
+    border-width: 2px;
+    border-style: solid;
+    color: var(--text-primary);
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 1rem;
+}
+
+.chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.chip {
+    padding: 10px 18px;
+    font-size: 0.95rem;
+    border-radius: 50px;
+}
+
+/* Popup menu */
+.info-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.info-menu {
+    position: relative;
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--soft-shadow);
+    width: 100%;
+    max-width: 380px;
+    padding: 26px 26px 22px;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-align: left;
+}
+
+.info-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+}
+
+.info-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
+.info-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    padding-right: 34px;
+}
+
+.info-sub {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    margin-top: 4px;
+}
+
+.info-desc {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 14px 0 0;
+}
+
+@media (max-width: 800px) {
+    .result-text { font-size: 0.75rem; }
+}
+
+</style>
 </head>
 <body>
 
@@ -20,7 +514,167 @@
         <!-- Rendered dynamically -->
     </div>
 
-    <script src="data.js"></script>
+    <script>
+// ======================================================================
+// MAValues shared data: categories, values, ideologies, people, popup menu
+// ======================================================================
+
+const categoryNames = {
+    culture: "Culture", property: "Property", ip: "Intellectual Property",
+    capital: "Capital and Wealth", workplace: "Workplace Structure",
+    tactic: "Tactic", price: "Price determination"
+};
+
+// Categories and their values (exactly as specified) + short descriptions
+const categoryValues = {
+    culture: [
+        { name: "Progressive", desc: "Society should keep moving forward and leave outdated traditions behind in favour of greater liberty." },
+        { name: "Moderate", desc: "Progress is welcome, but cultural bonds and inherited customs still matter and should be preserved." },
+        { name: "Conservatve", desc: "Social change should be slowed or resisted; tradition and established norms are worth defending." },
+        { name: "Traditionalist", desc: "Society should return to the lifestyle and values of our ancestors." }
+    ],
+    property: [
+        { name: "Georgism", desc: "Unused natural land belongs to everyone equally; those who hold it exclusively owe the community for that privilege." },
+        { name: "Lockean Homesteading", desc: "Unowned land becomes property by mixing your labour with it, and ownership then stays with you, even if you stop using it." },
+        { name: "Constructive Occupancy", desc: "Abandoned land can be re-homesteaded by someone else, even if it is still claimed by an owner who does not use it." },
+        { name: "Occupancy & Use", desc: "Property is legitimate only while you actually occupy and use it; absentee landlords have no valid claim." }
+    ],
+    ip: [
+        { name: "Anti-IP", desc: "Ideas are not scarce, so nobody should be able to restrict what others produce or use. Patents and copyrights are illegitimate." },
+        { name: "Propertiary IP", desc: "Creators own what they create and others should not copy it without the creator's consent." }
+    ],
+    capital: [
+        { name: "Freed Markets", desc: "Today's capitalism is a product of statism and causes inequality; removing state privilege lets free markets spread wealth and power." },
+        { name: "Full Capitalism", desc: "Capitalism is simply voluntary exchange between individuals; big companies would adapt or collapse in a free society, and their owners are legitimate." },
+        { name: "Cronyism", desc: "Powerful companies may rely on the state to protect themselves and restrict their rivals." }
+    ],
+    workplace: [
+        { name: "Hierarchial", desc: "The current boss-and-employee workplace structure should be kept." },
+        { name: "Horizontal Self-Employment", desc: "Workers are their own bosses, working independently or in flat co-operatives and collectively hiring and firing within their sector." },
+        { name: "Democratic Workplace", desc: "Workers should democratically elect their bosses every few years." },
+        { name: "Unionism", desc: "Worker unions are preferable to individual labour; workers bargain and organise collectively." }
+    ],
+    tactic: [
+        { name: "Counter Economics", desc: "Starve the state by trading in the black and grey market and ignoring its rules and taxes." },
+        { name: "Revolution", desc: "The state must be overthrown directly rather than slowly starved or reformed." },
+        { name: "Democracy", desc: "Use the present political landscape: popularise the ideas through elections and the democratic system." }
+    ],
+    price: [
+        { name: "Supply & Demand", desc: "Prices are set by buyers and sellers through the market." },
+        { name: "Labor Input", desc: "Prices should be determined by how much labour is put into a product." }
+    ]
+};
+
+// Quick lookup: value name -> description
+const valueDescriptions = {};
+for (const k in categoryValues) categoryValues[k].forEach(v => valueDescriptions[v.name] = v.desc);
+
+// Ideologies. A profile value can be an array = several acceptable positions.
+const ideologies = [
+    { name: "Rothbardianism", color: "#3b82f6", group: "Anarcho Capitalism",
+      desc: "Anarcho-capitalism in the tradition of Murray Rothbard: natural-law property rights, strict Lockean homesteading, and private firms in a fully free market.",
+      profile: { culture: "Moderate", property: "Lockean Homesteading", ip: "Anti-IP", capital: "Full Capitalism", workplace: "Hierarchial", tactic: "Counter Economics", price: "Supply & Demand" } },
+    { name: "Hoppeanism", color: "#8b5cf6", group: "Anarcho Capitalism",
+      desc: "Anarcho-capitalism in the tradition of Hans-Hermann Hoppe: private property with a strongly traditionalist view of culture and social order.",
+      profile: { culture: "Traditionalist", property: "Lockean Homesteading", ip: "Anti-IP", capital: "Full Capitalism", workplace: "Hierarchial", tactic: "Counter Economics", price: "Supply & Demand" } },
+    { name: "Left Rothbardianism", color: "#ef4444", group: "Left-Wing Market Anarchism",
+      desc: "Keeps Rothbardian homesteading and market exchange but pairs them with progressive culture, freed markets and independent, self-managed work.",
+      profile: { culture: "Progressive", property: ["Lockean Homesteading", "Constructive Occupancy"], ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", price: "Supply & Demand" } },
+    { name: "Mutualism", color: "#14b8a6", group: "Left-Wing Market Anarchism",
+      desc: "Market anarchism built on occupancy-and-use property, worker associations and the idea that prices should reflect the labour put into goods.",
+      profile: { culture: ["Progressive", "Moderate"], property: "Occupancy & Use", ip: "Anti-IP", capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: ["Democracy", "Counter Economics"], price: "Labor Input" } },
+    { name: "Geoanarchism", color: "#f59e0b", group: "Left-Wing Market Anarchism",
+      desc: "Market anarchism that treats land as a common inheritance: unused natural land belongs to everyone equally, as in Georgism.",
+      profile: { culture: "Moderate", property: "Georgism", ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", price: "Supply & Demand" } },
+    { name: "Agorism", color: "#ec4899", group: "Tactical",
+      desc: "A strategy-first ideology: build a stateless society through counter-economics, trading on the black market until the state is starved.",
+      profile: { culture: "Moderate", property: "Occupancy & Use", ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", price: "Supply & Demand" } }
+];
+
+// The three ideology groups shown on the Ideologies screen
+const ideologyGroups = [
+    { name: "Anarcho Capitalism", color: "#3b82f6",
+      desc: "Stateless society organised around private property, full capitalism and voluntary exchange, with hierarchical firms seen as legitimate." },
+    { name: "Left-Wing Market Anarchism", color: "#ef4444",
+      desc: "Markets without a state, combined with a critique of today's capitalism, concern for equality, and more worker-friendly and land-friendly property norms." },
+    { name: "Tactical", color: "#ec4899",
+      desc: "Ideologies defined mainly by how to reach a free society (the strategy) rather than by a particular property or workplace system." }
+];
+
+// People shown in results
+const people = [
+    { name: "Hans-Hermann Hoppe", color: "#8b5cf6",
+      desc: "Austrian-school economist and philosopher; anarcho-capitalist known for his argumentation ethics and traditionalist social views.",
+      profile: { culture: "Traditionalist", property: "Lockean Homesteading", ip: "Anti-IP", capital: "Full Capitalism", workplace: "Hierarchial", tactic: "Counter Economics", price: "Supply & Demand" } },
+    { name: "Murray Rothbard", color: "#3b82f6",
+      desc: "Economist and political theorist who founded modern anarcho-capitalism, combining Austrian economics with natural-rights property theory.",
+      profile: { culture: "Moderate", property: "Lockean Homesteading", ip: "Anti-IP", capital: "Full Capitalism", workplace: "Hierarchial", tactic: ["Democracy", "Counter Economics"], price: "Supply & Demand" } },
+    { name: "SEK3", color: "#ec4899",
+      desc: "Samuel Edward Konkin III, founder of agorism and the theory of counter-economics as a path to a stateless society.",
+      profile: { culture: "Progressive", property: "Lockean Homesteading", ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", price: "Supply & Demand" } },
+    { name: "Proudhon", color: "#14b8a6",
+      desc: "Pierre-Joseph Proudhon, the first self-declared anarchist and father of mutualism, famous for \"property is theft\" and for worker associations.",
+      profile: { culture: "Conservatve", property: "Occupancy & Use", ip: "Anti-IP", capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: "Democracy", price: "Labor Input" } },
+    { name: "Benjamin Tucker", color: "#f59e0b",
+      desc: "American individualist anarchist and editor of Liberty; defended mutual banking, the labour theory of value and the \"cost the limit of price\" principle.",
+      profile: { culture: "Moderate", property: "Occupancy & Use", ip: ["Anti-IP", "Propertiary IP"], capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", price: "Labor Input" } },
+    { name: "Ludwig von Mises", color: "#22c55e",
+      desc: "Leading Austrian-school economist and classical liberal who defended free markets and economic calculation, though he was not an anarchist.",
+      profile: { culture: "Moderate", property: "Lockean Homesteading", ip: "Propertiary IP", capital: "Full Capitalism", workplace: "Hierarchial", tactic: "Democracy", price: "Supply & Demand" } }
+];
+
+// ---------------- Popup menu (click a value / ideology / person) ----------------
+function openInfo(title, subtitle, desc, color) {
+    closeInfo();
+    const overlay = document.createElement('div');
+    overlay.className = 'info-overlay';
+    overlay.id = 'info-overlay';
+    overlay.innerHTML = `
+        <div class="info-menu" role="dialog" aria-modal="true">
+            <div class="info-bar" style="background:${color || 'var(--accent-soft)'}"></div>
+            <button class="info-close" aria-label="Close">&times;</button>
+            <div class="info-title"></div>
+            ${subtitle ? '<div class="info-sub"></div>' : ''}
+            <p class="info-desc"></p>
+        </div>`;
+    overlay.querySelector('.info-title').textContent = title;
+    if (subtitle) overlay.querySelector('.info-sub').textContent = subtitle;
+    overlay.querySelector('.info-desc').textContent = desc;
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeInfo(); });
+    overlay.querySelector('.info-close').addEventListener('click', closeInfo);
+    document.body.appendChild(overlay);
+}
+function closeInfo() {
+    const o = document.getElementById('info-overlay');
+    if (o) o.remove();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeInfo(); });
+
+const openValueInfo = (name, catKey) => openInfo(name, catKey ? categoryNames[catKey] : "Value", valueDescriptions[name] || "", null);
+const openIdeologyInfo = name => {
+    const i = ideologies.find(x => x.name === name);
+    if (i) return openInfo(i.name, "Ideology · " + i.group, i.desc, i.color);
+    const g = ideologyGroups.find(x => x.name === name);
+    if (g) openInfo(g.name, "Ideology group", g.desc, g.color);
+};
+const openPersonInfo = name => {
+    const p = people.find(x => x.name === name);
+    if (p) openInfo(p.name, "Person", p.desc, p.color);
+};
+
+// Theme toggle (shared)
+(function () {
+    const themeToggle = document.getElementById('theme-toggle');
+    const htmlElement = document.documentElement;
+    htmlElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
+    if (themeToggle) themeToggle.addEventListener('click', () => {
+        const next = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        htmlElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+    });
+})();
+
+</script>
     <script>
         const A = "Agree", N = "Neutral", D = "Disagree";
         const wrap = x => typeof x === 'string' ? { result: x } : { next: x };
