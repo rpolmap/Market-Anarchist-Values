@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Market Anarchist Quiz</title>
+    <title>MAValues</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,28 +18,21 @@
 
     <div class="main-container">
         <div class="title-container">
-            <h1>Market Anarchist Quiz</h1>
+            <h1 class="brand">MAValues</h1>
         </div>
         <p class="version-text">Discover your exact market anarchist ideological alignment</p>
-        
+
         <div class="description-box" style="margin-top: 30px; text-align: center;">
-            This political quiz evaluates your philosophical stances across 6 core dimensions: Culture, Property Rights, Intellectual Property, Capital & Wealth, Workplace Structure, and Revolutionary Tactics. Answer the prompts to find your closest ideological match.
+            This political quiz evaluates your philosophical stances across 7 core dimensions: Culture, Property, Intellectual Property, Capital and Wealth, Workplace Structure, Tactic, and Price determination. Answer the prompts to find your closest ideological match.
         </div>
 
         <div class="button-container" style="margin-top: 20px;">
             <button onclick="location.href='test.html'">Start Quiz</button>
+            <button onclick="location.href='ideologies.html'">Ideologies</button>
+            <button onclick="location.href='values.html'">Values</button>
         </div>
     </div>
 
-    <script>
-        const themeToggle = document.getElementById('theme-toggle');
-        const htmlElement = document.documentElement;
-        htmlElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
-        themeToggle.addEventListener('click', () => {
-            const next = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            htmlElement.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-        });
-    </script>
+    <script src="data.js"></script>
 </body>
 </html>
