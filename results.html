@@ -498,36 +498,16 @@ button:hover {
     .result-text { font-size: 0.75rem; }
 }
 
-/* Symbols row in the popup */
+/* Symbol in the value popup */
 .info-symbols {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 12px;
     margin: 16px 0 4px;
 }
 .info-symbol {
-    width: 56px;
-    height: 56px;
-    object-fit: contain;
-}
-.info-symbol.single {
     width: 96px;
     height: 96px;
-}
-.info-symbol-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    width: 72px;
-}
-.info-symbol-wrap span {
-    font-size: 0.62rem;
-    font-weight: 700;
-    text-align: center;
-    color: var(--text-dim);
-    line-height: 1.2;
+    object-fit: contain;
 }
 
 </style>
@@ -667,17 +647,6 @@ const valueSymbols = {
 };
 const symbolSrc = name => valueSymbols[name] ? encodeURI("pictures/" + valueSymbols[name] + ".svg") : "";
 
-// Builds the symbols row for an ideology / person profile (arrays = several symbols)
-function profileSymbolsHTML(profile) {
-    const names = [];
-    Object.keys(profile).forEach(k => [].concat(profile[k]).forEach(n => { if (!names.includes(n)) names.push(n); }));
-    return '<div class="info-symbols">' + names.map(n => `
-        <div class="info-symbol-wrap">
-            <img class="info-symbol" src="${symbolSrc(n)}" alt="${n.replace(/"/g, '&quot;')}">
-            <span>${n}</span>
-        </div>`).join('') + '</div>';
-}
-
 // ---------------- Popup menu (click a value / ideology / person) ----------------
 function openInfo(title, subtitle, desc, color, symbolsHTML) {
     closeInfo();
@@ -711,17 +680,17 @@ const openValueInfo = (name, catKey) => openInfo(
     catKey ? categoryNames[catKey] : "Value",
     valueDescriptions[name] || "",
     null,
-    valueSymbols[name] ? `<div class="info-symbols"><img class="info-symbol single" src="${symbolSrc(name)}" alt=""></div>` : ""
+    valueSymbols[name] ? `<div class="info-symbols"><img class="info-symbol" src="${symbolSrc(name)}" alt=""></div>` : ""
 );
 const openIdeologyInfo = name => {
     const i = ideologies.find(x => x.name === name);
-    if (i) return openInfo(i.name, "Ideology · " + i.group, i.desc, i.color, profileSymbolsHTML(i.profile));
+    if (i) return openInfo(i.name, "Ideology · " + i.group, i.desc, i.color);
     const g = ideologyGroups.find(x => x.name === name);
     if (g) openInfo(g.name, "Ideology group", g.desc, g.color);
 };
 const openPersonInfo = name => {
     const p = people.find(x => x.name === name);
-    if (p) openInfo(p.name, "Person", p.desc, p.color, profileSymbolsHTML(p.profile));
+    if (p) openInfo(p.name, "Person", p.desc, p.color);
 };
 
 // Theme toggle (shared)
