@@ -498,6 +498,18 @@ button:hover {
     .result-text { font-size: 0.75rem; }
 }
 
+/* Symbol in the value popup */
+.info-symbols {
+    display: flex;
+    justify-content: center;
+    margin: 16px 0 4px;
+}
+.info-symbol {
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+}
+
 </style>
 </head>
 <body>
@@ -628,8 +640,20 @@ const people = [
       profile: { culture: "Moderate", property: "Lockean Homesteading", ip: "Propertiary IP", capital: "Full Capitalism", workplace: "Hierarchial", tactic: "Democracy", price: "Supply & Demand" } }
 ];
 
+// ---------------- Value symbols (pictures folder) ----------------
+const valueSymbols = {
+    "Progressive": "progressive", "Moderate": "moderate", "Conservatve": "conservative", "Traditionalist": "traditionalist",
+    "Georgism": "georgism", "Lockean Homesteading": "lockean homesteading", "Constructive Occupancy": "constructive occupancy", "Occupancy & Use": "occupancy and use",
+    "Anti-IP": "anti ip", "Propertiary IP": "proprietary ip",
+    "Freed Markets": "freed markets", "Full Capitalism": "capitalism", "Cronyism": "cronyism",
+    "Hierarchial": "hierarchial", "Horizontal Self-Employment": "horizontal self employment", "Democratic Workplace": "democratic workplace", "Unionism": "unionism",
+    "Counter Economics": "counter economics", "Revolution": "revolution", "Democracy": "democracy",
+    "Supply & Demand": "supply and demand", "Labor Input": "labor input"
+};
+const symbolSrc = name => valueSymbols[name] ? encodeURI("pictures/" + valueSymbols[name] + ".svg") : "";
+
 // ---------------- Popup menu (click a value / ideology / person) ----------------
-function openInfo(title, subtitle, desc, color) {
+function openInfo(title, subtitle, desc, color, symbolsHTML) {
     closeInfo();
     const overlay = document.createElement('div');
     overlay.className = 'info-overlay';
@@ -640,6 +664,7 @@ function openInfo(title, subtitle, desc, color) {
             <button class="info-close" aria-label="Close">&times;</button>
             <div class="info-title"></div>
             ${subtitle ? '<div class="info-sub"></div>' : ''}
+            ${symbolsHTML || ''}
             <p class="info-desc"></p>
         </div>`;
     overlay.querySelector('.info-title').textContent = title;
@@ -655,7 +680,13 @@ function closeInfo() {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeInfo(); });
 
-const openValueInfo = (name, catKey) => openInfo(name, catKey ? categoryNames[catKey] : "Value", valueDescriptions[name] || "", null);
+const openValueInfo = (name, catKey) => openInfo(
+    name,
+    catKey ? categoryNames[catKey] : "Value",
+    valueDescriptions[name] || "",
+    null,
+    valueSymbols[name] ? `<div class="info-symbols"><img class="info-symbol" src="${symbolSrc(name)}" alt=""></div>` : ""
+);
 const openIdeologyInfo = name => {
     const i = ideologies.find(x => x.name === name);
     if (i) return openInfo(i.name, "Ideology · " + i.group, i.desc, i.color);
