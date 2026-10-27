@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Dark Background Glow / Shadow -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <style>
+    .bg-main { fill: #121212; }
+  </style>
+
+  <!-- Canvas Background matching Dark Mode Theme -->
+  <rect width="100%" height="100%" class="bg-main"/>
+
+  <!-- NeoValues Circular Icon Group -->
+  <g transform="translate(250, 250)">
+    
+    <!-- Outer Gold Border Ring -->
+    <circle cx="0" cy="0" r="180" fill="#ffd700" filter="url(#shadow)"/>
+    
+    <!-- Thin Inner Dark Separation Ring -->
+    <circle cx="0" cy="0" r="172" fill="#1a1a1a"/>
+    
+    <!-- Main Badge Background (Crimson Red) -->
+    <circle cx="0" cy="0" r="164" fill="#a81818"/>
+
+    <!-- ICON GRAPHIC: Hammer + Patent Seal (Scaled Up) -->
+    <g transform="translate(0, 0) scale(1.35)">
+      
+      <!-- Crossed Hammer (Labor Input) -->
+      <g transform="rotate(-30) translate(0, -15)">
+        <!-- Handle -->
+        <rect x="-7" y="-55" width="14" height="110" rx="4" fill="#ffd700"/>
+        <!-- Hammer Head -->
+        <path d="M -22 -55 L 22 -55 L 22 -35 L -22 -35 Z" fill="#ffffff" stroke="#ffd700" stroke-width="3" stroke-linejoin="round"/>
+        <!-- Hammer Back Peen -->
+        <path d="M -28 -50 L -22 -55 L -22 -35 Z" fill="#ffffff"/>
+      </g>
+
+      <!-- Patent Certificate / Ribbon Overlay (Intellectual Property Protection) -->
+      <g transform="translate(0, 30)">
+        <!-- Certificate Seal Circle -->
+        <circle cx="0" cy="0" r="28" fill="#ffd700" stroke="#801010" stroke-width="3"/>
+        <circle cx="0" cy="0" r="22" fill="#ffffff"/>
+        
+        <!-- Lock Keyhole (Enclosure / Legal Rights) -->
+        <path d="M 0 -9 C -4 -9 -7 -6 -7 -2 C -7 2 -4 4 -3 5 L -5 14 L 5 14 L 3 5 C 4 4 7 2 7 -2 C 7 -6 4 -9 0 -9 Z" fill="#801010"/>
+
+        <!-- Ribbon Tails -->
+        <path d="M -12 24 L -22 48 L -8 44 L 0 48 L 0 26 Z" fill="#ffd700" stroke="#801010" stroke-width="1.5"/>
+        <path d="M 12 24 L 22 48 L 8 44 L 0 48 L 0 26 Z" fill="#ffd700" stroke="#801010" stroke-width="1.5"/>
+      </g>
+
+    </g>
+  </g>
+</svg>
+
