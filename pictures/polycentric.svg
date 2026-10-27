@@ -1,19 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
   <defs>
-    <!-- Dark Background Glow / Shadow -->
+    <!-- Drop Shadow -->
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.5"/>
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.3"/>
     </filter>
   </defs>
 
-  <style>
-    .bg-main { fill: #121212; }
-  </style>
-
-  <!-- Dark Mode Canvas Background -->
-  <rect width="100%" height="100%" class="bg-main"/>
-
-  <!-- NeoValues Circular Icon Group -->
+  <!-- NeoValues Circular Icon Group (No Background Rect) -->
   <g transform="translate(250, 250)">
     
     <!-- Outer Gold Border Ring -->
@@ -22,17 +15,15 @@
     <!-- Thin Inner Dark Separation Ring -->
     <circle cx="0" cy="0" r="172" fill="#1a1a1a"/>
     
-    <!-- Main Badge Background (Teal/Cyan Axis commonly used for Decentralization / Governance) -->
+    <!-- Main Badge Background (Teal/Cyan Axis for Decentralization) -->
     <circle cx="0" cy="0" r="164" fill="#008080"/>
 
     <!-- SYMBOL: Decentralized Node Network -->
     <g transform="translate(0, 0) scale(1.35)">
       
       <!-- Network Connection Lines -->
-      <!-- Ring Connections -->
       <polygon points="0,-75 65,-37.5 65,37.5 0,75 -65,37.5 -65,-37.5" fill="none" stroke="#ffffff" stroke-width="4.5" opacity="0.7"/>
       
-      <!-- Cross Connections (Non-Centralized Mesh) -->
       <line x1="-65" y1="-37.5" x2="65" y2="37.5" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
       <line x1="65" y1="-37.5" x2="-65" y2="37.5" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
       <line x1="0" y1="-75" x2="65" y2="37.5" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
@@ -40,21 +31,15 @@
       <line x1="0" y1="75" x2="65" y2="-37.5" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
       <line x1="0" y1="75" x2="-65" y2="-37.5" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
 
-      <!-- Peripheral Nodes (Gold Rings with White Fill) -->
-      <!-- Top -->
+      <!-- Peripheral Nodes -->
       <circle cx="0" cy="-75" r="15" fill="#ffffff" stroke="#ffd700" stroke-width="4"/>
-      <!-- Top Right -->
       <circle cx="65" cy="-37.5" r="15" fill="#ffffff" stroke="#ffd700" stroke-width="4"/>
-      <!-- Bottom Right -->
       <circle cx="65" cy="37.5" r="15" fill="#ffffff" stroke="#ffd700" stroke-width="4"/>
-      <!-- Bottom -->
       <circle cx="0" cy="75" r="15" fill="#ffffff" stroke="#ffd700" stroke-width="4"/>
-      <!-- Bottom Left -->
       <circle cx="-65" cy="37.5" r="15" fill="#ffffff" stroke="#ffd700" stroke-width="4"/>
-      <!-- Top Left -->
       <circle cx="-65" cy="-37.5" r="15" fill="#ffffff" stroke="#ffd700" stroke-width="4"/>
 
-      <!-- Hollow Center (Symbolizing the absence of a central authority) -->
+      <!-- Hollow Center -->
       <circle cx="0" cy="0" r="16" fill="#008080" stroke="#ffd700" stroke-width="3.5" stroke-dasharray="6 3"/>
 
     </g>
