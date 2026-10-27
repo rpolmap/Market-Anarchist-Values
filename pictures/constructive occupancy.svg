@@ -1,0 +1,31 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <!-- Background Badge -->
+  <circle cx="256" cy="256" r="240" fill="#18181b" stroke="#3f3f46" stroke-width="10"/>
+  
+  <!-- Outer Gold Accent Ring -->
+  <circle cx="256" cy="256" r="222" fill="none" stroke="#eab308" stroke-width="6"/>
+
+  <!-- Cultivated Land Base -->
+  <path d="M 100 360 Q 256 395 412 360 L 412 385 Q 256 420 100 385 Z" fill="#15803d"/>
+
+  <!-- Homestead Structure (Occupancy) -->
+  <path d="M 160 340 L 160 220 L 256 140 L 352 220 L 352 340 Z" 
+        fill="#27272a" 
+        stroke="#eab308" 
+        stroke-width="14" 
+        stroke-linejoin="round"/>
+
+  <!-- Economic Management / Lease & Rent Keyhole Arch -->
+  <path d="M 226 340 L 226 270 A 30 30 0 0 1 286 270 L 286 340 Z" fill="#eab308"/>
+  <circle cx="256" cy="275" r="10" fill="#18181b"/>
+  <path d="M 252 275 L 260 275 L 262 305 L 250 305 Z" fill="#18181b"/>
+
+  <!-- Constructive Stewardship / Management Gear Emblem in Roof -->
+  <g transform="translate(256, 195)">
+    <circle cx="0" cy="0" r="18" fill="none" stroke="#22c55e" stroke-width="8"/>
+    <path d="M 0 -26 L 0 -18 M 0 18 L 0 26 M -26 0 L -18 0 M 18 0 L 26 0 M -18 -18 L -13 -13 M 13 13 L 18 18 M -18 18 L -13 13 M 13 -13 L 18 -18" 
+          stroke="#22c55e" stroke-width="6" stroke-linecap="round"/>
+  </g>
+</svg>
+
