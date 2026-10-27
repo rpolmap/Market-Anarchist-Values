@@ -257,9 +257,9 @@ button:hover {
 .result-icon {
     width: 85px;
     height: 85px;
-    border-radius: 50%;
+    object-fit: contain;
+    display: block;
     margin-bottom: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     transition: var(--smooth-transition);
 }
 
@@ -498,6 +498,38 @@ button:hover {
     .result-text { font-size: 0.75rem; }
 }
 
+/* Symbols row in the popup */
+.info-symbols {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin: 16px 0 4px;
+}
+.info-symbol {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+}
+.info-symbol.single {
+    width: 96px;
+    height: 96px;
+}
+.info-symbol-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 72px;
+}
+.info-symbol-wrap span {
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--text-dim);
+    line-height: 1.2;
+}
+
 </style>
 </head>
 <body>
@@ -623,8 +655,31 @@ const people = [
       profile: { culture: "Moderate", property: "Lockean Homesteading", ip: "Propertiary IP", capital: "Full Capitalism", workplace: "Hierarchial", tactic: "Democracy", price: "Supply & Demand" } }
 ];
 
+// ---------------- Value symbols (pictures folder) ----------------
+const valueSymbols = {
+    "Progressive": "progressive", "Moderate": "moderate", "Conservatve": "conservative", "Traditionalist": "traditionalist",
+    "Georgism": "georgism", "Lockean Homesteading": "lockean homesteading", "Constructive Occupancy": "constructive occupancy", "Occupancy & Use": "occupancy and use",
+    "Anti-IP": "anti ip", "Propertiary IP": "proprietary ip",
+    "Freed Markets": "freed markets", "Full Capitalism": "capitalism", "Cronyism": "cronyism",
+    "Hierarchial": "hierarchial", "Horizontal Self-Employment": "horizontal self employment", "Democratic Workplace": "democratic workplace", "Unionism": "unionism",
+    "Counter Economics": "counter economics", "Revolution": "revolution", "Democracy": "democracy",
+    "Supply & Demand": "supply and demand", "Labor Input": "labor input"
+};
+const symbolSrc = name => valueSymbols[name] ? encodeURI("pictures/" + valueSymbols[name] + ".svg") : "";
+
+// Builds the symbols row for an ideology / person profile (arrays = several symbols)
+function profileSymbolsHTML(profile) {
+    const names = [];
+    Object.keys(profile).forEach(k => [].concat(profile[k]).forEach(n => { if (!names.includes(n)) names.push(n); }));
+    return '<div class="info-symbols">' + names.map(n => `
+        <div class="info-symbol-wrap">
+            <img class="info-symbol" src="${symbolSrc(n)}" alt="${n.replace(/"/g, '&quot;')}">
+            <span>${n}</span>
+        </div>`).join('') + '</div>';
+}
+
 // ---------------- Popup menu (click a value / ideology / person) ----------------
-function openInfo(title, subtitle, desc, color) {
+function openInfo(title, subtitle, desc, color, symbolsHTML) {
     closeInfo();
     const overlay = document.createElement('div');
     overlay.className = 'info-overlay';
@@ -635,6 +690,7 @@ function openInfo(title, subtitle, desc, color) {
             <button class="info-close" aria-label="Close">&times;</button>
             <div class="info-title"></div>
             ${subtitle ? '<div class="info-sub"></div>' : ''}
+            ${symbolsHTML || ''}
             <p class="info-desc"></p>
         </div>`;
     overlay.querySelector('.info-title').textContent = title;
@@ -650,16 +706,22 @@ function closeInfo() {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeInfo(); });
 
-const openValueInfo = (name, catKey) => openInfo(name, catKey ? categoryNames[catKey] : "Value", valueDescriptions[name] || "", null);
+const openValueInfo = (name, catKey) => openInfo(
+    name,
+    catKey ? categoryNames[catKey] : "Value",
+    valueDescriptions[name] || "",
+    null,
+    valueSymbols[name] ? `<div class="info-symbols"><img class="info-symbol single" src="${symbolSrc(name)}" alt=""></div>` : ""
+);
 const openIdeologyInfo = name => {
     const i = ideologies.find(x => x.name === name);
-    if (i) return openInfo(i.name, "Ideology · " + i.group, i.desc, i.color);
+    if (i) return openInfo(i.name, "Ideology · " + i.group, i.desc, i.color, profileSymbolsHTML(i.profile));
     const g = ideologyGroups.find(x => x.name === name);
     if (g) openInfo(g.name, "Ideology group", g.desc, g.color);
 };
 const openPersonInfo = name => {
     const p = people.find(x => x.name === name);
-    if (p) openInfo(p.name, "Person", p.desc, p.color);
+    if (p) openInfo(p.name, "Person", p.desc, p.color, profileSymbolsHTML(p.profile));
 };
 
 // Theme toggle (shared)
@@ -763,7 +825,7 @@ const openPersonInfo = name => {
                 <div id="results-container">
                     ${Object.keys(userResults).map(key => `
                         <div class="result-item" onclick="openValueInfo('${userResults[key]}', '${key}')">
-                            <div class="result-icon" style="background-color: ${valueColors[key]};"></div>
+                            <img class="result-icon" src="${symbolSrc(userResults[key])}" alt="${userResults[key]}">
                             <div class="result-text">${userResults[key]}</div>
                         </div>
                     `).join('')}
