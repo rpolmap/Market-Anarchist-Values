@@ -1003,6 +1003,27 @@ const openPersonInfo = name => {
         const rankedPeople = rank(people);
         const expanded = { ideology: false, personality: false };
 
+        // Easter egg: click the closest personality 7 times within 10 seconds
+        const taylor = { name: "Taylor Swift", color: "#e879f9",
+            desc: "American singer-songwriter. You found the secret!" };
+        let eggOn = false, eggClicks = [], popTimer = null;
+        function personTopClick() {
+            const now = Date.now();
+            eggClicks = eggClicks.filter(t => now - t <= 10000);
+            eggClicks.push(now);
+            clearTimeout(popTimer);
+            if (!eggOn && eggClicks.length >= 7) {
+                eggOn = true; eggClicks = [];
+                renderMatches();
+                return;
+            }
+            // wait briefly so rapid clicks don't get blocked by the popup
+            popTimer = setTimeout(() => eggOn
+                ? openInfo(taylor.name, "Person", taylor.desc, taylor.color,
+                    `<div class="info-symbols"><img class="info-flag info-person" src="${personPlaceholder}" alt=""></div>`)
+                : openPersonInfo(rankedPeople[0].entry.name), 350);
+        }
+
         const arrowSvg = '<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg>';
         const q2 = n => JSON.stringify(n).replace(/"/g, '&quot;');
 
@@ -1012,10 +1033,13 @@ const openPersonInfo = name => {
             const imgFor = (r, cls) => isIdeo
                 ? `<img class="${cls}" src="${flagSrc(r.entry.name)}" alt="">`
                 : `<img class="${cls} match-person-img" src="${personPlaceholder}" alt="">`;
-            const top = list[0];
+            const egg = !isIdeo && eggOn;
+            const top = egg ? { entry: taylor, percent: 100 } : list[0];
+            const restList = egg ? list : list.slice(1);
+            const topClick = isIdeo ? `${open}(${q2(top.entry.name)})` : 'personTopClick()';
             const rows = expanded[kind] ? `
                 <div class="match-list">
-                    ${list.slice(1).map((r, i) => `
+                    ${restList.map((r, i) => `
                         <div class="match-row" onclick="${open}(${q2(r.entry.name)})">
                             ${imgFor(r, 'match-row-img')}
                             <div class="match-row-name">${r.entry.name}</div>
@@ -1027,7 +1051,7 @@ const openPersonInfo = name => {
                     <div class="match-bar" style="background:${top.entry.color}"></div>
                     <div class="match-half">
                         ${imgFor(top, 'match-img')}
-                        <div class="match-info" onclick="${open}(${q2(top.entry.name)})">
+                        <div class="match-info" onclick="${topClick}">
                             <div class="match-label">Closest ${isIdeo ? 'ideology' : 'personality'}</div>
                             <div class="match-name">${top.entry.name}</div>
                             <div class="match-pct">${top.percent}% match</div>
