@@ -510,6 +510,164 @@ button:hover {
     object-fit: contain;
 }
 
+
+/* ---------- Added: agree/disagree colours, back button ---------- */
+#buttons .btn-agree {
+    background-color: rgba(74, 163, 112, 0.16);
+    border-color: rgba(74, 163, 112, 0.45);
+}
+#buttons .btn-agree:hover {
+    background-color: rgba(74, 163, 112, 0.45);
+    border-color: rgba(74, 163, 112, 0.8);
+    color: var(--text-primary);
+    box-shadow: 0 5px 15px rgba(74, 163, 112, 0.25);
+}
+#buttons .btn-disagree {
+    background-color: rgba(212, 90, 90, 0.16);
+    border-color: rgba(212, 90, 90, 0.45);
+}
+#buttons .btn-disagree:hover {
+    background-color: rgba(212, 90, 90, 0.45);
+    border-color: rgba(212, 90, 90, 0.8);
+    color: var(--text-primary);
+    box-shadow: 0 5px 15px rgba(212, 90, 90, 0.25);
+}
+.back-wrap {
+    margin-top: -20px;
+    margin-bottom: 40px;
+}
+.back-btn {
+    padding: 10px 22px;
+    font-size: 0.95rem;
+    background: transparent;
+    color: var(--text-dim);
+}
+
+/* ---------- Added: value tiles (values.html) ---------- */
+.tile-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px 16px;
+}
+.value-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 110px;
+    cursor: pointer;
+    transition: var(--smooth-transition);
+}
+.value-tile .result-icon {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 8px;
+}
+.value-tile:hover .result-icon {
+    transform: scale(1.08);
+}
+.value-tile .result-text {
+    font-size: 0.82rem;
+}
+
+/* ---------- Added: closest matches box (results.html) ---------- */
+.match-box {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    margin: 12px auto 30px;
+    background-color: color-mix(in srgb, var(--card-bg) 70%, var(--bg-color));
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-sizing: border-box;
+}
+.match-strip {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    display: flex;
+    flex-direction: column;
+}
+.match-strip span { flex: 1; }
+.match-half {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 16px 16px 24px;
+}
+.match-divider {
+    height: 1px;
+    background: var(--border-color);
+}
+.match-img {
+    width: 66px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+.match-img.match-person-img {
+    width: 44px;
+    border-radius: 50%;
+    margin: 0 11px;
+}
+.match-info {
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+    text-align: left;
+}
+.match-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+}
+.match-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+.match-pct {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+.match-next {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.match-next svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ---------- Added: flag in popup ---------- */
+.info-flag {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+.info-flag.info-person {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+}
+
 </style>
 </head>
 <body>
@@ -537,17 +695,17 @@ button:hover {
 // ======================================================================
 
 const categoryNames = {
-    culture: "Culture", property: "Property", ip: "Intellectual Property",
+    culture: "Culture", property: "Property", pricing: "Pricing",
     capital: "Capital and Wealth", workplace: "Workplace Structure",
-    tactic: "Tactic", price: "Price determination"
+    tactic: "Tactic", communities: "Communities", wage: "Wage Model"
 };
 
-// Categories and their values (exactly as specified) + short descriptions
+// Categories and their values + short descriptions
 const categoryValues = {
     culture: [
         { name: "Progressive", desc: "Society should keep moving forward and leave outdated traditions behind in favour of greater liberty." },
         { name: "Moderate", desc: "Progress is welcome, but cultural bonds and inherited customs still matter and should be preserved." },
-        { name: "Conservatve", desc: "Social change should be slowed or resisted; tradition and established norms are worth defending." },
+        { name: "Conservative", desc: "Social change should be slowed or resisted; tradition and established norms are worth defending." },
         { name: "Traditionalist", desc: "Society should return to the lifestyle and values of our ancestors." }
     ],
     property: [
@@ -556,13 +714,15 @@ const categoryValues = {
         { name: "Constructive Occupancy", desc: "Abandoned land can be re-homesteaded by someone else, even if it is still claimed by an owner who does not use it." },
         { name: "Occupancy & Use", desc: "Property is legitimate only while you actually occupy and use it; absentee landlords have no valid claim." }
     ],
-    ip: [
-        { name: "Anti-IP", desc: "Ideas are not scarce, so nobody should be able to restrict what others produce or use. Patents and copyrights are illegitimate." },
-        { name: "Propertiary IP", desc: "Creators own what they create and others should not copy it without the creator's consent." }
+    pricing: [
+        { name: "Open Market Pricing", desc: "Intellectual property is illegitimate and prices are set freely by buyers and sellers." },
+        { name: "Open Labor Pricing", desc: "Intellectual property is illegitimate and prices should follow the labour put into a product rather than whatever the owner demands." },
+        { name: "Protected Market Pricing", desc: "Creators can stop others from selling what they invented, and prices are set freely by buyers and sellers." },
+        { name: "Protected Labor Pricing", desc: "Creators can stop others from selling what they invented, and prices should follow the labour put into the product." }
     ],
     capital: [
         { name: "Freed Markets", desc: "Today's capitalism is a product of statism and causes inequality; removing state privilege lets free markets spread wealth and power." },
-        { name: "Full Capitalism", desc: "Capitalism is simply voluntary exchange between individuals; big companies would adapt or collapse in a free society, and their owners are legitimate." },
+        { name: "Capitalism", desc: "Capitalism is simply voluntary exchange between individuals; big companies would adapt or collapse in a free society, and their owners are legitimate." },
         { name: "Cronyism", desc: "Powerful companies may rely on the state to protect themselves and restrict their rivals." }
     ],
     workplace: [
@@ -576,9 +736,15 @@ const categoryValues = {
         { name: "Revolution", desc: "The state must be overthrown directly rather than slowly starved or reformed." },
         { name: "Democracy", desc: "Use the present political landscape: popularise the ideas through elections and the democratic system." }
     ],
-    price: [
-        { name: "Supply & Demand", desc: "Prices are set by buyers and sellers through the market." },
-        { name: "Labor Input", desc: "Prices should be determined by how much labour is put into a product." }
+    communities: [
+        { name: "Covenant Communities", desc: "Voluntary, enclosed communities bound by a shared contract that every member agrees to." },
+        { name: "Cooperative Communities", desc: "Communities operate mutual banks that their members contribute to, keeping the community fair and effective." },
+        { name: "Polycentric", desc: "Many different communities and legal systems exist side by side, each minding its own business." }
+    ],
+    wage: [
+        { name: "Traditional Wages", desc: "Workers earn a fixed amount of money every month." },
+        { name: "Profit-based Wages", desc: "Workers' pay depends on the profit the company makes." },
+        { name: "Distributed Earnings", desc: "A company's earnings are distributed between all of its workers without someone setting the rates for everyone." }
     ]
 };
 
@@ -590,22 +756,22 @@ for (const k in categoryValues) categoryValues[k].forEach(v => valueDescriptions
 const ideologies = [
     { name: "Rothbardianism", color: "#3b82f6", group: "Anarcho Capitalism",
       desc: "Anarcho-capitalism in the tradition of Murray Rothbard: natural-law property rights, strict Lockean homesteading, and private firms in a fully free market.",
-      profile: { culture: "Moderate", property: "Lockean Homesteading", ip: "Anti-IP", capital: "Full Capitalism", workplace: "Hierarchial", tactic: "Counter Economics", price: "Supply & Demand" } },
+      profile: { culture: "Moderate", property: "Lockean Homesteading", pricing: "Open Market Pricing", capital: "Capitalism", workplace: "Hierarchial", tactic: "Counter Economics", communities: ["Polycentric", "Covenant Communities"], wage: "Traditional Wages" } },
     { name: "Hoppeanism", color: "#8b5cf6", group: "Anarcho Capitalism",
       desc: "Anarcho-capitalism in the tradition of Hans-Hermann Hoppe: private property with a strongly traditionalist view of culture and social order.",
-      profile: { culture: "Traditionalist", property: "Lockean Homesteading", ip: "Anti-IP", capital: "Full Capitalism", workplace: "Hierarchial", tactic: "Counter Economics", price: "Supply & Demand" } },
+      profile: { culture: "Traditionalist", property: "Lockean Homesteading", pricing: "Open Market Pricing", capital: "Capitalism", workplace: "Hierarchial", tactic: "Counter Economics", communities: "Covenant Communities", wage: "Traditional Wages" } },
     { name: "Left Rothbardianism", color: "#ef4444", group: "Left-Wing Market Anarchism",
       desc: "Keeps Rothbardian homesteading and market exchange but pairs them with progressive culture, freed markets and independent, self-managed work.",
-      profile: { culture: "Progressive", property: ["Lockean Homesteading", "Constructive Occupancy"], ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", price: "Supply & Demand" } },
+      profile: { culture: "Progressive", property: ["Lockean Homesteading", "Constructive Occupancy"], pricing: "Open Market Pricing", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Polycentric", wage: ["Profit-based Wages", "Distributed Earnings"] } },
     { name: "Mutualism", color: "#14b8a6", group: "Left-Wing Market Anarchism",
       desc: "Market anarchism built on occupancy-and-use property, worker associations and the idea that prices should reflect the labour put into goods.",
-      profile: { culture: ["Progressive", "Moderate"], property: "Occupancy & Use", ip: "Anti-IP", capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: ["Democracy", "Counter Economics"], price: "Labor Input" } },
+      profile: { culture: ["Progressive", "Moderate"], property: "Occupancy & Use", pricing: "Open Labor Pricing", capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: ["Democracy", "Counter Economics"], communities: "Cooperative Communities", wage: "Distributed Earnings" } },
     { name: "Geoanarchism", color: "#f59e0b", group: "Left-Wing Market Anarchism",
       desc: "Market anarchism that treats land as a common inheritance: unused natural land belongs to everyone equally, as in Georgism.",
-      profile: { culture: "Moderate", property: "Georgism", ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", price: "Supply & Demand" } },
+      profile: { culture: "Moderate", property: "Georgism", pricing: "Open Market Pricing", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Polycentric", wage: ["Traditional Wages", "Profit-based Wages"] } },
     { name: "Agorism", color: "#ec4899", group: "Tactical",
       desc: "A strategy-first ideology: build a stateless society through counter-economics, trading on the black market until the state is starved.",
-      profile: { culture: "Moderate", property: "Occupancy & Use", ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", price: "Supply & Demand" } }
+      profile: { culture: "Moderate", property: "Occupancy & Use", pricing: "Open Market Pricing", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Polycentric", wage: ["Traditional Wages", "Profit-based Wages"] } }
 ];
 
 // The three ideology groups shown on the Ideologies screen
@@ -622,35 +788,50 @@ const ideologyGroups = [
 const people = [
     { name: "Hans-Hermann Hoppe", color: "#8b5cf6",
       desc: "Austrian-school economist and philosopher; anarcho-capitalist known for his argumentation ethics and traditionalist social views.",
-      profile: { culture: "Traditionalist", property: "Lockean Homesteading", ip: "Anti-IP", capital: "Full Capitalism", workplace: "Hierarchial", tactic: "Counter Economics", price: "Supply & Demand" } },
+      profile: { culture: "Traditionalist", property: "Lockean Homesteading", pricing: "Open Market Pricing", capital: "Capitalism", workplace: "Hierarchial", tactic: "Counter Economics", communities: "Covenant Communities", wage: "Traditional Wages" } },
     { name: "Murray Rothbard", color: "#3b82f6",
       desc: "Economist and political theorist who founded modern anarcho-capitalism, combining Austrian economics with natural-rights property theory.",
-      profile: { culture: "Moderate", property: "Lockean Homesteading", ip: "Anti-IP", capital: "Full Capitalism", workplace: "Hierarchial", tactic: ["Democracy", "Counter Economics"], price: "Supply & Demand" } },
-    { name: "SEK3", color: "#ec4899",
-      desc: "Samuel Edward Konkin III, founder of agorism and the theory of counter-economics as a path to a stateless society.",
-      profile: { culture: "Progressive", property: "Lockean Homesteading", ip: "Anti-IP", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", price: "Supply & Demand" } },
-    { name: "Proudhon", color: "#14b8a6",
-      desc: "Pierre-Joseph Proudhon, the first self-declared anarchist and father of mutualism, famous for \"property is theft\" and for worker associations.",
-      profile: { culture: "Conservatve", property: "Occupancy & Use", ip: "Anti-IP", capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: "Democracy", price: "Labor Input" } },
+      profile: { culture: "Moderate", property: "Lockean Homesteading", pricing: "Open Market Pricing", capital: "Capitalism", workplace: "Hierarchial", tactic: ["Democracy", "Counter Economics"], communities: "Polycentric", wage: "Traditional Wages" } },
+    { name: "Samuel Edward Konkin III", color: "#ec4899",
+      desc: "Founder of agorism and the theory of counter-economics as a path to a stateless society (often known as SEK3).",
+      profile: { culture: "Progressive", property: "Lockean Homesteading", pricing: "Open Market Pricing", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Polycentric", wage: ["Traditional Wages", "Profit-based Wages"] } },
+    { name: "Pierre-Joseph Proudhon", color: "#14b8a6",
+      desc: "The first self-declared anarchist and father of mutualism, famous for \"property is theft\" and for worker associations.",
+      profile: { culture: "Conservative", property: "Occupancy & Use", pricing: "Open Labor Pricing", capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: "Democracy", communities: "Cooperative Communities", wage: "Distributed Earnings" } },
     { name: "Benjamin Tucker", color: "#f59e0b",
       desc: "American individualist anarchist and editor of Liberty; defended mutual banking, the labour theory of value and the \"cost the limit of price\" principle.",
-      profile: { culture: "Moderate", property: "Occupancy & Use", ip: ["Anti-IP", "Propertiary IP"], capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", price: "Labor Input" } },
+      profile: { culture: "Moderate", property: "Occupancy & Use", pricing: ["Open Labor Pricing", "Protected Labor Pricing"], capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Cooperative Communities", wage: "Traditional Wages" } },
     { name: "Ludwig von Mises", color: "#22c55e",
       desc: "Leading Austrian-school economist and classical liberal who defended free markets and economic calculation, though he was not an anarchist.",
-      profile: { culture: "Moderate", property: "Lockean Homesteading", ip: "Propertiary IP", capital: "Full Capitalism", workplace: "Hierarchial", tactic: "Democracy", price: "Supply & Demand" } }
+      profile: { culture: "Moderate", property: "Lockean Homesteading", pricing: "Protected Market Pricing", capital: "Capitalism", workplace: "Hierarchial", tactic: "Democracy", communities: "Polycentric", wage: "Traditional Wages" } }
 ];
 
-// ---------------- Value symbols (pictures folder) ----------------
+// ---------------- Value symbols, ideology flags, person placeholder (pictures folder) ----------------
 const valueSymbols = {
-    "Progressive": "progressive", "Moderate": "moderate", "Conservatve": "conservative", "Traditionalist": "traditionalist",
+    "Progressive": "progressive", "Moderate": "moderate", "Conservative": "conservative", "Traditionalist": "traditionalist",
     "Georgism": "georgism", "Lockean Homesteading": "lockean homesteading", "Constructive Occupancy": "constructive occupancy", "Occupancy & Use": "occupancy and use",
-    "Anti-IP": "anti ip", "Propertiary IP": "proprietary ip",
-    "Freed Markets": "freed markets", "Full Capitalism": "capitalism", "Cronyism": "cronyism",
+    "Open Market Pricing": "open market pricing", "Open Labor Pricing": "open labor pricing",
+    "Protected Market Pricing": "protected market pricing", "Protected Labor Pricing": "protected labor pricing",
+    "Freed Markets": "freed markets", "Capitalism": "capitalism", "Cronyism": "cronyism",
     "Hierarchial": "hierarchial", "Horizontal Self-Employment": "horizontal self employment", "Democratic Workplace": "democratic workplace", "Unionism": "unionism",
     "Counter Economics": "counter economics", "Revolution": "revolution", "Democracy": "democracy",
-    "Supply & Demand": "supply and demand", "Labor Input": "labor input"
+    "Covenant Communities": "covenant communities", "Cooperative Communities": "cooperative communities", "Polycentric": "polycentric",
+    "Traditional Wages": "traditional wages", "Profit-based Wages": "profit based wages", "Distributed Earnings": "distributed earnings"
 };
 const symbolSrc = name => valueSymbols[name] ? encodeURI("pictures/" + valueSymbols[name] + ".svg") : "";
+
+const ideologyFlags = {
+    "Rothbardianism": "rothbardianism.png", "Hoppeanism": "hoppeanism.png",
+    "Left Rothbardianism": "left rothbardianism.jpg", "Mutualism": "mutualism.jpg",
+    "Geoanarchism": "geoanarchism.png", "Agorism": "agorism.png"
+};
+const flagSrc = name => ideologyFlags[name] ? encodeURI("pictures/" + ideologyFlags[name]) : "";
+
+// Placeholder portrait: dark gray head on black background
+const personPlaceholder = "data:image/svg+xml;utf8," + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#000"/>' +
+    '<circle cx="32" cy="25" r="11" fill="#3f3f46"/>' +
+    '<path d="M10 64c0-14 10-22 22-22s22 8 22 22z" fill="#3f3f46"/></svg>');
 
 // ---------------- Popup menu (click a value / ideology / person) ----------------
 function openInfo(title, subtitle, desc, color, symbolsHTML) {
@@ -689,13 +870,15 @@ const openValueInfo = (name, catKey) => openInfo(
 );
 const openIdeologyInfo = name => {
     const i = ideologies.find(x => x.name === name);
-    if (i) return openInfo(i.name, "Ideology · " + i.group, i.desc, i.color);
+    if (i) return openInfo(i.name, "Ideology · " + i.group, i.desc, i.color,
+        `<div class="info-symbols"><img class="info-flag" src="${flagSrc(i.name)}" alt=""></div>`);
     const g = ideologyGroups.find(x => x.name === name);
     if (g) openInfo(g.name, "Ideology group", g.desc, g.color);
 };
 const openPersonInfo = name => {
     const p = people.find(x => x.name === name);
-    if (p) openInfo(p.name, "Person", p.desc, p.color);
+    if (p) openInfo(p.name, "Person", p.desc, p.color,
+        `<div class="info-symbols"><img class="info-flag info-person" src="${personPlaceholder}" alt=""></div>`);
 };
 
 // Theme toggle (shared)
@@ -715,12 +898,16 @@ const openPersonInfo = name => {
         document.getElementById('catalog').innerHTML = Object.keys(categoryValues).map(k => `
             <div class="catalog-card">
                 <div class="catalog-title">${categoryNames[k]}</div>
-                <div class="chip-row">
-                    ${categoryValues[k].map(v => `<button class="chip" data-cat="${k}" data-name="${v.name}">${v.name}</button>`).join('')}
+                <div class="tile-row">
+                    ${categoryValues[k].map(v => `
+                        <div class="value-tile" data-cat="${k}" data-name="${v.name}">
+                            <img class="result-icon" src="${symbolSrc(v.name)}" alt="">
+                            <div class="result-text">${v.name}</div>
+                        </div>`).join('')}
                 </div>
             </div>`).join('');
         document.getElementById('catalog').addEventListener('click', e => {
-            const c = e.target.closest('.chip');
+            const c = e.target.closest('.value-tile');
             if (c) openValueInfo(c.dataset.name, c.dataset.cat);
         });
     </script>
