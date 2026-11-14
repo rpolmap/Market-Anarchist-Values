@@ -725,7 +725,7 @@ button:hover {
 
 const categoryNames = {
     culture: "Culture", property: "Property", financing: "Financing", pricing: "Pricing",
-    capital: "Capital and Wealth", workplace: "Workplace Structure",
+    workplace: "Workplace Structure",
     tactic: "Tactic", communities: "Communities", wage: "Wage Model", focus: "Focus"
 };
 
@@ -751,10 +751,6 @@ const categoryValues = {
         { name: "Profit-Based Supply & Demand", desc: "Prices are set by consumers and sellers competing with each other through supply and demand." },
         { name: "Cost-Driven Supply & Demand", desc: "In an absolutely free market prices correspond to the cost of production and labour, leaving little to no space for profit, while still relying on supply and demand." },
         { name: "Labour Theory of Value", desc: "Prices should be based on the time of production and the labour needed to produce the product." }
-    ],
-    capital: [
-        { name: "Freed Markets", desc: "Capitalism is not free exchange between individuals but a system that needs the state to function; without the state it turns into freed markets." },
-        { name: "Capitalism", desc: "Capitalism is the free exchange between individuals with no state intervention; with the state it turns into cronyism." }
     ],
     workplace: [
         { name: "Hierarchical", desc: "Hierarchies stay intact: business owners have full control over all of their workers." },
@@ -795,41 +791,41 @@ for (const k in categoryValues) categoryValues[k].forEach(v => valueDescriptions
 const ideologies = [
     { name: "Rothbardianism", color: "#3b82f6", group: "Anarcho Capitalism",
       desc: "Anarcho-capitalism in the tradition of Murray Rothbard: natural-law property rights, strict Lockean homesteading, and private firms in a fully free market.",
-      profile: { property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", workplace: "Hierarchical", tactic: "Counter Economics", communities: ["Covenant Communities", "Atomic Individualism"], wage: "Traditional Wages" } },
+      profile: { property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", workplace: "Hierarchical", tactic: "Counter Economics", communities: ["Covenant Communities", "Atomic Individualism"], wage: "Traditional Wages" } },
     { name: "Hoppeanism", color: "#8b5cf6", group: "Anarcho Capitalism",
       desc: "Anarcho-capitalism in the tradition of Hans-Hermann Hoppe: private property with a strongly traditionalist view of culture and social order.",
-      profile: { culture: "Traditionalist", property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", workplace: "Hierarchical", tactic: "Counter Economics", communities: "Covenant Communities", wage: "Traditional Wages" } },
+      profile: { culture: "Traditionalist", property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", workplace: "Hierarchical", tactic: "Counter Economics", communities: "Covenant Communities", wage: "Traditional Wages" } },
     { name: "Left-Rothbardianism", color: "#ef4444", group: "Left-Wing Market Anarchism",
-      desc: "Keeps Rothbardian homesteading and market exchange but pairs them with progressive culture, freed markets and independent, self-managed work.",
-      profile: { culture: "Progressive", property: ["Lockean Homesteading", "Constructive Occupancy"], financing: ["Payment for Usage", "Mutual Credit"], pricing: ["Profit-Based Supply & Demand", "Cost-Driven Supply & Demand"], capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: ["Counter Economics", "Gradualism"], communities: ["Atomic Individualism", "Cooperative Communities"], wage: "Profit-based Earnings" } },
+      desc: "Keeps Rothbardian homesteading and market exchange but pairs them with progressive culture and independent, self-managed work.",
+      profile: { culture: "Progressive", property: ["Lockean Homesteading", "Constructive Occupancy"], financing: ["Payment for Usage", "Mutual Credit"], pricing: ["Profit-Based Supply & Demand", "Cost-Driven Supply & Demand"], workplace: "Horizontal Self-Employment", tactic: ["Counter Economics", "Gradualism"], communities: ["Atomic Individualism", "Cooperative Communities"], wage: "Profit-based Earnings" } },
     { name: "Mutualism", color: "#14b8a6", group: "Left-Wing Market Anarchism",
       desc: "Market anarchism built on occupancy-and-use property, worker associations and the idea that prices should reflect the labour put into goods.",
-      profile: { property: "Occupancy & Use", financing: "Mutual Credit", pricing: "Labour Theory of Value", capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: ["Gradualism", "Democracy"], communities: "Cooperative Communities", wage: "Profit-based Earnings" } },
+      profile: { property: "Occupancy & Use", financing: "Mutual Credit", pricing: "Labour Theory of Value", workplace: ["Democratic Workplace", "Unionism"], tactic: ["Gradualism", "Democracy"], communities: "Cooperative Communities", wage: "Profit-based Earnings" } },
     { name: "Geoanarchism", color: "#f59e0b", group: "Left-Wing Market Anarchism", required: ["financing"],
       desc: "Market anarchism that treats land as a common inheritance and finances public property through a land value tax, as in Georgism.",
-      profile: { property: ["Constructive Occupancy", "Lockean Homesteading"], financing: "Land Value Tax", pricing: ["Profit-Based Supply & Demand", "Cost-Driven Supply & Demand"], capital: "Freed Markets" } },
+      profile: { property: ["Constructive Occupancy", "Lockean Homesteading"], financing: "Land Value Tax", pricing: ["Profit-Based Supply & Demand", "Cost-Driven Supply & Demand"] } },
     { name: "Agorism", color: "#ec4899", group: "Tactical",
       desc: "A strategy-first ideology: build a stateless society through counter-economics, trading on the black market until the state is starved.",
-      profile: { property: "Occupancy & Use", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Atomic Individualism" } },
+      profile: { property: "Occupancy & Use", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Atomic Individualism" } },
     { name: "Anarcho-Frontierism", color: "#06b6d4", group: "Focus-Based", focus: "Anarcho-Frontierism",
       desc: "Leave Earth and settle as far from civilization as possible for maximum individual freedom. Reached through the Anarcho-Frontierism focus, when your values fit too.",
-      profile: { property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", tactic: "Counter Economics", communities: "Atomic Individualism" } },
+      profile: { property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", tactic: "Counter Economics", communities: "Atomic Individualism" } },
     { name: "Egoism", color: "#84cc16", group: "Focus-Based", focus: "Egoism",
       desc: "There is no duty or morality; everyone does whatever they feel is right, with no universal right and wrong. Reached through the Egoism focus, when your values fit too.",
-      profile: { property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", tactic: "Counter Economics", communities: "Atomic Individualism" } }
+      profile: { property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", tactic: "Counter Economics", communities: "Atomic Individualism" } }
 ];
 
 // Closest non-anarchist ideology (shown separately in the results)
 const nonAnarchistIdeologies = [
     { name: "Minarchism", color: "#64748b", group: "Non-Anarchist",
       desc: "Keeps a minimal state limited to protecting rights (police, courts, defence) and leaves everything else to the free market.",
-      profile: { property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", tactic: "Democracy" } },
+      profile: { property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", tactic: "Democracy" } },
     { name: "Geolibertarianism", color: "#eab308", group: "Non-Anarchist", required: ["financing"],
       desc: "Free markets combined with a state that funds itself through a land value tax, treating natural land as a common inheritance.",
-      profile: { property: ["Constructive Occupancy", "Lockean Homesteading"], financing: "Land Value Tax", pricing: "Profit-Based Supply & Demand", capital: ["Freed Markets", "Capitalism"], tactic: "Democracy" } },
+      profile: { property: ["Constructive Occupancy", "Lockean Homesteading"], financing: "Land Value Tax", pricing: "Profit-Based Supply & Demand", tactic: "Democracy" } },
     { name: "Market Socialism", color: "#fb7185", group: "Non-Anarchist",
       desc: "Keeps markets and prices but puts firms under worker or social ownership, usually inside a state.",
-      profile: { property: "Occupancy & Use", financing: "Mutual Credit", pricing: ["Labour Theory of Value", "Cost-Driven Supply & Demand"], capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: "Democracy", communities: "Cooperative Communities", wage: "Profit-based Earnings" } }
+      profile: { property: "Occupancy & Use", financing: "Mutual Credit", pricing: ["Labour Theory of Value", "Cost-Driven Supply & Demand"], workplace: ["Democratic Workplace", "Unionism"], tactic: "Democracy", communities: "Cooperative Communities", wage: "Profit-based Earnings" } }
 ];
 
 // The ideology groups shown on the Ideologies screen
@@ -848,19 +844,19 @@ const ideologyGroups = [
 const people = [
     { name: "Hans-Hermann Hoppe", color: "#8b5cf6",
       desc: "Austrian-school economist and philosopher; anarcho-capitalist known for his argumentation ethics and traditionalist social views.",
-      profile: { culture: "Traditionalist", property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", workplace: "Hierarchical", tactic: "Counter Economics", communities: "Covenant Communities", wage: "Traditional Wages" } },
+      profile: { culture: "Traditionalist", property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", workplace: "Hierarchical", tactic: "Counter Economics", communities: "Covenant Communities", wage: "Traditional Wages" } },
     { name: "Murray Rothbard", color: "#3b82f6",
       desc: "Economist and political theorist who founded modern anarcho-capitalism, combining Austrian economics with natural-rights property theory.",
-      profile: { culture: "Moderate", property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", workplace: "Hierarchical", tactic: ["Democracy", "Counter Economics"], communities: ["Covenant Communities", "Atomic Individualism"], wage: "Traditional Wages" } },
+      profile: { culture: "Moderate", property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", workplace: "Hierarchical", tactic: ["Democracy", "Counter Economics"], communities: ["Covenant Communities", "Atomic Individualism"], wage: "Traditional Wages" } },
     { name: "Samuel Edward Konkin III", color: "#ec4899",
       desc: "Founder of agorism and the theory of counter-economics as a path to a stateless society (often known as SEK3).",
-      profile: { culture: "Progressive", property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Atomic Individualism", wage: ["Traditional Wages", "Profit-based Earnings"] } },
+      profile: { culture: "Progressive", property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Atomic Individualism", wage: ["Traditional Wages", "Profit-based Earnings"] } },
     { name: "Pierre-Joseph Proudhon", color: "#14b8a6",
       desc: "The first self-declared anarchist and father of mutualism, famous for \"property is theft\" and for worker associations.",
-      profile: { culture: "Conservative", property: "Occupancy & Use", financing: "Mutual Credit", pricing: "Labour Theory of Value", capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: ["Democracy", "Gradualism"], communities: "Cooperative Communities", wage: "Profit-based Earnings" } },
+      profile: { culture: "Conservative", property: "Occupancy & Use", financing: "Mutual Credit", pricing: "Labour Theory of Value", workplace: ["Democratic Workplace", "Unionism"], tactic: ["Democracy", "Gradualism"], communities: "Cooperative Communities", wage: "Profit-based Earnings" } },
     { name: "Benjamin Tucker", color: "#f59e0b",
       desc: "American individualist anarchist and editor of Liberty; defended mutual banking, the labour theory of value and the \"cost the limit of price\" principle.",
-      profile: { culture: "Moderate", property: "Occupancy & Use", financing: "Mutual Credit", pricing: ["Labour Theory of Value", "Cost-Driven Supply & Demand"], capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Cooperative Communities", wage: "Traditional Wages" } }
+      profile: { culture: "Moderate", property: "Occupancy & Use", financing: "Mutual Credit", pricing: ["Labour Theory of Value", "Cost-Driven Supply & Demand"], workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Cooperative Communities", wage: "Traditional Wages" } }
 ];
 
 // ---------------- Value symbols, ideology flags, placeholders ----------------
@@ -870,7 +866,6 @@ const valueSymbols = {
     "Lockean Homesteading": "lockean homesteading", "Constructive Occupancy": "constructive occupancy", "Occupancy & Use": "occupancy and use",
     "Payment for Usage": "placeholder", "Mutual Credit": "placeholder", "Land Value Tax": "land-value-tax",
     "Profit-Based Supply & Demand": "Profit Based Supply and Demand", "Cost-Driven Supply & Demand": "cost driven supply and demand", "Labour Theory of Value": "placeholder",
-    "Freed Markets": "freed markets", "Capitalism": "capitalism",
     "Hierarchical": "hierarchial", "Horizontal Self-Employment": "horizontal self employment", "Democratic Workplace": "democratic workplace", "Unionism": "unionism",
     "Counter Economics": "counter economics", "Revolution": "revolution", "Democracy": "democracy", "Gradualism": "placeholder",
     "Covenant Communities": "covenant communities", "Cooperative Communities": "cooperative communities", "Atomic Individualism": "atomic Individualism",
@@ -987,9 +982,6 @@ const openPersonInfo = name => {
                 "Cost-Driven Supply & Demand|Labour Theory of Value": 0.5,
                 "Profit-Based Supply & Demand|Labour Theory of Value": 0
             }),
-            capital: table({
-                "Freed Markets|Capitalism": 0.5
-            }),
             workplace: table({
                 "Hierarchical|Unionism": 0.4,
                 "Hierarchical|Horizontal Self-Employment": 0.3,
@@ -1016,7 +1008,7 @@ const openPersonInfo = name => {
             })
         };
 
-        const weights = { culture: 1.0, property: 1.4, financing: 1.0, pricing: 1.2, capital: 1.2, workplace: 1.2, tactic: 0.8, communities: 0.7, wage: 0.8 };
+        const weights = { culture: 1.0, property: 1.4, financing: 1.0, pricing: 1.2, workplace: 1.2, tactic: 0.8, communities: 0.7, wage: 0.8 };
 
         // Focus is not part of the values used for matching. It only unlocks ideologies that have a
         // "focus" (Egoism, Anarcho-Frontierism): they are listed only when the person's Focus matches,
@@ -1057,6 +1049,10 @@ const openPersonInfo = name => {
         }
 
         const userResults = JSON.parse(localStorage.getItem('userResults')) || {};
+        // Drop anything saved by an older quiz version (e.g. the removed Capital and Wealth category)
+        Object.keys(userResults).forEach(k => {
+            if (!categoryValues[k] || !categoryValues[k].some(v => v.name === userResults[k])) delete userResults[k];
+        });
         const userFocus = localStorage.getItem('userFocus') || 'No Focus';
 
         const rankedIdeologies = rank(ideologies);
