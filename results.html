@@ -1010,9 +1010,9 @@ const openPersonInfo = name => {
 
         const weights = { culture: 1.0, property: 1.4, financing: 1.0, pricing: 1.2, workplace: 1.2, tactic: 0.8, communities: 0.7, wage: 0.8 };
 
-        // Focus is not part of the values used for matching. It only unlocks ideologies that have a
-        // "focus" (Egoism, Anarcho-Frontierism): they are listed only when the person's Focus matches,
-        // and then they get a small bonus on top of how well the values fit.
+        // Focus is not part of the values used for matching. Ideologies that have a "focus" (Egoism,
+        // Anarcho-Frontierism) are always listed, but can only be closest when the person's Focus matches;
+        // then they also get a small bonus on top of how well the values fit.
         const FOCUS_BONUS = 0.15;
 
         function score(entry, answers) {
@@ -1030,18 +1030,26 @@ const openPersonInfo = name => {
             return { entry, percent: Math.round(raw * 100), exact, raw, focusHit: !!(entry.focus && entry.focus === userFocus) };
         }
         // "required" categories must match exactly (e.g. Geolibertarianism needs a Land Value Tax).
+        // Focus ideologies (Egoism, Anarcho-Frontierism) stay listed but can't be closest unless the person's Focus matches.
         // Entries that miss one stay in the list, but their match is halved and capped so it can
         // never be higher than the lowest entry that does meet its requirements: they can't be closest.
         const meetsRequired = e => !e.required || e.required.every(k => [].concat(e.profile[k]).includes(userResults[k]));
         function rank(list) {
-            const scored = list
-                .filter(e => !e.focus || e.focus === userFocus)
-                .map(e => { const s = score(e, userResults); s.blocked = !meetsRequired(e); return s; });
-            const ok = scored.filter(s => !s.blocked);
-            if (ok.length) {
-                const floor = Math.min(...ok.map(s => s.raw));
-                scored.filter(s => s.blocked).forEach(s => {
-                    s.raw = Math.min(s.raw * 0.5, floor);
+            const scored = list.map(e => {
+                const s = score(e, userResults);
+                s.blocked = !meetsRequired(e);                              // missing a required value
+                s.focusBlocked = !!(e.focus && e.focus !== userFocus);      // Focus doesn't match
+                return s;
+            });
+            const free = scored.filter(s => !s.blocked && !s.focusBlocked);
+            if (free.length) {
+                const best = Math.max(...free.map(s => s.raw));
+                const floor = Math.min(...free.map(s => s.raw));
+                scored.forEach(s => {
+                    // Missing a required value: halved and never above the lowest normal entry
+                    if (s.blocked) s.raw = Math.min(s.raw * 0.5, floor);
+                    // Focus mismatch: keeps its value match, but stays just below the closest entry
+                    else if (s.focusBlocked) s.raw = Math.min(s.raw, Math.max(0, best - 0.01));
                     s.percent = Math.round(s.raw * 100);
                 });
             }
