@@ -810,13 +810,13 @@ const ideologies = [
       profile: { property: ["Constructive Occupancy", "Lockean Homesteading"], financing: "Land Value Tax", pricing: ["Profit-Based Supply & Demand", "Cost-Driven Supply & Demand"], capital: "Freed Markets" } },
     { name: "Agorism", color: "#ec4899", group: "Tactical",
       desc: "A strategy-first ideology: build a stateless society through counter-economics, trading on the black market until the state is starved.",
-      profile: { pricing: "Profit-Based Supply & Demand", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics" } },
+      profile: { property: "Occupancy & Use", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Atomic Individualism" } },
     { name: "Anarcho-Frontierism", color: "#06b6d4", group: "Focus-Based", focus: "Anarcho-Frontierism",
       desc: "Leave Earth and settle as far from civilization as possible for maximum individual freedom. Reached through the Anarcho-Frontierism focus, when your values fit too.",
-      profile: { property: "Lockean Homesteading", capital: "Capitalism", tactic: "Counter Economics", communities: "Atomic Individualism" } },
+      profile: { property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", tactic: "Counter Economics", communities: "Atomic Individualism" } },
     { name: "Egoism", color: "#84cc16", group: "Focus-Based", focus: "Egoism",
       desc: "There is no duty or morality; everyone does whatever they feel is right, with no universal right and wrong. Reached through the Egoism focus, when your values fit too.",
-      profile: { property: "Lockean Homesteading", capital: "Capitalism", tactic: "Counter Economics", communities: "Atomic Individualism" } }
+      profile: { property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", tactic: "Counter Economics", communities: "Atomic Individualism" } }
 ];
 
 // Closest non-anarchist ideology (shown separately in the results)
@@ -826,10 +826,10 @@ const nonAnarchistIdeologies = [
       profile: { property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", tactic: "Democracy" } },
     { name: "Geolibertarianism", color: "#eab308", group: "Non-Anarchist", required: ["financing"],
       desc: "Free markets combined with a state that funds itself through a land value tax, treating natural land as a common inheritance.",
-      profile: { property: ["Constructive Occupancy", "Lockean Homesteading"], financing: "Land Value Tax", capital: ["Freed Markets", "Capitalism"] } },
+      profile: { property: ["Constructive Occupancy", "Lockean Homesteading"], financing: "Land Value Tax", pricing: "Profit-Based Supply & Demand", capital: ["Freed Markets", "Capitalism"], tactic: "Democracy" } },
     { name: "Market Socialism", color: "#fb7185", group: "Non-Anarchist",
       desc: "Keeps markets and prices but puts firms under worker or social ownership, usually inside a state.",
-      profile: { financing: "Mutual Credit", pricing: ["Labour Theory of Value", "Cost-Driven Supply & Demand"], capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], wage: "Profit-based Earnings" } }
+      profile: { property: "Occupancy & Use", financing: "Mutual Credit", pricing: ["Labour Theory of Value", "Cost-Driven Supply & Demand"], capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: "Democracy", communities: "Cooperative Communities", wage: "Profit-based Earnings" } }
 ];
 
 // The ideology groups shown on the Ideologies screen
@@ -1037,12 +1037,24 @@ const openPersonInfo = name => {
             if (entry.focus && entry.focus === userFocus) raw = Math.min(1, raw + FOCUS_BONUS);
             return { entry, percent: Math.round(raw * 100), exact, raw, focusHit: !!(entry.focus && entry.focus === userFocus) };
         }
-        const rank = list => list
-            .filter(e => !e.focus || e.focus === userFocus)
-            // "required" categories must match exactly (e.g. no Geolibertarianism without a Land Value Tax)
-            .filter(e => !e.required || e.required.every(k => [].concat(e.profile[k]).includes(userResults[k])))
-            .map(e => score(e, userResults))
-            .sort((a, b) => b.raw - a.raw || (b.focusHit - a.focusHit) || b.exact - a.exact);
+        // "required" categories must match exactly (e.g. Geolibertarianism needs a Land Value Tax).
+        // Entries that miss one stay in the list, but their match is halved and capped so it can
+        // never be higher than the lowest entry that does meet its requirements: they can't be closest.
+        const meetsRequired = e => !e.required || e.required.every(k => [].concat(e.profile[k]).includes(userResults[k]));
+        function rank(list) {
+            const scored = list
+                .filter(e => !e.focus || e.focus === userFocus)
+                .map(e => { const s = score(e, userResults); s.blocked = !meetsRequired(e); return s; });
+            const ok = scored.filter(s => !s.blocked);
+            if (ok.length) {
+                const floor = Math.min(...ok.map(s => s.raw));
+                scored.filter(s => s.blocked).forEach(s => {
+                    s.raw = Math.min(s.raw * 0.5, floor);
+                    s.percent = Math.round(s.raw * 100);
+                });
+            }
+            return scored.sort((a, b) => (a.blocked - b.blocked) || b.raw - a.raw || (b.focusHit - a.focusHit) || b.exact - a.exact);
+        }
 
         const userResults = JSON.parse(localStorage.getItem('userResults')) || {};
         const userFocus = localStorage.getItem('userFocus') || 'No Focus';
