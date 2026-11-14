@@ -718,14 +718,15 @@ button:hover {
     </div>
 
     <script>
+
 // ======================================================================
 // MAValues shared data: categories, values, ideologies, people, popup menu
 // ======================================================================
 
 const categoryNames = {
-    culture: "Culture", property: "Property", pricing: "Pricing",
+    culture: "Culture", property: "Property", financing: "Financing", pricing: "Pricing",
     capital: "Capital and Wealth", workplace: "Workplace Structure",
-    tactic: "Tactic", communities: "Communities", wage: "Wage Model"
+    tactic: "Tactic", communities: "Communities", wage: "Wage Model", focus: "Focus"
 };
 
 // Categories and their values + short descriptions
@@ -737,43 +738,52 @@ const categoryValues = {
         { name: "Traditionalist", desc: "Society should return to the lifestyle and values of our ancestors." }
     ],
     property: [
-        { name: "Georgism", desc: "Unused natural land belongs to everyone equally; those who hold it exclusively owe the community for that privilege." },
-        { name: "Lockean Homesteading", desc: "Unowned land becomes property by mixing your labour with it, and ownership then stays with you, even if you stop using it." },
-        { name: "Constructive Occupancy", desc: "Abandoned land can be re-homesteaded by someone else, even if it is still claimed by an owner who does not use it." },
-        { name: "Occupancy & Use", desc: "Property is legitimate only while you actually occupy and use it; absentee landlords have no valid claim." }
+        { name: "Lockean Homesteading", desc: "Property is land you homestead or buy, and it remains yours until you voluntarily transfer ownership of it, even if you stop using it." },
+        { name: "Constructive Occupancy", desc: "Property is land you live in, use or actively finance and maintain; if you abandon it, anyone else can rehomestead it." },
+        { name: "Occupancy & Use", desc: "There is no private property, only possession of what you actively live in or use; if you stop using it yourself, anyone else can rehomestead it." }
+    ],
+    financing: [
+        { name: "Payment for Usage", desc: "Public property is financed by its users: you directly or indirectly pay a price set by the property owner for everything you use." },
+        { name: "Mutual Credit", desc: "Public property is financed from a mutual community bank based on voluntary donations." },
+        { name: "Land Value Tax", desc: "Public property is financed by a Land Value Tax on unimproved property." }
     ],
     pricing: [
-        { name: "Open Market Pricing", desc: "Intellectual property is illegitimate and prices are set freely by buyers and sellers." },
-        { name: "Open Labor Pricing", desc: "Intellectual property is illegitimate and prices should follow the labour put into a product rather than whatever the owner demands." },
-        { name: "Protected Market Pricing", desc: "Creators can stop others from selling what they invented, and prices are set freely by buyers and sellers." },
-        { name: "Protected Labor Pricing", desc: "Creators can stop others from selling what they invented, and prices should follow the labour put into the product." }
+        { name: "Profit-Based Supply & Demand", desc: "Prices are set by consumers and sellers competing with each other through supply and demand." },
+        { name: "Cost-Driven Supply & Demand", desc: "In an absolutely free market prices correspond to the cost of production and labour, leaving little to no space for profit, while still relying on supply and demand." },
+        { name: "Labour Theory of Value", desc: "Prices should be based on the time of production and the labour needed to produce the product." }
     ],
     capital: [
-        { name: "Freed Markets", desc: "Today's capitalism is a product of statism and causes inequality; removing state privilege lets free markets spread wealth and power." },
-        { name: "Capitalism", desc: "Capitalism is simply voluntary exchange between individuals; big companies would adapt or collapse in a free society, and their owners are legitimate." },
-        { name: "Cronyism", desc: "Powerful companies may rely on the state to protect themselves and restrict their rivals." }
+        { name: "Freed Markets", desc: "Capitalism is not free exchange between individuals but a system that needs the state to function; without the state it turns into freed markets." },
+        { name: "Capitalism", desc: "Capitalism is the free exchange between individuals with no state intervention; with the state it turns into cronyism." }
     ],
     workplace: [
-        { name: "Hierarchial", desc: "The current boss-and-employee workplace structure should be kept." },
-        { name: "Horizontal Self-Employment", desc: "Workers are their own bosses, working independently or in flat co-operatives and collectively hiring and firing within their sector." },
-        { name: "Democratic Workplace", desc: "Workers should democratically elect their bosses every few years." },
-        { name: "Unionism", desc: "Worker unions are preferable to individual labour; workers bargain and organise collectively." }
+        { name: "Hierarchical", desc: "Hierarchies stay intact: business owners have full control over all of their workers." },
+        { name: "Horizontal Self-Employment", desc: "The workplace becomes heterarchical, with workers deciding together about decisions in their own area." },
+        { name: "Democratic Workplace", desc: "The workplace becomes heterarchical, with workers democratically deciding over important decisions." },
+        { name: "Unionism", desc: "Hierarchies stay intact, with worker unions making compromises with company owners over important decisions." }
     ],
     tactic: [
         { name: "Counter Economics", desc: "Starve the state by trading in the black and grey market and ignoring its rules and taxes." },
-        { name: "Revolution", desc: "The state must be overthrown directly rather than slowly starved or reformed." },
-        { name: "Democracy", desc: "Use the present political landscape: popularise the ideas through elections and the democratic system." }
+        { name: "Revolution", desc: "The state must be overthrown directly through a revolution rather than slowly starved or reformed." },
+        { name: "Democracy", desc: "Use the already existing democratic foundations to gain popularity and reach the ideal system." },
+        { name: "Gradualism", desc: "Form voluntary communities based on mutual aid that outperform the state in efficiency and eventually replace it." }
     ],
     communities: [
-        { name: "Covenant Communities", desc: "Voluntary, enclosed communities bound by a shared contract that every member agrees to." },
-        { name: "Cooperative Communities", desc: "Communities operate mutual banks that their members contribute to, keeping the community fair and effective." },
-        { name: "Polycentric", desc: "Many different communities and legal systems exist side by side, each minding its own business." }
+        { name: "Covenant Communities", desc: "Communities of people with similar culture and interests, each living on their own property within the settlement." },
+        { name: "Cooperative Communities", desc: "Communities built around the mutual ownership and financing of public property." },
+        { name: "Atomic Individualism", desc: "Everyone lives on their own property and interferes with others only when needed." }
     ],
     wage: [
-        { name: "Traditional Wages", desc: "Workers earn a fixed amount of money every month." },
-        { name: "Profit-based Wages", desc: "Workers' pay depends on the profit the company makes." },
-        { name: "Distributed Earnings", desc: "A company's earnings are distributed between all of its workers without someone setting the rates for everyone." }
+        { name: "Traditional Wages", desc: "Workers receive a set monthly or yearly wage." },
+        { name: "Profit-based Earnings", desc: "Workers' pay is based on the profit of their company and their role in the company." }
     ]
+};
+
+// Focus options (NOT one of the values used for ideology matching)
+const focusDescriptions = {
+    "No Focus": "Living under a free market and having success.",
+    "Egoism": "There is no duty or morality; everyone should do whatever they feel is right, with no universal right and wrong.",
+    "Anarcho-Frontierism": "Leaving Earth and settling as far from civilization as possible for maximum individual freedom."
 };
 
 // Quick lookup: value name -> description
@@ -781,79 +791,105 @@ const valueDescriptions = {};
 for (const k in categoryValues) categoryValues[k].forEach(v => valueDescriptions[v.name] = v.desc);
 
 // Ideologies. A profile value can be an array = several acceptable positions.
+// An ideology with a "focus" is only reachable when the person's Focus matches it (and their values fit too).
 const ideologies = [
     { name: "Rothbardianism", color: "#3b82f6", group: "Anarcho Capitalism",
       desc: "Anarcho-capitalism in the tradition of Murray Rothbard: natural-law property rights, strict Lockean homesteading, and private firms in a fully free market.",
-      profile: { culture: "Moderate", property: "Lockean Homesteading", pricing: "Open Market Pricing", capital: "Capitalism", workplace: "Hierarchial", tactic: "Counter Economics", communities: ["Polycentric", "Covenant Communities"], wage: "Traditional Wages" } },
+      profile: { culture: "Moderate", property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", workplace: "Hierarchical", tactic: "Counter Economics", communities: ["Covenant Communities", "Atomic Individualism"], wage: "Traditional Wages" } },
     { name: "Hoppeanism", color: "#8b5cf6", group: "Anarcho Capitalism",
       desc: "Anarcho-capitalism in the tradition of Hans-Hermann Hoppe: private property with a strongly traditionalist view of culture and social order.",
-      profile: { culture: "Traditionalist", property: "Lockean Homesteading", pricing: "Open Market Pricing", capital: "Capitalism", workplace: "Hierarchial", tactic: "Counter Economics", communities: "Covenant Communities", wage: "Traditional Wages" } },
-    { name: "Left Rothbardianism", color: "#ef4444", group: "Left-Wing Market Anarchism",
+      profile: { culture: "Traditionalist", property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", workplace: "Hierarchical", tactic: "Counter Economics", communities: "Covenant Communities", wage: "Traditional Wages" } },
+    { name: "Left-Rothbardianism", color: "#ef4444", group: "Left-Wing Market Anarchism",
       desc: "Keeps Rothbardian homesteading and market exchange but pairs them with progressive culture, freed markets and independent, self-managed work.",
-      profile: { culture: "Progressive", property: ["Lockean Homesteading", "Constructive Occupancy"], pricing: "Open Market Pricing", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Polycentric", wage: ["Profit-based Wages", "Distributed Earnings"] } },
+      profile: { culture: "Progressive", property: ["Lockean Homesteading", "Constructive Occupancy"], financing: ["Payment for Usage", "Mutual Credit"], pricing: ["Profit-Based Supply & Demand", "Cost-Driven Supply & Demand"], capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: ["Counter Economics", "Gradualism"], communities: ["Atomic Individualism", "Cooperative Communities"], wage: "Profit-based Earnings" } },
     { name: "Mutualism", color: "#14b8a6", group: "Left-Wing Market Anarchism",
       desc: "Market anarchism built on occupancy-and-use property, worker associations and the idea that prices should reflect the labour put into goods.",
-      profile: { culture: ["Progressive", "Moderate"], property: "Occupancy & Use", pricing: "Open Labor Pricing", capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: ["Democracy", "Counter Economics"], communities: "Cooperative Communities", wage: "Distributed Earnings" } },
+      profile: { culture: ["Progressive", "Moderate"], property: "Occupancy & Use", financing: "Mutual Credit", pricing: "Labour Theory of Value", capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: ["Gradualism", "Democracy"], communities: "Cooperative Communities", wage: "Profit-based Earnings" } },
     { name: "Geoanarchism", color: "#f59e0b", group: "Left-Wing Market Anarchism",
-      desc: "Market anarchism that treats land as a common inheritance: unused natural land belongs to everyone equally, as in Georgism.",
-      profile: { culture: "Moderate", property: "Georgism", pricing: "Open Market Pricing", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Polycentric", wage: ["Traditional Wages", "Profit-based Wages"] } },
+      desc: "Market anarchism that treats land as a common inheritance and finances public property through a land value tax, as in Georgism.",
+      profile: { culture: "Moderate", property: ["Constructive Occupancy", "Lockean Homesteading"], financing: "Land Value Tax", pricing: ["Profit-Based Supply & Demand", "Cost-Driven Supply & Demand"], capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Cooperative Communities", wage: ["Traditional Wages", "Profit-based Earnings"] } },
     { name: "Agorism", color: "#ec4899", group: "Tactical",
       desc: "A strategy-first ideology: build a stateless society through counter-economics, trading on the black market until the state is starved.",
-      profile: { culture: "Moderate", property: "Occupancy & Use", pricing: "Open Market Pricing", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Polycentric", wage: ["Traditional Wages", "Profit-based Wages"] } }
+      profile: { culture: "Moderate", property: "Occupancy & Use", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Atomic Individualism", wage: ["Traditional Wages", "Profit-based Earnings"] } },
+    { name: "Anarcho-Frontierism", color: "#06b6d4", group: "Focus-Based", focus: "Anarcho-Frontierism",
+      desc: "Leave Earth and settle as far from civilization as possible for maximum individual freedom. Reached through the Anarcho-Frontierism focus, when your values fit too.",
+      profile: { culture: ["Moderate", "Conservative"], property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Atomic Individualism", wage: ["Traditional Wages", "Profit-based Earnings"] } },
+    { name: "Egoism", color: "#84cc16", group: "Focus-Based", focus: "Egoism",
+      desc: "There is no duty or morality; everyone does whatever they feel is right, with no universal right and wrong. Reached through the Egoism focus, when your values fit too.",
+      profile: { culture: ["Progressive", "Moderate"], property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Atomic Individualism", wage: "Profit-based Earnings" } }
 ];
 
-// The three ideology groups shown on the Ideologies screen
+// Closest non-anarchist ideology (shown separately in the results)
+const nonAnarchistIdeologies = [
+    { name: "Minarchism", color: "#64748b", group: "Non-Anarchist",
+      desc: "Keeps a minimal state limited to protecting rights (police, courts, defence) and leaves everything else to the free market.",
+      profile: { culture: "Moderate", property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", workplace: "Hierarchical", tactic: "Democracy", communities: ["Atomic Individualism", "Covenant Communities"], wage: "Traditional Wages" } },
+    { name: "Geolibertarianism", color: "#eab308", group: "Non-Anarchist",
+      desc: "Free markets combined with a state that funds itself through a land value tax, treating natural land as a common inheritance.",
+      profile: { culture: "Moderate", property: ["Constructive Occupancy", "Lockean Homesteading"], financing: "Land Value Tax", pricing: "Profit-Based Supply & Demand", capital: ["Freed Markets", "Capitalism"], workplace: ["Hierarchical", "Horizontal Self-Employment"], tactic: "Democracy", communities: "Cooperative Communities", wage: ["Traditional Wages", "Profit-based Earnings"] } },
+    { name: "Market Socialism", color: "#fb7185", group: "Non-Anarchist",
+      desc: "Keeps markets and prices but puts firms under worker or social ownership, usually inside a state.",
+      profile: { culture: "Progressive", property: "Occupancy & Use", financing: "Mutual Credit", pricing: ["Labour Theory of Value", "Cost-Driven Supply & Demand"], capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: "Democracy", communities: "Cooperative Communities", wage: "Profit-based Earnings" } }
+];
+
+// The ideology groups shown on the Ideologies screen
 const ideologyGroups = [
     { name: "Anarcho Capitalism", color: "#3b82f6",
       desc: "Stateless society organised around private property, full capitalism and voluntary exchange, with hierarchical firms seen as legitimate." },
     { name: "Left-Wing Market Anarchism", color: "#ef4444",
       desc: "Markets without a state, combined with a critique of today's capitalism, concern for equality, and more worker-friendly and land-friendly property norms." },
     { name: "Tactical", color: "#ec4899",
-      desc: "Ideologies defined mainly by how to reach a free society (the strategy) rather than by a particular property or workplace system." }
+      desc: "Ideologies defined mainly by how to reach a free society (the strategy) rather than by a particular property or workplace system." },
+    { name: "Focus-Based", color: "#84cc16",
+      desc: "Ideologies defined mainly by the individual's main focus (Egoism or Anarcho-Frontierism) rather than by a particular economic system." }
 ];
 
 // People shown in results
 const people = [
     { name: "Hans-Hermann Hoppe", color: "#8b5cf6",
       desc: "Austrian-school economist and philosopher; anarcho-capitalist known for his argumentation ethics and traditionalist social views.",
-      profile: { culture: "Traditionalist", property: "Lockean Homesteading", pricing: "Open Market Pricing", capital: "Capitalism", workplace: "Hierarchial", tactic: "Counter Economics", communities: "Covenant Communities", wage: "Traditional Wages" } },
+      profile: { culture: "Traditionalist", property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", workplace: "Hierarchical", tactic: "Counter Economics", communities: "Covenant Communities", wage: "Traditional Wages" } },
     { name: "Murray Rothbard", color: "#3b82f6",
       desc: "Economist and political theorist who founded modern anarcho-capitalism, combining Austrian economics with natural-rights property theory.",
-      profile: { culture: "Moderate", property: "Lockean Homesteading", pricing: "Open Market Pricing", capital: "Capitalism", workplace: "Hierarchial", tactic: ["Democracy", "Counter Economics"], communities: "Polycentric", wage: "Traditional Wages" } },
+      profile: { culture: "Moderate", property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", workplace: "Hierarchical", tactic: ["Democracy", "Counter Economics"], communities: ["Covenant Communities", "Atomic Individualism"], wage: "Traditional Wages" } },
     { name: "Samuel Edward Konkin III", color: "#ec4899",
       desc: "Founder of agorism and the theory of counter-economics as a path to a stateless society (often known as SEK3).",
-      profile: { culture: "Progressive", property: "Lockean Homesteading", pricing: "Open Market Pricing", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Polycentric", wage: ["Traditional Wages", "Profit-based Wages"] } },
+      profile: { culture: "Progressive", property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Atomic Individualism", wage: ["Traditional Wages", "Profit-based Earnings"] } },
     { name: "Pierre-Joseph Proudhon", color: "#14b8a6",
       desc: "The first self-declared anarchist and father of mutualism, famous for \"property is theft\" and for worker associations.",
-      profile: { culture: "Conservative", property: "Occupancy & Use", pricing: "Open Labor Pricing", capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: "Democracy", communities: "Cooperative Communities", wage: "Distributed Earnings" } },
+      profile: { culture: "Conservative", property: "Occupancy & Use", financing: "Mutual Credit", pricing: "Labour Theory of Value", capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: ["Democracy", "Gradualism"], communities: "Cooperative Communities", wage: "Profit-based Earnings" } },
     { name: "Benjamin Tucker", color: "#f59e0b",
       desc: "American individualist anarchist and editor of Liberty; defended mutual banking, the labour theory of value and the \"cost the limit of price\" principle.",
-      profile: { culture: "Moderate", property: "Occupancy & Use", pricing: ["Open Labor Pricing", "Protected Labor Pricing"], capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Cooperative Communities", wage: "Traditional Wages" } },
-    { name: "Ludwig von Mises", color: "#22c55e",
-      desc: "Leading Austrian-school economist and classical liberal who defended free markets and economic calculation, though he was not an anarchist.",
-      profile: { culture: "Moderate", property: "Lockean Homesteading", pricing: "Protected Market Pricing", capital: "Capitalism", workplace: "Hierarchial", tactic: "Democracy", communities: "Polycentric", wage: "Traditional Wages" } }
+      profile: { culture: "Moderate", property: "Occupancy & Use", financing: "Mutual Credit", pricing: ["Labour Theory of Value", "Cost-Driven Supply & Demand"], capital: "Freed Markets", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Cooperative Communities", wage: "Traditional Wages" } }
 ];
 
-// ---------------- Value symbols, ideology flags, person placeholder (pictures folder) ----------------
+// ---------------- Value symbols, ideology flags, placeholders ----------------
+// Values without their own symbol use pictures/placeholder.svg
 const valueSymbols = {
     "Progressive": "progressive", "Moderate": "moderate", "Conservative": "conservative", "Traditionalist": "traditionalist",
-    "Georgism": "georgism", "Lockean Homesteading": "lockean homesteading", "Constructive Occupancy": "constructive occupancy", "Occupancy & Use": "occupancy and use",
-    "Open Market Pricing": "open market pricing", "Open Labor Pricing": "open labor pricing",
-    "Protected Market Pricing": "protected market pricing", "Protected Labor Pricing": "protected labor pricing",
-    "Freed Markets": "freed markets", "Capitalism": "capitalism", "Cronyism": "cronyism",
-    "Hierarchial": "hierarchial", "Horizontal Self-Employment": "horizontal self employment", "Democratic Workplace": "democratic workplace", "Unionism": "unionism",
-    "Counter Economics": "counter economics", "Revolution": "revolution", "Democracy": "democracy",
-    "Covenant Communities": "covenant communities", "Cooperative Communities": "cooperative communities", "Polycentric": "polycentric",
-    "Traditional Wages": "traditional wages", "Profit-based Wages": "profit based wages", "Distributed Earnings": "distributed earnings"
+    "Lockean Homesteading": "lockean homesteading", "Constructive Occupancy": "constructive occupancy", "Occupancy & Use": "occupancy and use",
+    "Payment for Usage": "placeholder", "Mutual Credit": "placeholder", "Land Value Tax": "land-value-tax",
+    "Profit-Based Supply & Demand": "Profit Based Supply and Demand", "Cost-Driven Supply & Demand": "cost driven supply and demand", "Labour Theory of Value": "placeholder",
+    "Freed Markets": "freed markets", "Capitalism": "capitalism",
+    "Hierarchical": "hierarchial", "Horizontal Self-Employment": "horizontal self employment", "Democratic Workplace": "democratic workplace", "Unionism": "unionism",
+    "Counter Economics": "counter economics", "Revolution": "revolution", "Democracy": "democracy", "Gradualism": "placeholder",
+    "Covenant Communities": "covenant communities", "Cooperative Communities": "cooperative communities", "Atomic Individualism": "atomic Individualism",
+    "Traditional Wages": "traditional wages", "Profit-based Earnings": "profit based wages"
 };
-const symbolSrc = name => valueSymbols[name] ? encodeURI("pictures/" + valueSymbols[name] + ".svg") : "";
+const symbolSrc = name => encodeURI("pictures/" + (valueSymbols[name] || "placeholder") + ".svg");
 
+// Flags live in the ideologies folder; ideologies without a flag use the placeholder flag below
 const ideologyFlags = {
     "Rothbardianism": "rothbardianism.png", "Hoppeanism": "hoppeanism.png",
-    "Left Rothbardianism": "left rothbardianism.jpg", "Mutualism": "mutualism.jpg",
+    "Left-Rothbardianism": "left rothbardianism.jpg", "Mutualism": "mutualism.jpg",
     "Geoanarchism": "geoanarchism.png", "Agorism": "agorism.png"
 };
-const flagSrc = name => ideologyFlags[name] ? encodeURI("pictures/" + ideologyFlags[name]) : "";
+
+// Placeholder flag: dark gray "?" on black background (same style as the placeholder portrait)
+const flagPlaceholder = "data:image/svg+xml;utf8," + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="40" fill="#000"/>' +
+    '<text x="30" y="30" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="bold" fill="#3f3f46">?</text></svg>');
+const flagSrc = name => ideologyFlags[name] ? encodeURI("ideologies/" + ideologyFlags[name]) : flagPlaceholder;
 
 // Placeholder portrait: dark gray head on black background
 const personPlaceholder = "data:image/svg+xml;utf8," + encodeURIComponent(
@@ -897,7 +933,7 @@ const openValueInfo = (name, catKey) => openInfo(
     valueSymbols[name] ? `<div class="info-symbols"><img class="info-symbol" src="${symbolSrc(name)}" alt=""></div>` : ""
 );
 const openIdeologyInfo = name => {
-    const i = ideologies.find(x => x.name === name);
+    const i = ideologies.find(x => x.name === name) || nonAnarchistIdeologies.find(x => x.name === name);
     if (i) return openInfo(i.name, "Ideology · " + i.group, i.desc, i.color,
         `<div class="info-symbols"><img class="info-flag" src="${flagSrc(i.name)}" alt=""></div>`);
     const g = ideologyGroups.find(x => x.name === name);
@@ -921,6 +957,7 @@ const openPersonInfo = name => {
     });
 })();
 
+
 </script>
     <script>
         // ---------- Matching algorithm ----------
@@ -938,70 +975,80 @@ const openPersonInfo = name => {
             property: table({
                 "Occupancy & Use|Constructive Occupancy": 0.7,
                 "Constructive Occupancy|Lockean Homesteading": 0.6,
-                "Occupancy & Use|Georgism": 0.5,
-                "Georgism|Lockean Homesteading": 0.4,
-                "Georgism|Constructive Occupancy": 0.3,
                 "Occupancy & Use|Lockean Homesteading": 0
             }),
+            financing: table({
+                "Land Value Tax|Mutual Credit": 0.4,
+                "Mutual Credit|Payment for Usage": 0.3,
+                "Land Value Tax|Payment for Usage": 0.2
+            }),
             pricing: table({
-                "Open Market Pricing|Open Labor Pricing": 0.5,
-                "Open Market Pricing|Protected Market Pricing": 0.5,
-                "Open Labor Pricing|Protected Labor Pricing": 0.5,
-                "Protected Market Pricing|Protected Labor Pricing": 0.5,
-                "Open Market Pricing|Protected Labor Pricing": 0,
-                "Open Labor Pricing|Protected Market Pricing": 0
+                "Profit-Based Supply & Demand|Cost-Driven Supply & Demand": 0.5,
+                "Cost-Driven Supply & Demand|Labour Theory of Value": 0.5,
+                "Profit-Based Supply & Demand|Labour Theory of Value": 0
             }),
             capital: table({
-                "Freed Markets|Capitalism": 0.5,
-                "Capitalism|Cronyism": 0.3,
-                "Freed Markets|Cronyism": 0
+                "Freed Markets|Capitalism": 0.5
             }),
             workplace: table({
-                "Hierarchial|Unionism": 0.4,
-                "Hierarchial|Horizontal Self-Employment": 0.3,
+                "Hierarchical|Unionism": 0.4,
+                "Hierarchical|Horizontal Self-Employment": 0.3,
                 "Horizontal Self-Employment|Unionism": 0.4,
                 "Unionism|Democratic Workplace": 0.6,
                 "Horizontal Self-Employment|Democratic Workplace": 0.3,
-                "Hierarchial|Democratic Workplace": 0
+                "Hierarchical|Democratic Workplace": 0
             }),
             tactic: table({
                 "Counter Economics|Revolution": 0.5,
                 "Counter Economics|Democracy": 0.3,
-                "Revolution|Democracy": 0
+                "Counter Economics|Gradualism": 0.5,
+                "Democracy|Gradualism": 0.4,
+                "Revolution|Democracy": 0,
+                "Revolution|Gradualism": 0
             }),
             communities: table({
-                "Polycentric|Covenant Communities": 0.3,
-                "Polycentric|Cooperative Communities": 0.3,
+                "Covenant Communities|Atomic Individualism": 0.4,
+                "Cooperative Communities|Atomic Individualism": 0.3,
                 "Covenant Communities|Cooperative Communities": 0
             }),
             wage: table({
-                "Traditional Wages|Profit-based Wages": 0.5,
-                "Profit-based Wages|Distributed Earnings": 0.5,
-                "Traditional Wages|Distributed Earnings": 0
+                "Traditional Wages|Profit-based Earnings": 0.5
             })
         };
 
-        const weights = { culture: 1.0, property: 1.4, pricing: 1.2, capital: 1.2, workplace: 1.2, tactic: 0.8, communities: 0.7, wage: 0.8 };
+        const weights = { culture: 1.0, property: 1.4, financing: 1.0, pricing: 1.2, capital: 1.2, workplace: 1.2, tactic: 0.8, communities: 0.7, wage: 0.8 };
+
+        // Focus is not part of the values used for matching. It only unlocks ideologies that have a
+        // "focus" (Egoism, Anarcho-Frontierism): they are listed only when the person's Focus matches,
+        // and then they get a small bonus on top of how well the values fit.
+        const FOCUS_BONUS = 0.15;
 
         function score(entry, answers) {
             let total = 0, max = 0, exact = 0;
             for (const key in answers) {
                 if (entry.profile[key] === undefined) continue;
                 const accepted = [].concat(entry.profile[key]);
-                const sim = Math.max(...accepted.map(v => v === answers[key] ? 1 : similarity[key](v, answers[key])));
+                const sim = Math.max(...accepted.map(v => v === answers[key] ? 1 : (similarity[key] ? similarity[key](v, answers[key]) : 0)));
                 total += sim * weights[key];
                 max += weights[key];
                 if (accepted.includes(answers[key])) exact++;
             }
-            return { entry, percent: max ? Math.round((total / max) * 100) : 0, exact, raw: max ? total / max : 0 };
+            let raw = max ? total / max : 0;
+            if (entry.focus && entry.focus === userFocus) raw = Math.min(1, raw + FOCUS_BONUS);
+            return { entry, percent: Math.round(raw * 100), exact, raw, focusHit: !!(entry.focus && entry.focus === userFocus) };
         }
-        const rank = list => list.map(e => score(e, userResults)).sort((a, b) => b.raw - a.raw || b.exact - a.exact);
+        const rank = list => list
+            .filter(e => !e.focus || e.focus === userFocus)
+            .map(e => score(e, userResults))
+            .sort((a, b) => b.raw - a.raw || (b.focusHit - a.focusHit) || b.exact - a.exact);
 
         const userResults = JSON.parse(localStorage.getItem('userResults')) || {};
+        const userFocus = localStorage.getItem('userFocus') || 'No Focus';
 
         const rankedIdeologies = rank(ideologies);
+        const rankedNonAnarchist = rank(nonAnarchistIdeologies);
         const rankedPeople = rank(people);
-        const expanded = { ideology: false, personality: false };
+        const expanded = { ideology: false, nonanarchist: false, personality: false };
 
         // Easter egg: click the closest personality 7 times within 10 seconds
         const taylor = { name: "Taylor Swift", color: "#e879f9",
@@ -1028,7 +1075,7 @@ const openPersonInfo = name => {
         const q2 = n => JSON.stringify(n).replace(/"/g, '&quot;');
 
         function matchSection(kind, list) {
-            const isIdeo = kind === 'ideology';
+            const isIdeo = kind !== 'personality';
             const open = isIdeo ? 'openIdeologyInfo' : 'openPersonInfo';
             const imgFor = (r, cls) => isIdeo
                 ? `<img class="${cls}" src="${flagSrc(r.entry.name)}" alt="">`
@@ -1052,11 +1099,11 @@ const openPersonInfo = name => {
                     <div class="match-half">
                         ${imgFor(top, 'match-img')}
                         <div class="match-info" onclick="${topClick}">
-                            <div class="match-label">Closest ${isIdeo ? 'ideology' : 'personality'}</div>
+                            <div class="match-label">Closest ${kind === 'nonanarchist' ? 'non-anarchist ideology' : isIdeo ? 'ideology' : 'personality'}</div>
                             <div class="match-name">${top.entry.name}</div>
                             <div class="match-pct">${top.percent}% match</div>
                         </div>
-                        <button class="match-next ${expanded[kind] ? 'open' : ''}" aria-label="Show next closest ${kind}s" onclick="toggleMatches('${kind}')">${arrowSvg}</button>
+                        <button class="match-next ${expanded[kind] ? 'open' : ''}" aria-label="Show next closest matches" onclick="toggleMatches('${kind}')">${arrowSvg}</button>
                     </div>
                     ${rows}
                 </div>`;
@@ -1065,6 +1112,8 @@ const openPersonInfo = name => {
         function renderMatches() {
             document.getElementById('match-box').innerHTML =
                 matchSection('ideology', rankedIdeologies) +
+                '<div class="match-divider"></div>' +
+                matchSection('nonanarchist', rankedNonAnarchist) +
                 '<div class="match-divider"></div>' +
                 matchSection('personality', rankedPeople);
         }
