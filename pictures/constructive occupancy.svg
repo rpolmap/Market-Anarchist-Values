@@ -1,31 +1,16 @@
-
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
-  <!-- Background Badge -->
-  <circle cx="256" cy="256" r="240" fill="#18181b" stroke="#3f3f46" stroke-width="10"/>
-  
-  <!-- Outer Gold Accent Ring -->
-  <circle cx="256" cy="256" r="222" fill="none" stroke="#eab308" stroke-width="6"/>
-
-  <!-- Cultivated Land Base -->
-  <path d="M 100 360 Q 256 395 412 360 L 412 385 Q 256 420 100 385 Z" fill="#15803d"/>
-
-  <!-- Homestead Structure (Occupancy) -->
-  <path d="M 160 340 L 160 220 L 256 140 L 352 220 L 352 340 Z" 
-        fill="#27272a" 
-        stroke="#eab308" 
-        stroke-width="14" 
-        stroke-linejoin="round"/>
-
-  <!-- Economic Management / Lease & Rent Keyhole Arch -->
-  <path d="M 226 340 L 226 270 A 30 30 0 0 1 286 270 L 286 340 Z" fill="#eab308"/>
-  <circle cx="256" cy="275" r="10" fill="#18181b"/>
-  <path d="M 252 275 L 260 275 L 262 305 L 250 305 Z" fill="#18181b"/>
-
-  <!-- Constructive Stewardship / Management Gear Emblem in Roof -->
-  <g transform="translate(256, 195)">
-    <circle cx="0" cy="0" r="18" fill="none" stroke="#22c55e" stroke-width="8"/>
-    <path d="M 0 -26 L 0 -18 M 0 18 L 0 26 M -26 0 L -18 0 M 18 0 L 26 0 M -18 -18 L -13 -13 M 13 13 L 18 18 M -18 18 L -13 13 M 13 -13 L 18 -18" 
-          stroke="#22c55e" stroke-width="6" stroke-linecap="round"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1000"
+   height="1000"
+   viewBox="0 0 264.58333 264.58333"
+   version="1.1"
+   xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <circle style="fill:#7a4423;fill-opacity:1;stroke:none" cx="132.29167" cy="132.29167" r="125.37917" />
+    <circle style="fill:none;stroke:#f4d527;stroke-width:5.29167;stroke-opacity:1" cx="132.29167" cy="132.29167" r="125.37917" />
+    <polygon style="fill:#ffffff" points="132.29,56 212.58,120 52,120" />
+    <rect style="fill:#ffffff" x="76" y="126" width="112.58" height="52" />
+    <path style="fill:#7a4423" d="M 114,178 V 150 A 18.3,18.3 0 0 1 150.6,150 V 178 Z" />
+    <path style="fill:#4cc35a" d="M 50,186 Q 132.29,164 214.58,186 V 204 H 50 Z" />
   </g>
 </svg>
-
