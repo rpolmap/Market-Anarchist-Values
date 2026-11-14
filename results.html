@@ -805,7 +805,7 @@ const ideologies = [
     { name: "Mutualism", color: "#14b8a6", group: "Left-Wing Market Anarchism",
       desc: "Market anarchism built on occupancy-and-use property, worker associations and the idea that prices should reflect the labour put into goods.",
       profile: { property: "Occupancy & Use", financing: "Mutual Credit", pricing: "Labour Theory of Value", capital: "Freed Markets", workplace: ["Democratic Workplace", "Unionism"], tactic: ["Gradualism", "Democracy"], communities: "Cooperative Communities", wage: "Profit-based Earnings" } },
-    { name: "Geoanarchism", color: "#f59e0b", group: "Left-Wing Market Anarchism",
+    { name: "Geoanarchism", color: "#f59e0b", group: "Left-Wing Market Anarchism", required: ["financing"],
       desc: "Market anarchism that treats land as a common inheritance and finances public property through a land value tax, as in Georgism.",
       profile: { property: ["Constructive Occupancy", "Lockean Homesteading"], financing: "Land Value Tax", pricing: ["Profit-Based Supply & Demand", "Cost-Driven Supply & Demand"], capital: "Freed Markets" } },
     { name: "Agorism", color: "#ec4899", group: "Tactical",
@@ -824,7 +824,7 @@ const nonAnarchistIdeologies = [
     { name: "Minarchism", color: "#64748b", group: "Non-Anarchist",
       desc: "Keeps a minimal state limited to protecting rights (police, courts, defence) and leaves everything else to the free market.",
       profile: { property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", capital: "Capitalism", tactic: "Democracy" } },
-    { name: "Geolibertarianism", color: "#eab308", group: "Non-Anarchist",
+    { name: "Geolibertarianism", color: "#eab308", group: "Non-Anarchist", required: ["financing"],
       desc: "Free markets combined with a state that funds itself through a land value tax, treating natural land as a common inheritance.",
       profile: { property: ["Constructive Occupancy", "Lockean Homesteading"], financing: "Land Value Tax", capital: ["Freed Markets", "Capitalism"] } },
     { name: "Market Socialism", color: "#fb7185", group: "Non-Anarchist",
@@ -1039,6 +1039,8 @@ const openPersonInfo = name => {
         }
         const rank = list => list
             .filter(e => !e.focus || e.focus === userFocus)
+            // "required" categories must match exactly (e.g. no Geolibertarianism without a Land Value Tax)
+            .filter(e => !e.required || e.required.every(k => [].concat(e.profile[k]).includes(userResults[k])))
             .map(e => score(e, userResults))
             .sort((a, b) => b.raw - a.raw || (b.focusHit - a.focusHit) || b.exact - a.exact);
 
