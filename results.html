@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -494,10 +495,6 @@ button:hover {
     margin: 14px 0 0;
 }
 
-@media (max-width: 800px) {
-    .result-text { font-size: 0.75rem; }
-}
-
 /* Symbol in the value popup */
 .info-symbols {
     display: flex;
@@ -509,7 +506,6 @@ button:hover {
     height: 96px;
     object-fit: contain;
 }
-
 
 /* ---------- Added: agree/disagree colours, back button ---------- */
 #buttons .btn-agree {
@@ -668,7 +664,6 @@ button:hover {
     border-radius: 50%;
 }
 
-
 /* ---------- Added: expandable next matches ---------- */
 .match-section { position: relative; }
 .match-bar { position: absolute; left: 0; top: 0; bottom: 0; width: 5px; }
@@ -701,6 +696,10 @@ button:hover {
 .match-row-pct { font-size: 0.85rem; color: var(--text-dim); }
 .match-next svg { transition: transform 0.25s ease; }
 .match-next.open svg { transform: rotate(90deg); }
+
+@media (max-width: 800px) {
+    .result-text { font-size: 0.75rem; }
+}
 </style>
 </head>
 <body>
@@ -875,7 +874,6 @@ const people = [
 ];
 
 // ---------------- Value symbols, ideology flags, placeholders ----------------
-// Values without their own symbol use pictures/placeholder.svg
 const valueSymbols = {
     "Progressive": "progressive", "Moderate": "moderate", "Conservative": "conservative", "Traditionalist": "traditionalist",
     "Lockean Homesteading": "lockean homesteading", "Constructive Occupancy": "constructive occupancy", "Occupancy & Use": "occupancy and use",
@@ -900,19 +898,16 @@ const ideologyFlags = {
     "Objectivism": "objectivism.png", "Libertarian Monarchism": "libertarian monarchism.png"
 };
 
-// Placeholder flag: dark gray "?" on black background (same style as the placeholder portrait)
 const flagPlaceholder = "data:image/svg+xml;utf8," + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40"><rect width="60" height="40" fill="#000"/>' +
     '<text x="30" y="30" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="bold" fill="#3f3f46">?</text></svg>');
 const flagSrc = name => ideologyFlags[name] ? encodeURI("ideologies/" + ideologyFlags[name]) : flagPlaceholder;
 
-// Placeholder portrait: dark gray head on black background
 const personPlaceholder = "data:image/svg+xml;utf8," + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#000"/>' +
     '<circle cx="32" cy="25" r="11" fill="#3f3f46"/>' +
     '<path d="M10 64c0-14 10-22 22-22s22 8 22 22z" fill="#3f3f46"/></svg>');
 
-// Portraits live in the personalities folder; anyone without a portrait uses the placeholder above
 const personImages = {
     "Hans-Hermann Hoppe": "hoppe.jpg", "Murray Rothbard": "rothbard.jpg",
     "Samuel Edward Konkin III": "konkin.jpg", "Pierre-Joseph Proudhon": "proudhon.jpg",
@@ -920,7 +915,7 @@ const personImages = {
 };
 const personSrc = name => personImages[name] ? encodeURI("personalities/" + personImages[name]) : personPlaceholder;
 
-// ---------------- Popup menu (click a value / ideology / person) ----------------
+// ---------------- Popup menu ----------------
 function openInfo(title, subtitle, desc, color, symbolsHTML) {
     closeInfo();
     const overlay = document.createElement('div');
@@ -968,7 +963,7 @@ const openPersonInfo = name => {
         `<div class="info-symbols"><img class="info-flag info-person" src="${personSrc(p.name)}" alt=""></div>`);
 };
 
-// Theme toggle (shared)
+// Theme toggle
 (function () {
     const themeToggle = document.getElementById('theme-toggle');
     const htmlElement = document.documentElement;
@@ -979,214 +974,228 @@ const openPersonInfo = name => {
         localStorage.setItem('theme', next);
     });
 })();
-
-
 </script>
-    <script>
-        // ---------- Matching algorithm ----------
-        const ordinal = list => (a, b) => {
-            const i = list.indexOf(a), j = list.indexOf(b);
-            return (i < 0 || j < 0) ? 0 : 1 - Math.abs(i - j) / (list.length - 1);
-        };
-        const table = pairs => (a, b) => pairs[a + "|" + b] ?? pairs[b + "|" + a] ?? 0;
 
-        const similarity = {
-            culture: ordinal(["Progressive", "Moderate", "Conservative", "Traditionalist"]),
-            property: table({
-                "Occupancy & Use|Constructive Occupancy": 0.7,
-                "Constructive Occupancy|Lockean Homesteading": 0.6,
-                "Occupancy & Use|Lockean Homesteading": 0
-            }),
-            financing: table({
-                "Land Value Tax|Mutual Credit": 0.4,
-                "Mutual Credit|Payment for Usage": 0.3,
-                "Land Value Tax|Payment for Usage": 0.2
-            }),
-            pricing: table({
-                "Profit-Based Supply & Demand|Cost-Driven Supply & Demand": 0.5,
-                "Cost-Driven Supply & Demand|Labour Theory of Value": 0.5,
-                "Profit-Based Supply & Demand|Labour Theory of Value": 0
-            }),
-            workplace: table({
-                "Hierarchical|Unionism": 0.4,
-                "Hierarchical|Horizontal Self-Employment": 0.3,
-                "Horizontal Self-Employment|Unionism": 0.4,
-                "Unionism|Democratic Workplace": 0.6,
-                "Horizontal Self-Employment|Democratic Workplace": 0.3,
-                "Hierarchical|Democratic Workplace": 0
-            }),
-            tactic: table({
-                "Counter Economics|Revolution": 0.5,
-                "Counter Economics|Democracy": 0.3,
-                "Counter Economics|Gradualism": 0.5,
-                "Democracy|Gradualism": 0.4,
-                "Revolution|Democracy": 0,
-                "Revolution|Gradualism": 0
-            }),
-            communities: table({
-                "Covenant Communities|Atomic Individualism": 0.4,
-                "Cooperative Communities|Atomic Individualism": 0.3,
-                "Covenant Communities|Cooperative Communities": 0,
-                "Covenant Communities|Symbolic Monarchism": 0.5,
-                "Atomic Individualism|Symbolic Monarchism": 0.2,
-                "Cooperative Communities|Symbolic Monarchism": 0.1
-            }),
-            wage: table({
-                "Traditional Wages|Profit-based Earnings": 0.5
-            })
-        };
+<script>
+// ---------- Matching algorithm ----------
+const ordinal = list => (a, b) => {
+    const i = list.indexOf(a), j = list.indexOf(b);
+    return (i < 0 || j < 0) ? 0 : 1 - Math.abs(i - j) / (list.length - 1);
+};
+const table = pairs => (a, b) => pairs[a + "|" + b] ?? pairs[b + "|" + a] ?? 0;
 
-        const weights = { culture: 1.0, property: 1.4, financing: 1.0, pricing: 1.2, workplace: 1.2, tactic: 0.8, communities: 0.7, wage: 0.8 };
+const similarity = {
+    culture: ordinal(["Progressive", "Moderate", "Conservative", "Traditionalist"]),
+    property: table({
+        "Occupancy & Use|Constructive Occupancy": 0.7,
+        "Constructive Occupancy|Lockean Homesteading": 0.6,
+        "Occupancy & Use|Lockean Homesteading": 0
+    }),
+    financing: table({
+        "Land Value Tax|Mutual Credit": 0.4,
+        "Mutual Credit|Payment for Usage": 0.3,
+        "Land Value Tax|Payment for Usage": 0.2
+    }),
+    pricing: table({
+        "Profit-Based Supply & Demand|Cost-Driven Supply & Demand": 0.5,
+        "Cost-Driven Supply & Demand|Labour Theory of Value": 0.5,
+        "Profit-Based Supply & Demand|Labour Theory of Value": 0
+    }),
+    workplace: table({
+        "Hierarchical|Unionism": 0.4,
+        "Hierarchical|Horizontal Self-Employment": 0.3,
+        "Horizontal Self-Employment|Unionism": 0.4,
+        "Unionism|Democratic Workplace": 0.6,
+        "Horizontal Self-Employment|Democratic Workplace": 0.3,
+        "Hierarchical|Democratic Workplace": 0
+    }),
+    tactic: table({
+        "Counter Economics|Revolution": 0.5,
+        "Counter Economics|Democracy": 0.3,
+        "Counter Economics|Gradualism": 0.5,
+        "Democracy|Gradualism": 0.4,
+        "Revolution|Democracy": 0,
+        "Revolution|Gradualism": 0
+    }),
+    communities: table({
+        "Covenant Communities|Atomic Individualism": 0.4,
+        "Cooperative Communities|Atomic Individualism": 0.3,
+        "Covenant Communities|Cooperative Communities": 0,
+        "Covenant Communities|Symbolic Monarchism": 0.5,
+        "Atomic Individualism|Symbolic Monarchism": 0.2,
+        "Cooperative Communities|Symbolic Monarchism": 0.1
+    }),
+    wage: table({
+        "Traditional Wages|Profit-based Earnings": 0.5
+    })
+};
 
-        const FOCUS_BONUS = 0.15;
+const weights = { culture: 1.0, property: 1.4, financing: 1.0, pricing: 1.2, workplace: 1.2, tactic: 0.8, communities: 0.7, wage: 0.8 };
+const FOCUS_BONUS = 0.15;
 
-        function score(entry, answers) {
-            let total = 0, max = 0, exact = 0;
-            for (const key in answers) {
-                if (entry.profile[key] === undefined) continue;
-                const accepted = [].concat(entry.profile[key]);
-                const sim = Math.max(...accepted.map(v => v === answers[key] ? 1 : (similarity[key] ? similarity[key](v, answers[key]) : 0)));
-                total += sim * weights[key];
-                max += weights[key];
-                if (accepted.includes(answers[key])) exact++;
-            }
-            let raw = max ? total / max : 0;
-            if (entry.focus && entry.focus === userFocus) raw = Math.min(1, raw + FOCUS_BONUS);
-            return { entry, percent: Math.round(raw * 100), exact, raw, focusHit: !!(entry.focus && entry.focus === userFocus) };
-        }
-        
-        const meetsRequired = e => !e.required || e.required.every(k => [].concat(e.profile[k]).includes(userResults[k]));
-        function rank(list) {
-            const scored = list.map(e => {
-                const s = score(e, userResults);
-                s.blocked = !meetsRequired(e);                              
-                s.focusBlocked = !!(e.focus && e.focus !== userFocus);      
-                return s;
-            });
-            const free = scored.filter(s => !s.blocked && !s.focusBlocked);
-            if (free.length) {
-                const best = Math.max(...free.map(s => s.raw));
-                const floor = Math.min(...free.map(s => s.raw));
-                scored.forEach(s => {
-                    if (s.blocked) s.raw = Math.min(s.raw * 0.5, floor);
-                    else if (s.focusBlocked) s.raw = Math.min(s.raw, Math.max(0, best - 0.01));
-                    s.percent = Math.round(s.raw * 100);
-                });
-            }
-            return scored.sort((a, b) => (a.blocked - b.blocked) || b.raw - a.raw || (b.focusHit - a.focusHit) || b.exact - a.exact);
-        }
+function score(entry, answers) {
+    let total = 0, max = 0, exact = 0;
+    for (const key in answers) {
+        if (entry.profile[key] === undefined) continue;
+        const accepted = [].concat(entry.profile[key]);
+        const sim = Math.max(...accepted.map(v => v === answers[key] ? 1 : (similarity[key] ? similarity[key](v, answers[key]) : 0)));
+        total += sim * weights[key];
+        max += weights[key];
+        if (accepted.includes(answers[key])) exact++;
+    }
+    let raw = max ? total / max : 0;
+    if (entry.focus && entry.focus === userFocus) raw = Math.min(1, raw + FOCUS_BONUS);
+    return { entry, percent: Math.round(raw * 100), exact, raw, focusHit: !!(entry.focus && entry.focus === userFocus) };
+}
 
-        const userResults = JSON.parse(localStorage.getItem('userResults')) || {};
-        Object.keys(userResults).forEach(k => {
-            if (!categoryValues[k] || !categoryValues[k].some(v => v.name === userResults[k])) delete userResults[k];
+const meetsRequired = e => !e.required || e.required.every(k => [].concat(e.profile[k]).includes(userResults[k]));
+function rank(list) {
+    const scored = list.map(e => {
+        const s = score(e, userResults);
+        s.blocked = !meetsRequired(e);
+        s.focusBlocked = !!(e.focus && e.focus !== userFocus);
+        return s;
+    });
+    const free = scored.filter(s => !s.blocked && !s.focusBlocked);
+    if (free.length) {
+        const best = Math.max(...free.map(s => s.raw));
+        const floor = Math.min(...free.map(s => s.raw));
+        scored.forEach(s => {
+            if (s.blocked) s.raw = Math.min(s.raw * 0.5, floor);
+            else if (s.focusBlocked) s.raw = Math.min(s.raw, Math.max(0, best - 0.01));
+            s.percent = Math.round(s.raw * 100);
         });
-        const userFocus = localStorage.getItem('userFocus') || 'No Focus';
+    }
+    return scored.sort((a, b) => (a.blocked - b.blocked) || b.raw - a.raw || (b.focusHit - a.focusHit) || b.exact - a.exact);
+}
 
-        const rankedIdeologies = rank(ideologies);
-        const rankedNonAnarchist = rank(nonAnarchistIdeologies);
-        const rankedPeople = rank(people);
-        const expanded = { ideology: false, nonanarchist: false, personality: false };
+const userResults = JSON.parse(localStorage.getItem('userResults')) || {};
+Object.keys(userResults).forEach(k => {
+    if (!categoryValues[k] || !categoryValues[k].some(v => v.name === userResults[k])) delete userResults[k];
+});
+const userFocus = localStorage.getItem('userFocus') || 'No Focus';
 
-        const taylor = { name: "Taylor Swift", color: "#e879f9",
-            desc: "American singer-songwriter. You found the secret!" };
-        let eggOn = false, eggClicks = [], popTimer = null;
-        function personTopClick() {
-            const now = Date.now();
-            eggClicks = eggClicks.filter(t => now - t <= 10000);
-            eggClicks.push(now);
-            clearTimeout(popTimer);
-            if (!eggOn && eggClicks.length >= 7) {
-                eggOn = true; eggClicks = [];
-                renderMatches();
-                return;
-            }
-            popTimer = setTimeout(() => eggOn
-                ? openInfo(taylor.name, "Person", taylor.desc, taylor.color,
-                    `<div class="info-symbols"><img class="info-flag info-person" src="taylor swift.png" alt=""></div>`)
-                : openPersonInfo(rankedPeople[0].entry.name), 350);
-        }
+const rankedIdeologies = rank(ideologies);
+const rankedNonAnarchist = rank(nonAnarchistIdeologies);
+const rankedPeople = rank(people);
+const expanded = { ideology: false, nonanarchist: false, personality: false };
 
-        const arrowSvg = '<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg>';
-        const q2 = n => JSON.stringify(n).replace(/"/g, '&quot;');
+const taylor = {
+    name: "Taylor Swift",
+    color: "#e879f9",
+    desc: "American singer-songwriter. You found the secret!"
+};
 
-        function matchSection(kind, list) {
-            const isIdeo = kind !== 'personality';
-            const open = isIdeo ? 'openIdeologyInfo' : 'openPersonInfo';
-            const imgFor = (r, cls) => isIdeo
-                ? `<img class="${cls}" src="${flagSrc(r.entry.name)}" alt="">`
-                : (r.entry.name === "Taylor Swift" 
-                    ? `<img class="${cls} match-person-img" src="taylor swift.png" alt="">`
-                    : `<img class="${cls} match-person-img" src="${personSrc(r.entry.name)}" alt="">`);
-            const egg = !isIdeo && eggOn;
-            const top = egg ? { entry: taylor, percent: 100 } : list[0];
-            const restList = egg ? list : list.slice(1);
-            const topClick = isIdeo ? `${open}(${q2(top.entry.name)})` : 'personTopClick()';
-            const rows = expanded[kind] ? `
-                <div class="match-list">
-                    ${restList.map((r, i) => `
-                        <div class="match-row" onclick="${open}(${q2(r.entry.name)})">
-                            ${imgFor(r, 'match-row-img')}
-                            <div class="match-row-name">${r.entry.name}</div>
-                            <div class="match-row-pct">${r.percent}%</div>
-                        </div>`).join('')}
-                </div>` : '';
-            return `
-                <div class="match-section">
-                    <div class="match-bar" style="background:${top.entry.color}"></div>
-                    <div class="match-half">
-                        ${imgFor(top, 'match-img')}
-                        <div class="match-info" onclick="${topClick}">
-                            <div class="match-label">Closest ${kind === 'nonanarchist' ? 'non-anarchist ideology' : isIdeo ? 'ideology' : 'personality'}</div>
-                            <div class="match-name">${top.entry.name}</div>
-                            <div class="match-pct">${top.percent}% match</div>
-                        </div>
-                        <button class="match-next ${expanded[kind] ? 'open' : ''}" aria-label="Show next closest matches" onclick="toggleMatches('${kind}')">${arrowSvg}</button>
-                    </div>
-                    ${rows}
-                </div>`;
-        }
+let eggOn = false, eggClicks = [], popTimer = null;
 
-        function renderMatches() {
-            document.getElementById('match-box').innerHTML =
-                matchSection('ideology', rankedIdeologies) +
-                '<div class="match-divider"></div>' +
-                matchSection('nonanarchist', rankedNonAnarchist) +
-                '<div class="match-divider"></div>' +
-                matchSection('personality', rankedPeople);
-        }
+function personTopClick() {
+    const now = Date.now();
+    eggClicks = eggClicks.filter(t => now - t <= 10000);
+    eggClicks.push(now);
+    clearTimeout(popTimer);
 
-        function toggleMatches(kind) {
-            expanded[kind] = !expanded[kind];
-            renderMatches();
-        }
-
-        document.getElementById('app').innerHTML = `
-            <div class="main-results-wrapper">
-                <div class="title-container">
-                    <h1 class="brand">MAValues</h1>
-                </div>
-                <h2 class="results-heading">Your Results</h2>
-                <p class="version-text">Here is your breakdown across all ${Object.keys(userResults).length} dimensions:</p>
-
-                <div id="results-container">
-                    ${Object.keys(userResults).map(key => `
-                        <div class="result-item" onclick="openValueInfo('${userResults[key]}', '${key}')">
-                            <img class="result-icon" src="${symbolSrc(userResults[key])}" alt="${userResults[key]}">
-                            <div class="result-text">${userResults[key]}</div>
-                        </div>
-                    `).join('')}
-                </div>
-
-                <div class="result-header-text">Closest Matches</div>
-                <div class="match-box" id="match-box"></div>
-
-                <div class="button-container" style="margin-top: 25px;">
-                    <button onclick="location.href='index.html'">Home</button>
-                    <button onclick="location.href='test.html'">Retake Quiz</button>
-                </div>
-            </div>
-        `;
+    if (!eggOn && eggClicks.length >= 7) {
+        eggOn = true;
+        eggClicks = [];
         renderMatches();
-    </script>
+        return;
+    }
+
+    popTimer = setTimeout(() => eggOn
+        ? openInfo(
+            taylor.name,
+            "Person",
+            taylor.desc,
+            taylor.color,
+            `<div class="info-symbols"><img class="info-flag info-person" src="personalities/taylor swift.png" alt=""></div>`
+        )
+        : openPersonInfo(rankedPeople[0].entry.name), 350);
+}
+
+const arrowSvg = '<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg>';
+const q2 = n => JSON.stringify(n).replace(/"/g, '&quot;');
+
+function matchSection(kind, list) {
+    const isIdeo = kind !== 'personality';
+    const open = isIdeo ? 'openIdeologyInfo' : 'openPersonInfo';
+    const imgFor = (r, cls) => isIdeo
+        ? `<img class="${cls}" src="${flagSrc(r.entry.name)}" alt="">`
+        : (r.entry.name === "Taylor Swift"
+            ? `<img class="${cls} match-person-img" src="personalities/taylor swift.png" alt="">`
+            : `<img class="${cls} match-person-img" src="${personSrc(r.entry.name)}" alt="">`);
+
+    const egg = !isIdeo && eggOn;
+    const top = egg ? { entry: taylor, percent: 100 } : list[0];
+    const restList = egg ? list : list.slice(1);
+    const topClick = isIdeo ? `${open}(${q2(top.entry.name)})` : 'personTopClick()';
+
+    const rows = expanded[kind] ? `
+        <div class="match-list">
+            ${restList.map(r => `
+                <div class="match-row" onclick="${open}(${q2(r.entry.name)})">
+                    ${imgFor(r, 'match-row-img')}
+                    <div class="match-row-name">${r.entry.name}</div>
+                    <div class="match-row-pct">${r.percent}%</div>
+                </div>`).join('')}
+        </div>` : '';
+
+    return `
+        <div class="match-section">
+            <div class="match-bar" style="background:${top.entry.color}"></div>
+            <div class="match-half">
+                ${imgFor(top, 'match-img')}
+                <div class="match-info" onclick="${topClick}">
+                    <div class="match-label">Closest ${kind === 'nonanarchist' ? 'non-anarchist ideology' : isIdeo ? 'ideology' : 'personality'}</div>
+                    <div class="match-name">${top.entry.name}</div>
+                    <div class="match-pct">${top.percent}% match</div>
+                </div>
+                <button class="match-next ${expanded[kind] ? 'open' : ''}" aria-label="Show next closest matches" onclick="toggleMatches('${kind}')">${arrowSvg}</button>
+            </div>
+            ${rows}
+        </div>`;
+}
+
+function renderMatches() {
+    document.getElementById('match-box').innerHTML =
+        matchSection('ideology', rankedIdeologies) +
+        '<div class="match-divider"></div>' +
+        matchSection('nonanarchist', rankedNonAnarchist) +
+        '<div class="match-divider"></div>' +
+        matchSection('personality', rankedPeople);
+}
+
+function toggleMatches(kind) {
+    expanded[kind] = !expanded[kind];
+    renderMatches();
+}
+
+document.getElementById('app').innerHTML = `
+    <div class="main-results-wrapper">
+        <div class="title-container">
+            <h1 class="brand">MAValues</h1>
+        </div>
+        <h2 class="results-heading">Your Results</h2>
+        <p class="version-text">Here is your breakdown across all ${Object.keys(userResults).length} dimensions:</p>
+
+        <div id="results-container">
+            ${Object.keys(userResults).map(key => `
+                <div class="result-item" onclick="openValueInfo('${userResults[key]}', '${key}')">
+                    <img class="result-icon" src="${symbolSrc(userResults[key])}" alt="${userResults[key]}">
+                    <div class="result-text">${userResults[key]}</div>
+                </div>
+            `).join('')}
+        </div>
+
+        <div class="result-header-text">Closest Matches</div>
+        <div class="match-box" id="match-box"></div>
+
+        <div class="button-container" style="margin-top: 25px;">
+            <button onclick="location.href='index.html'">Home</button>
+            <button onclick="location.href='test.html'">Retake Quiz</button>
+        </div>
+    </div>
+`;
+renderMatches();
+</script>
 </body>
 </html>
