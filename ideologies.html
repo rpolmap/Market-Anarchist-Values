@@ -696,8 +696,7 @@ button:hover {
 
 const categoryNames = {
     culture: "Culture", property: "Property", financing: "Financing", pricing: "Pricing",
-    workplace: "Workplace Structure",
-    tactic: "Tactic", communities: "Communities", wage: "Wage Model", focus: "Focus"
+    workplace: "Workplace Structure", tactic: "Tactic", communities: "Communities", wage: "Wage Model", focus: "Focus"
 };
 
 // Categories and their values + short descriptions
@@ -738,6 +737,7 @@ const categoryValues = {
     communities: [
         { name: "Covenant Communities", desc: "Communities of people with similar culture and interests, each living on their own property within the settlement." },
         { name: "Cooperative Communities", desc: "Communities built around the mutual ownership and financing of public property." },
+        { name: "Symbolic Monarchism", desc: "A loyal community with a symbolic and voluntary king or queen who preserves the culture and cares for the people." },
         { name: "Atomic Individualism", desc: "Everyone lives on their own property and interferes with others only when needed." }
     ],
     wage: [
@@ -750,7 +750,8 @@ const categoryValues = {
 const focusDescriptions = {
     "No Focus": "Living under a free market and having success.",
     "Egoism": "There is no duty or morality; everyone should do whatever they feel is right, with no universal right and wrong.",
-    "Anarcho-Frontierism": "Leaving Earth and settling as far from civilization as possible for maximum individual freedom."
+    "Anarcho-Frontierism": "Leaving Earth and settling as far from civilization as possible for maximum individual freedom.",
+    "Pink Capitalism": "Absolute worldwide LGBTQ rights and culture incorporated into Capitalism."
 };
 
 // Quick lookup: value name -> description
@@ -778,12 +779,18 @@ const ideologies = [
     { name: "Agorism", color: "#ec4899", group: "Tactical",
       desc: "A strategy-first ideology: build a stateless society through counter-economics, trading on the black market until the state is starved.",
       profile: { property: "Occupancy & Use", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", workplace: "Horizontal Self-Employment", tactic: "Counter Economics", communities: "Atomic Individualism" } },
+    { name: "Anarcho-Monarchism", color: "#b45309", group: "Anarcho Capitalism", required: ["communities"],
+      desc: "Stateless society in which a loyal community keeps a symbolic and voluntary king or queen to preserve its culture and care for its people.",
+      profile: { culture: ["Traditionalist", "Conservative"], property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", workplace: "Hierarchical", tactic: ["Counter Economics", "Gradualism"], communities: "Symbolic Monarchism", wage: "Traditional Wages" } },
     { name: "Anarcho-Frontierism", color: "#06b6d4", group: "Focus-Based", focus: "Anarcho-Frontierism",
       desc: "Leave Earth and settle as far from civilization as possible for maximum individual freedom. Reached through the Anarcho-Frontierism focus, when your values fit too.",
       profile: { property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", tactic: "Counter Economics", communities: "Atomic Individualism" } },
     { name: "Egoism", color: "#84cc16", group: "Focus-Based", focus: "Egoism",
-      desc: "There is no duty or morality; everyone does whatever they feel is right, with no universal right and wrong. Reached through the Egoism focus, when your values fit too.",
-      profile: { property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", tactic: "Counter Economics", communities: "Atomic Individualism" } }
+      desc: "There is no duty or morality; everyone should do whatever they feel is right, with no universal right and wrong. Reached through the Egoism focus, when your values fit too.",
+      profile: { property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", tactic: "Counter Economics", communities: "Atomic Individualism" } },
+    { name: "Pink Capitalism", color: "#f472b6", group: "Focus-Based", focus: "Pink Capitalism",
+      desc: "Absolute worldwide LGBTQ rights and culture incorporated into Capitalism. Reached through the Pink Capitalism focus, when your values fit too.",
+      profile: { culture: "Progressive", property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", tactic: "Counter Economics", communities: "Atomic Individualism" } }
 ];
 
 // Closest non-anarchist ideology (shown separately in the results)
@@ -796,7 +803,13 @@ const nonAnarchistIdeologies = [
       profile: { property: ["Constructive Occupancy", "Lockean Homesteading"], financing: "Land Value Tax", pricing: "Profit-Based Supply & Demand", tactic: "Democracy" } },
     { name: "Market Minarcho-Socialism", color: "#fb7185", group: "Non-Anarchist",
       desc: "Keeps markets and prices but puts firms under worker or social ownership, usually inside a state.",
-      profile: { property: "Occupancy & Use", financing: "Mutual Credit", pricing: ["Labour Theory of Value", "Cost-Driven Supply & Demand"], workplace: ["Democratic Workplace", "Unionism"], tactic: "Democracy", communities: "Cooperative Communities", wage: "Profit-based Earnings" } }
+      profile: { property: "Occupancy & Use", financing: "Mutual Credit", pricing: ["Labour Theory of Value", "Cost-Driven Supply & Demand"], workplace: ["Democratic Workplace", "Unionism"], tactic: "Democracy", communities: "Cooperative Communities", wage: "Profit-based Earnings" } },
+    { name: "Objectivism", color: "#38bdf8", group: "Non-Anarchist",
+      desc: "Rational self-interest and laissez-faire capitalism, with a minimal state limited to protecting individual rights.",
+      profile: { property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", workplace: "Hierarchical", tactic: "Democracy", wage: "Traditional Wages" } },
+    { name: "Libertarian Monarchism", color: "#c2410c", group: "Non-Anarchist", required: ["communities"],
+      desc: "Free-market libertarianism combined with a symbolic and voluntary monarchy that preserves the culture and cares for the people.",
+      profile: { culture: ["Traditionalist", "Conservative"], property: "Lockean Homesteading", financing: "Payment for Usage", pricing: "Profit-Based Supply & Demand", workplace: "Hierarchical", tactic: "Democracy", communities: "Symbolic Monarchism", wage: "Traditional Wages" } }
 ];
 
 // The ideology groups shown on the Ideologies screen
@@ -841,7 +854,7 @@ const valueSymbols = {
     "Profit-Based Supply & Demand": "Profit Based Supply and Demand", "Cost-Driven Supply & Demand": "cost driven supply and demand", "Labour Theory of Value": "labour theory of value",
     "Hierarchical": "hierarchial", "Horizontal Self-Employment": "horizontal self employment", "Democratic Workplace": "democratic workplace", "Unionism": "unionism",
     "Counter Economics": "counter economics", "Revolution": "revolution", "Democracy": "democracy", "Gradualism": "gradualism",
-    "Covenant Communities": "covenant communities", "Cooperative Communities": "cooperative communities", "Atomic Individualism": "atomic Individualism",
+    "Covenant Communities": "covenant communities", "Cooperative Communities": "cooperative communities", "Symbolic Monarchism": "symbolic monarchism", "Atomic Individualism": "atomic Individualism",
     "Traditional Wages": "traditional wages", "Profit-based Earnings": "profit based wages"
 };
 const symbolSrc = name => encodeURI("pictures/" + (valueSymbols[name] || "placeholder") + ".svg");
@@ -853,7 +866,9 @@ const ideologyFlags = {
     "Geoanarchism": "geoanarchism.png", "Agorism": "agorism.png",
     "Anarcho-Frontierism": "an-frontierism.png", "Egoism": "egoism.webp",
     "Minarchism": "minarchism.png", "Geolibertarianism": "geolibertarianism.png",
-    "Market Minarcho-Socialism": "market minarcho-socialism.svg"
+    "Market Minarcho-Socialism": "market minarcho-socialism.svg",
+    "Anarcho-Monarchism": "anarcho monarchism.png", "Pink Capitalism": "pink capitalism.svg",
+    "Objectivism": "objectivism.png", "Libertarian Monarchism": "libertarian monarchism.png"
 };
 
 // Placeholder flag: dark gray "?" on black background (same style as the placeholder portrait)
@@ -939,23 +954,24 @@ const openPersonInfo = name => {
 
 </script>
     <script>
-        const allIdeologies = [...ideologies, ...nonAnarchistIdeologies];
-        document.getElementById('catalog').innerHTML = ideologyGroups.map(g => `
+        const ideologyCategories = [
+            { name: "Anarchist", list: ideologies },
+            { name: "Non-Anarchist", list: nonAnarchistIdeologies }
+        ];
+        document.getElementById('catalog').innerHTML = ideologyCategories.map(c => `
             <div class="catalog-card">
-                <button class="catalog-title group-title" data-group="${g.name}" style="border-color:${g.color}">${g.name}</button>
+                <div class="catalog-title">${c.name}</div>
                 <div class="tile-row">
-                    ${allIdeologies.filter(i => i.group === g.name).map(i => `
+                    ${c.list.map(i => `
                         <div class="value-tile ideology-tile" data-name="${i.name}">
-                            <img class="result-icon" src="${flagSrc(i.name)}" alt="" style="border-color:${i.color}">
+                            <img class="result-icon" src="${flagSrc(i.name)}" alt="">
                             <div class="result-text">${i.name}</div>
                         </div>`).join('')}
                 </div>
             </div>`).join('');
         document.getElementById('catalog').addEventListener('click', e => {
             const t = e.target.closest('.ideology-tile');
-            if (t) return openIdeologyInfo(t.dataset.name);
-            const g = e.target.closest('[data-group]');
-            if (g) openIdeologyInfo(g.dataset.group);
+            if (t) openIdeologyInfo(t.dataset.name);
         });
     </script>
 </body>
