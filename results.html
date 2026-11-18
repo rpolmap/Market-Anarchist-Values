@@ -1102,7 +1102,7 @@ const openPersonInfo = name => {
             }
             popTimer = setTimeout(() => eggOn
                 ? openInfo(taylor.name, "Person", taylor.desc, taylor.color,
-                    `<div class="info-symbols"><img class="info-flag info-person" src="taylor swift.svg" alt=""></div>`)
+                    `<div class="info-symbols"><img class="info-flag info-person" src="taylor swift.png" alt=""></div>`)
                 : openPersonInfo(rankedPeople[0].entry.name), 350);
         }
 
@@ -1115,7 +1115,7 @@ const openPersonInfo = name => {
             const imgFor = (r, cls) => isIdeo
                 ? `<img class="${cls}" src="${flagSrc(r.entry.name)}" alt="">`
                 : (r.entry.name === "Taylor Swift" 
-                    ? `<img class="${cls} match-person-img" src="taylor swift.svg" alt="">`
+                    ? `<img class="${cls} match-person-img" src="taylor swift.png" alt="">`
                     : `<img class="${cls} match-person-img" src="${personSrc(r.entry.name)}" alt="">`);
             const egg = !isIdeo && eggOn;
             const top = egg ? { entry: taylor, percent: 100 } : list[0];
