@@ -1,0 +1,263 @@
+{
+  "anarchist": [
+    {
+      "id": "Hoppeanism",
+      "value": [
+        {
+          "culture": ["Conservative", "Traditionalist"],
+          "property": ["Lockean Homesteading"],
+          "financing": ["Payment for Usage"],
+          "pricing": ["Profit-Based Supply & Demand"],
+          "workplace structure": ["Hierarchical"],
+          "tactic": ["Democracy"],
+          "communities": ["Covenant Communities"],
+          "wage model": ["Traditional Wages"]
+        }
+      ]
+    },
+    {
+      "id": "Rothbardianism",
+      "value": [
+        {
+          "culture": ["Progressive", "Moderate", "Conservative", "Traditionalist"],
+          "property": ["Lockean Homesteading"],
+          "financing": ["Payment for Usage"],
+          "pricing": ["Profit-Based Supply & Demand"],
+          "workplace structure": ["Hierarchical", "Unionism"],
+          "tactic": ["Democracy", "Counter-Economics"],
+          "communities": ["Covenant Communities", "Atomic Individualism"],
+          "wage model": ["Traditional Wages"]
+        }
+      ]
+    },
+    {
+      "id": "Left-Rothbardianism",
+      "value": [
+        {
+          "culture": ["Progressive", "Moderate"],
+          "property": ["Lockean Homesteading", "Constructive Occupancy"],
+          "financing": ["Payment for Usage", "Mutual Bank"],
+          "pricing": ["Cost-Driven Supply & Demand"],
+          "workplace structure": ["Unionism", "Horizontal Self-Employment", "Democratic Workplace"],
+          "tactic": ["Counter-Economics"],
+          "communities": ["Cooperative Communities", "Atomic Individualism"],
+          "wage model": ["Profit-Based Earnings"]
+        }
+      ]
+    },
+    {
+      "id": "Agorism",
+      "value": [
+        {
+          "culture": ["Progressive", "Moderate", "Conservative"],
+          "property": ["Lockean Homesteading", "Constructive Occupancy"],
+          "financing": ["Payment for Usage"],
+          "pricing": ["Profit-Based Supply & Demand", "Cost-Driven Supply & Demand"],
+          "workplace structure": ["Horizontal Self-Employment", "Democratic Workplace"],
+          "tactic": ["Counter-Economics"],
+          "communities": ["Atomic Individualism"],
+          "wage model": ["Traditional Wages", "Profit-Based Earnings"]
+        }
+      ]
+    },
+    {
+      "id": "Geoanarchism",
+      "value": [
+        {
+          "culture": ["Progressive", "Moderate", "Conservative", "Traditionalist"],
+          "property": ["Lockean Homesteading", "Constructive Occupancy", "Occupancy & Use"],
+          "financing": ["Land Value Tax"],
+          "pricing": ["Profit-Based Supply & Demand", "Cost-Driven Supply & Demand"],
+          "workplace structure": ["Hierarchical", "Unionism", "Horizontal Self-Employment", "Democratic Workplace"],
+          "tactic": ["Democracy", "Gradualism"],
+          "communities": ["Cooperative Communities", "Atomic Individualism"],
+          "wage model": ["Traditional Wages", "Profit-Based Earnings"]
+        }
+      ]
+    },
+    {
+      "id": "Mutualism",
+      "value": [
+        {
+          "culture": ["Progressive", "Moderate"],
+          "property": ["Occupancy & Use"],
+          "financing": ["Mutual Bank"],
+          "pricing": ["Cost-Driven Supply & Demand", "Labour Theory of Value"],
+          "workplace structure": ["Horizontal Self-Employment", "Democratic Workplace"],
+          "tactic": ["Gradualism"],
+          "communities": ["Cooperative Communities"],
+          "wage model": ["Profit-Based Earnings"]
+        }
+      ]
+    },
+    {
+      "id": "Anarcho-Monarchism",
+      "value": [
+        {
+          "culture": ["Conservative", "Traditionalist"],
+          "property": ["Lockean Homesteading"],
+          "financing": ["Payment for Usage"],
+          "pricing": ["Profit-Based Supply & Demand"],
+          "workplace structure": ["Hierarchical"],
+          "tactic": ["Counter-Economics", "Revolution", "Gradualism"],
+          "communities": ["Symbolic Monarchism"],
+          "wage model": ["Traditional Wages", "Profit-Based Earnings"]
+        }
+      ]
+    }
+  ],
+  "personalities": [
+    {
+      "id": "Hans-Hermann Hoppe",
+      "value": [
+        {
+          "culture": ["Conservative", "Traditionalist"],
+          "property": ["Lockean Homesteading"],
+          "financing": ["Payment for Usage"],
+          "pricing": ["Profit-Based Supply & Demand"],
+          "workplace structure": ["Hierarchical"],
+          "tactic": ["Democracy", "Gradualism"],
+          "communities": ["Covenant Communities"],
+          "wage model": ["Traditional Wages", "Profit-Based Earnings"]
+        }
+      ]
+    },
+    {
+      "id": "Murray Rothbard",
+      "value": [
+        {
+          "culture": ["Moderate", "Conservative"],
+          "property": ["Lockean Homesteading"],
+          "financing": ["Payment for Usage"],
+          "pricing": ["Profit-Based Supply & Demand"],
+          "workplace structure": ["Hierarchical"],
+          "tactic": ["Democracy", "Gradualism"],
+          "communities": ["Covenant Communities", "Atomic Individualism"],
+          "wage model": ["Traditional Wages", "Profit-Based Earnings"]
+        }
+      ]
+    },
+    {
+      "id": "Samuel Edward Konkin III",
+      "value": [
+        {
+          "culture": ["Progressive"],
+          "property": ["Lockean Homesteading", "Constructive Occupancy"],
+          "financing": ["Payment for Usage"],
+          "pricing": ["Cost-Driven Supply & Demand"],
+          "workplace structure": ["Horizontal Self-Employment"],
+          "tactic": ["Counter-Economics"],
+          "communities": ["Atomic Individualism"],
+          "wage model": ["Profit-Based Earnings"]
+        }
+      ]
+    },
+    {
+      "id": "Benjamin Tucker",
+      "value": [
+        {
+          "culture": ["Progressive"],
+          "property": ["Occupancy & Use"],
+          "financing": ["Mutual Bank"],
+          "pricing": ["Cost-Driven Supply & Demand", "Labour Theory of Value"],
+          "workplace structure": ["Horizontal Self-Employment"],
+          "tactic": ["Gradualism"],
+          "communities": ["Atomic Individualism"],
+          "wage model": ["Profit-Based Earnings"]
+        }
+      ]
+    },
+    {
+      "id": "Pierre-Joseph Proudhon",
+      "value": [
+        {
+          "culture": ["Conservative", "Traditionalist"],
+          "property": ["Occupancy & Use"],
+          "financing": ["Mutual Bank"],
+          "pricing": ["Labour Theory of Value"],
+          "workplace structure": ["Democratic Workplace"],
+          "tactic": ["Gradualism"],
+          "communities": ["Cooperative Communities"],
+          "wage model": ["Profit-Based Earnings"]
+        }
+      ]
+    },
+    {
+      "id": "Kevin Carson",
+      "value": [
+        {
+          "culture": ["Progressive"],
+          "property": ["Occupancy & Use", "Constructive Occupancy"],
+          "financing": ["Mutual Bank"],
+          "pricing": ["Cost-Driven Supply & Demand", "Labour Theory of Value"],
+          "workplace structure": ["Unionism", "Horizontal Self-Employment", "Democratic Workplace"],
+          "tactic": ["Counter-Economics", "Gradualism"],
+          "communities": ["Cooperative Communities"],
+          "wage model": ["Profit-Based Earnings"]
+        }
+      ]
+    }
+  ],
+  "non anarchist": [
+    {
+      "id": "Minarchism",
+      "value": [
+        {
+          "culture": ["Progressive", "Moderate", "Conservative", "Traditionalist"],
+          "property": ["Lockean Homesteading"],
+          "financing": ["Payment for Usage"],
+          "pricing": ["Profit-Based Supply & Demand"],
+          "workplace structure": ["Hierarchical", "Unionism"],
+          "tactic": ["Democracy"],
+          "communities": ["Covenant Communities", "Atomic Individualism"],
+          "wage model": ["Traditional Wages", "Profit-Based Earnings"]
+        }
+      ]
+    },
+    {
+      "id": "Geolibertarianism",
+      "value": [
+        {
+          "culture": ["Progressive", "Moderate", "Conservative", "Traditionalist"],
+          "property": ["Constructive Occupancy"],
+          "financing": ["Land Value Tax"],
+          "pricing": ["Profit-Based Supply & Demand", "Cost-Driven Supply & Demand"],
+          "workplace structure": ["Hierarchical", "Unionism", "Horizontal Self-Employment", "Democratic Workplace"],
+          "tactic": ["Democracy"],
+          "communities": ["Cooperative Communities", "Atomic Individualism"],
+          "wage model": ["Traditional Wages", "Profit-Based Earnings"]
+        }
+      ]
+    },
+    {
+      "id": "Market Minarcho-Socialism",
+      "value": [
+        {
+          "culture": ["Progressive", "Moderate"],
+          "property": ["Occupancy & Use"],
+          "financing": ["Mutual Bank"],
+          "pricing": ["Cost-Driven Supply & Demand", "Labour Theory of Value"],
+          "workplace structure": ["Democratic Workplace"],
+          "tactic": ["Democracy"],
+          "communities": ["Cooperative Communities"],
+          "wage model": ["Profit-Based Earnings"]
+        }
+      ]
+    },
+    {
+      "id": "Libertarian Monarchism",
+      "value": [
+        {
+          "culture": ["Conservative", "Traditionalist"],
+          "property": ["Lockean Homesteading"],
+          "financing": ["Payment for Usage"],
+          "pricing": ["Profit-Based Supply & Demand"],
+          "workplace structure": ["Hierarchical"],
+          "tactic": ["Democracy", "Gradualism"],
+          "communities": ["Symbolic Monarchism"],
+          "wage model": ["Traditional Wages", "Profit-Based Earnings"]
+        }
+      ]
+    }
+  ]
+}
