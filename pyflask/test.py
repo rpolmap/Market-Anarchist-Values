@@ -11,4 +11,4 @@ with DATA_PATH.open("r", encoding="utf-8") as f:
 
 @test.get("/")
 def test_home():
-    return "Flask is running on Railway!"
+    return "test.py running"
