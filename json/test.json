@@ -1,0 +1,182 @@
+{
+  "categories": [
+    {
+      "id": "culture",
+      "text": "What view on culture should the ideal society have?",
+      "answers": [
+        {
+          "text": "We should develop a future with no traditionalist inequality while only keeping non-exploitive cultural elements",
+          "value": "Progressive"
+        },
+        {
+          "text": "We should find a balance between tradition and some traditional views and progress",
+          "value": "Moderate"
+        },
+        {
+          "text": "We should continue scientific progress, but keep traditional views and customs",
+          "value": "Conservative"
+        },
+        {
+          "text": "We should return to the wisdom of the past and reject the weak modern views that damage our bonds",
+          "value": "Traditionalist"
+        }
+      ]
+    },
+    {
+      "id": "property",
+      "text": "How should private property be defined?",
+      "answers": [
+        {
+          "text": "Private Property is land you homestead or buy and remains yours until you voluntarily transfer ownership of it",
+          "value": "Lockean Homesteading"
+        },
+        {
+          "text": "Private Property is land you live in, use or actively finance/maintain and can be rehomesteaded by anyone else if you abondon it",
+          "value": "Constructive Occupancy"
+        },
+        {
+          "text": "There is no private property, only possesion you actively live in or use that can be rehomesteaded by anyone else if you stop using it for yourself",
+          "value": "Occupancy & Use"
+        }
+      ]
+    },
+    {
+      "id": "financing",
+      "text": "How should public property be financed?",
+      "answers": [
+        {
+          "text": "You should directly or indirecly pay a price set by the property owner for everything you use",
+          "value": "Payment for Usage"
+        },
+        {
+          "text": "Public property should be finananced from a mutual community bank based on voluntary donatations",
+          "value": "Mutual Bank"
+        },
+        {
+          "text": "There should be a Land Value Tax for unimproved property used to finance public property",
+          "value": "Land Value Tax"
+        }
+      ]
+    },
+    {
+      "id": "pricing",
+      "text": "How should prices be determined in the free market?",
+      "answers": [
+        {
+          "text": "Prices should be set by consumers & sellers competing with each other based on Supply & Demand",
+          "value": "Profit-Based Supply & Demand"
+        },
+        {
+          "text": "Prices will correspond to the cost of production and labour in an absolute free market with little to no space for profit while relying on Supply & Demand",
+          "value": "Cost-Driven Supply & Demand"
+        },
+        {
+          "text": "Prices should be based on the time of production and labour needed to produce the product",
+          "value": "Labour Theory of Value"
+        }
+      ]
+    },
+    {
+      "id": "workplace structure",
+      "text": "How should the ideal workplace look like?",
+      "answers": [
+        {
+          "text": "Hierarchies should stay intact, as businesses owners should have full control over all their workers",
+          "value": "Hierarchical"
+        },
+        {
+          "text": "Hierarchies should stay intact with Worker Unions making compromises with company owners over important decisions",
+          "value": "Unionism"
+        },
+        {
+          "text": "The Workplace should become Heterarchical with Workers in certain areas deciding about decisions in their area together",
+          "value": "Horizontal Self-Employment"
+        },
+        {
+          "text": "The Workplace should become Heterarchical with Workers democratically deciding over important decisions",
+          "value": "Democratic Workplace"
+        }
+      ]
+    },
+    {
+      "id": "tactic",
+      "text": "How should Market Anarchy be reached?",
+      "answers": [
+        {
+          "text": "Already existing democratic foundations should be used to gain popularity and reach the ideal system",
+          "value": "Democracy"
+        },
+        {
+          "text": "The State should be dismantled with the help of black markets",
+          "value": "Counter-Economics"
+        },
+        {
+          "text": "We should start a revolution to overthrow the government and reach the ideal system",
+          "value": "Revolution"
+        },
+        {
+          "text": "We should form voluntary communities based on mutual aid that would outperform the state in efficiency and eventually replace it",
+          "value": "Gradualism"
+        }
+      ]
+    },
+    {
+      "id": "communities",
+      "text": "How should towns and settlements look like and work?",
+      "answers": [
+        {
+          "text": "There should be communities of people with similar culture and interests living on their own property within the settlement",
+          "value": "Covenant Communities"
+        },
+        {
+          "text": "There should be communities for mutual ownership and financing of public property",
+          "value": "Cooperative Communities"
+        },
+        {
+          "text": "There should be loyal community with a symbolic  and voluntary king or queen preserving the culture and caring for the people",
+          "value": "Symbolic Monarchism"
+        },
+        {
+          "text": "Everyone should live on their own property only interfering with others when needed",
+          "value": "Atomic Individualism"
+        }
+      ]
+    },
+    {
+      "id": "wage model",
+      "text": "How should workers receive payment for their work?",
+      "answers": [
+        {
+          "text": "There should be set monthly or yearly wages a worker receives",
+          "value": "Traditional Wages"
+        },
+        {
+          "text": "Workers should receive wages based on the profit of their company and their role in the company",
+          "value": "Profit-Based Earnings"
+        }
+      ]
+    },
+    {
+      "id": "focus",
+      "text": "What should the main focus of an individual be?",
+      "answers": [
+        {
+          "text": "Living under a free market and being successful",
+          "v_focus": "none"
+        },
+        {
+          "text": "There should be no duty or morality. Everyone should do whatever they feel is right with no universal right and wrong",
+          "v_focus": "Egoism"
+        },
+        {
+          "text": "Leaving Earth and settling as far from civilization as possible for maximum individual freedom",
+          "v_focus": "Anarcho-Frontierism"
+        },
+        {
+          "text": "Absolute worldwide LGBTQ rights and culture incorporated into Capitalism",
+          "v_focus": "Pink Capitalism"
+        }
+      ]
+    }
+  ]
+}
