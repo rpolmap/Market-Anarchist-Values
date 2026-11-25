@@ -13,9 +13,6 @@ def get.Questions(data)
   text = []
 return render_template("test.html", question=text[index], next_index=next_index)
 
-    
-
-
 @test.get("/")
 def test_home():
     return "test.py running"
