@@ -9,11 +9,10 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div id="quiz"></div>
-    <script src="test.js"></script>
-    <div class="button-container">
-      <button class="back" onclick="handleBack()">←Back</button>
+    <div class="question">
+      {{ question }}
     </div>
+      <button class="back" onclick="handleBack()">←Back</button>
     <script>
       function handleBack() {
         if (index > 0) {
