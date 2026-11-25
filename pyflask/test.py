@@ -12,7 +12,7 @@ def get_Questions(data):
   categories = data.get("categories", [])
   text = []
   for category in categories:
-    text.extend(category.get("text", []))
+    text.append(category.get("text", ""))
   return text
 @test.get("/question/<int:index>")
 def show_question(index):
