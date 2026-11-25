@@ -11,7 +11,10 @@ with DATA_PATH.open("r", encoding="utf-8") as f:
 def get_Questions(data):
   categories = data.get("categories", [])
   text = []
-return text
+  return text
+@test.get("/question/<int:index>")
+def show_question(index):
+    text = get_Questions(TEST)
 return render_template("test.html", question=text[index], next_index=next_index)
 
 @test.get("/")
