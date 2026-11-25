@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, abort
 
 test = Blueprint("test", __name__)
 
-DATA_PATH = Path(__file__).resolve().parent.parent / "json/test.json"
+DATA_PATH = Path(__file__).resolve().parent.parent / "json" / "test.json"
 with DATA_PATH.open("r", encoding="utf-8") as f:
     TEST = json.load(f)
 
