@@ -8,7 +8,7 @@ DATA_PATH = Path(__file__).resolve().parent.parent / "json" / "test.json"
 with DATA_PATH.open("r", encoding="utf-8") as f:
     TEST = json.load(f)
 
-def get.Questions(data)
+def get_Questions(data):
   categories = data.get("categories", [])
   text = []
 return text
