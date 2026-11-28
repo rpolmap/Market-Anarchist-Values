@@ -15,7 +15,7 @@
   </head>
   <body>
     <h2>MAValues</h2>
-    <div id="results>
+    <div id="results">
   <script>
     const answers = JSON.parse(sessionStorage.getItem('quizAnswers') || '[]');
     const container = document.getElementById('results');
