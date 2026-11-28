@@ -1,118 +1,118 @@
-      body {
-        background: hwb(0 9% 91%);
-      }
-      h1 {
-        font-family: "Quicksand", sans-serif;
-        color: hwb(0 90% 10%);
-        font-size: 15dvw;
-        text-align: center;
-      }
-      h2 {
-        font-size: 8dvw;
-        color: hwb(0 90% 10%);
-        font-family: "Quicksand", sans-serif;
-        text-align: center;
-      }
-      .btn {
-        font-size: 4dvw;
-        background-color: hwb(0 17% 83%);
-        font-family: "Quicksand", sans-serif;
-        font-weight: bold;
-        color: hwb(0 90% 10%);
-        border: none;
-        overflow: hidden;
-        border-radius: 4dvw;
-        margin: 0 auto;
-        padding-top: 4dvw;
-        padding-bottom: 4dvw;
-        padding-left: 17dvw;
-        padding-right: 17dvw;
-        display: block;
-        margin-bottom: 4dvw;
-        width: 200dvw;
-        max-width: 90%;
-      }
-      button:hover {
-        background-color: hwb(0 90% 10%);
-        color: black;
-        transform: scale(0.97);
-      }
-      .question {
-        font-size: 5dvw;
-        background: hwb(0 13% 87%);
-        color: hwb(0 90% 10%);
-        font-family: "Quicksand", sans-serif;
-        font-weight: bold;
-        width: 200dvw;
-        padding-top: 12dvw;
-        padding-bottom: 12dvw;
-        border: none;
-        display: block;
-        border-radius: 6dvw;
-        overflow: hidden;
-        margin: 0 auto;
-        margin-bottom: 6dvw;
-        max-width: 90%;
-        text-align: center;
-      }
-      a {
-        text-decoration: none;
-      }
-      .tbtn {
-        font-size: 4dvw;
-        background-color: hwb(0 17% 83%);
-        font-family: "Quicksand", sans-serif;
-        font-weight: bold;
-        color: hwb(0 90% 10%);
-        border: none;
-        overflow: hidden;
-        border-radius: 4dvw;
-        margin: 0 auto;
-        padding-top: 2dvw;
-        padding-bottom: 2dvw;
-        padding-left: 17dvw;
-        padding-right: 17dvw;
-        display: block;
-        margin-bottom: 4dvw;
-        width: 200dvw;
-        max-width: 90%;
-      }
-      .back {
-        font-size: 4dvw;
-        color: hwb(0 90% 10%);
-        background-color: hwb(0 13% 87%);
-        font-family: "Quicksand", sans-serif;
-        font-weight: bold;
-        margin: 0 auto;
-        display: block;
-        border-radius: 4dvw;
-        overflow: hidden;
-        border: none;
-        padding-top: 2dvw;
-        padding-bottom: 2dvw;
-        padding-left: 4dvw;
-        padding-right: 4dvw;
-      }
-      .symbol-name {
-        font-size: 3dvw;
-        color: hwb(0 90% 10%);
-        font-family: "Quicksand", sans-serif;
-      }
-      .result-item {
-        text-align: center;
-        width: 20dvw;
-        font-weight: bold;
-        flex: 1;
-      }
-      .resultrow {
-        display: flex;
-        margin: 0 auto;
-        text-align: center;
-        align-items: flex-start;
-        width: 90dvw;
-        margin-bottom: 4dvw;
-      }
-      .symbol {
-        width: 18dvw;
-        height: auto;
-      }
+body {
+  background: hwb(0 9% 91%);
+}
+h1 {
+  font-family: "Quicksand", sans-serif;
+  color: hwb(0 90% 10%);
+  font-size: min(15dvw, 96px);
+  text-align: center;
+}
+h2 {
+  font-size: min(8dvw, 52px);
+  color: hwb(0 90% 10%);
+  font-family: "Quicksand", sans-serif;
+  text-align: center;
+}
+.btn {
+  font-size: min(4dvw, 24px);
+  background-color: hwb(0 17% 83%);
+  font-family: "Quicksand", sans-serif;
+  font-weight: bold;
+  color: hwb(0 90% 10%);
+  border: none;
+  overflow: hidden;
+  border-radius: min(4dvw, 24px);
+  margin: 0 auto;
+  padding-top: min(4dvw, 20px);
+  padding-bottom: min(4dvw, 20px);
+  padding-left: min(17dvw, 80px);
+  padding-right: min(17dvw, 80px);
+  display: block;
+  margin-bottom: min(4dvw, 24px);
+  width: min(200dvw, 480px);
+  max-width: 90%;
+}
+button:hover {
+  background-color: hwb(0 90% 10%);
+  color: black;
+  transform: scale(0.97);
+}
+.question {
+  font-size: min(5dvw, 32px);
+  background: hwb(0 13% 87%);
+  color: hwb(0 90% 10%);
+  font-family: "Quicksand", sans-serif;
+  font-weight: bold;
+  width: min(200dvw, 800px);
+  padding-top: min(12dvw, 56px);
+  padding-bottom: min(12dvw, 56px);
+  border: none;
+  display: block;
+  border-radius: min(6dvw, 32px);
+  overflow: hidden;
+  margin: 0 auto;
+  margin-bottom: min(6dvw, 32px);
+  max-width: 90%;
+  text-align: center;
+}
+a {
+  text-decoration: none;
+}
+.tbtn {
+  font-size: min(4dvw, 24px);
+  background-color: hwb(0 17% 83%);
+  font-family: "Quicksand", sans-serif;
+  font-weight: bold;
+  color: hwb(0 90% 10%);
+  border: none;
+  overflow: hidden;
+  border-radius: min(4dvw, 24px);
+  margin: 0 auto;
+  padding-top: min(2dvw, 12px);
+  padding-bottom: min(2dvw, 12px);
+  padding-left: min(17dvw, 80px);
+  padding-right: min(17dvw, 80px);
+  display: block;
+  margin-bottom: min(4dvw, 24px);
+  width: min(200dvw, 480px);
+  max-width: 90%;
+}
+.back {
+  font-size: min(4dvw, 24px);
+  color: hwb(0 90% 10%);
+  background-color: hwb(0 13% 87%);
+  font-family: "Quicksand", sans-serif;
+  font-weight: bold;
+  margin: 0 auto;
+  display: block;
+  border-radius: min(4dvw, 24px);
+  overflow: hidden;
+  border: none;
+  padding-top: min(2dvw, 12px);
+  padding-bottom: min(2dvw, 12px);
+  padding-left: min(4dvw, 24px);
+  padding-right: min(4dvw, 24px);
+}
+.symbol-name {
+  font-size: min(3dvw, 20px);
+  color: hwb(0 90% 10%);
+  font-family: "Quicksand", sans-serif;
+}
+.result-item {
+  text-align: center;
+  width: min(20dvw, 160px);
+  font-weight: bold;
+  flex: 1;
+}
+.resultrow {
+  display: flex;
+  margin: 0 auto;
+  text-align: center;
+  align-items: flex-start;
+  width: min(90dvw, 900px);
+  margin-bottom: min(4dvw, 24px);
+}
+.symbol {
+  width: min(18dvw, 140px);
+  height: auto;
+}
