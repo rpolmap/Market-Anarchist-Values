@@ -1,5 +1,7 @@
 <?php
-  
+  ?json = file_get_contents(__DIR__ . 'json/test.json');
+  ?data = json_decode($json, true);
+  ?categories = $data['categories'] ?? [];
 ?>
 <!DOCTYPE html>
 <html lang="en-US">
@@ -13,7 +15,7 @@
   </head>
   <body>
     <div class="question">
-      {{ question }}
+      <?php foreach ($categories as $category): ?>
     </div>
       <button class="back" onclick="handleBack()">←Back</button>
     <script>
