@@ -1,5 +1,5 @@
 function nextQuestion() {
-  window.location.href = `?q=${index - 1}`;
+  window.location.href = `?q=${index + 1}`;
 }
 function previousQuestion() {
   window.location.href = `?q=${index - 1}`;
