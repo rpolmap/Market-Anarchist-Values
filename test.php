@@ -1,5 +1,5 @@
 <?php
-  $json = file_get_contents(__DIR__ . 'json/test.json');
+  $json = file_get_contents(__DIR__ . '/json/test.json');
   $data = json_decode($json, true);
   $categories = $data['categories'] ?? [];
 ?>
