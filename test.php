@@ -18,6 +18,7 @@
       <div class="question">
         <?php echo $category['text']; ?>
       </div>
+        <?php endforeach; ?>
       <button class="back" onclick="handleBack()">←Back</button>
     <script>
       function handleBack() {
