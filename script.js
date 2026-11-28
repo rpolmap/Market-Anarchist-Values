@@ -11,3 +11,7 @@ function handleBack() {
           window.location.href = "index.html";
         }
 }
+const raw = sessionStorage.getItem('quizAnswers');
+if (raw && !new URLSearchParams(window.location.search).has('answers')) {
+  window.location.replace(`results.php?answers=${encodeURIComponent(raw)}`);
+}

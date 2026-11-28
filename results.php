@@ -1,6 +1,10 @@
 <?php
   $json = file_get_contents(__DIR__ . '/json/valuesvg.json');
   $data = json_decode($json, true);
+  $answers = json_decode($_GET['answers'] ?? '[]', true);
+  if (!is_array($answers)) {
+  $answers = [];
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en-US">
@@ -15,10 +19,10 @@
   </head>
   <body>
     <h2>MAValues</h2>
-    <div id="results">
-  <script>
-    const answers = JSON.parse(sessionStorage.getItem('quizAnswers') || '[]');
-    const container = document.getElementById('results');
-  </script>
+    <?php foreach($answers as $value): ?>
+      <div class="result-item">
+        <?php echo htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); ?>
+      </div>
+    <?php endforeach; ?>
   </body>
 </html>
