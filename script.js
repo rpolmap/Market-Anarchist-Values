@@ -1,4 +1,7 @@
-function nextQuestion() {
+function nextQuestion(value) {
+  const answers = JSON.parse(sessionStorage.getItem('quizAnswers') || '[]');
+  answers[index] = value;
+  sessionStorage.setItem('quizAnswers', JSON.stringify(answers));
   window.location.href = `?q=${index + 1}`;
 }
 function previousQuestion() {
