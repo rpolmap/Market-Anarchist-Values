@@ -19,14 +19,6 @@
   </head>
   <body>
     <h2>MAValues</h2>
-   <?php if (count($answers) > 0): ?>
-      <div class="resultrow">
-        <?php foreach($answers as $value): ?>
-          <div class="result-item">
-            <?php echo htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); ?>
-          </div>
-        <?php endforeach; ?>
-      </div>
-    <?php endif; ?>
+   
   </body>
 </html>
