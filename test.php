@@ -37,7 +37,7 @@
     <button class="back" onclick="handleBack()">←Back</button>
     <script>
       const index = <?php echo $index; ?>;
-      const total = <?php echo $count($questions); ?>;
+      const total = <?php echo count($categories); ?>;
     </script>
   </body>
 </html>
