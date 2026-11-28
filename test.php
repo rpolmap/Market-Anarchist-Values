@@ -26,7 +26,10 @@
       <?php echo $category['text']; ?>
     </div>
     <?php foreach ($category['answers'] as $answer): ?>
-      <button class="tbtn" onclick="nextQuestion()">
+      <button class="tbtn"
+        data-value="<?php echo $answer['value'] ?? ''; ?>"
+        onclick="nextQuestion(this.dataset.value)"
+      >
         <?php echo $answer['text']; ?>
       </button>
     <?php endforeach; ?>
